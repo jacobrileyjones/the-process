@@ -1,0 +1,2439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="THE PROCESS" />
+  <title>THE PROCESS</title>
+  <style>
+    :root {
+      --bg-page: #060911;
+      --bg-card: #0f172a;
+      --bg-card-inner: #1e293b;
+      --bg-input: #090d16;
+      --border-subtle: rgba(148, 163, 184, 0.16);
+      --border-strong: rgba(148, 163, 184, 0.28);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --emerald: #10b981;
+      --emerald-hover: #059669;
+      --emerald-soft: rgba(16, 185, 129, 0.14);
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --indigo: #818cf8;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      padding-bottom: 96px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 14px;
+    }
+
+    /* Top Header */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(6, 9, 17, 0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 10px 0;
+    }
+
+    .topbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      background: var(--emerald-soft);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      color: var(--emerald);
+      font-size: 12px;
+    }
+
+    .sync-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .sync-pill.cloud {
+      color: #6ee7b7;
+      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .timer-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 5px 8px;
+    }
+
+    .timer-readout {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-primary);
+      min-width: 42px;
+      text-align: center;
+    }
+
+    .icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card-inner);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Main Content */
+    .main-content {
+      padding-top: 14px;
+    }
+
+    /* Day Selector */
+    .day-scroller {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+      scrollbar-width: none;
+    }
+
+    .day-scroller::-webkit-scrollbar {
+      display: none;
+    }
+
+    .day-pill {
+      flex: 1 0 auto;
+      min-width: 78px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 8px 10px;
+      text-align: center;
+      cursor: pointer;
+      color: var(--text-secondary);
+    }
+
+    .day-pill.active {
+      background: var(--emerald-soft);
+      border-color: var(--emerald);
+      color: var(--text-primary);
+    }
+
+    .day-pill-num {
+      display: block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    .day-pill-name {
+      display: block;
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+
+    /* Session Stopwatch Banner */
+    .stopwatch-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: 16px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .card-header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .card-subtitle {
+      margin: 3px 0 0 0;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .day-banner {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .swap-day-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .badge-emerald {
+      background: var(--emerald-soft);
+      color: #6ee7b7;
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    .badge-amber {
+      background: rgba(245, 158, 11, 0.14);
+      color: #fcd34d;
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+
+    .badge-indigo {
+      background: rgba(129, 140, 248, 0.14);
+      color: #c7d2fe;
+      border-color: rgba(129, 140, 248, 0.35);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: var(--emerald);
+      color: #04130d;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-primary:hover {
+      background: var(--emerald-hover);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card-inner);
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-compact {
+      padding: 7px 10px;
+      font-size: 11px;
+      border-radius: 10px;
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    .day-option-card {
+      background: var(--bg-card-inner);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 11px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .day-option-card.active {
+      border-color: var(--emerald);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .day-option-badge {
+      flex-shrink: 0;
+      min-width: 78px;
+      height: 28px;
+      padding: 0 10px;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    /* Set Table */
+    .sets-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .sets-table th {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 0 4px 6px 4px;
+    }
+
+    .sets-table td {
+      padding: 4px;
+      text-align: center;
+    }
+
+    .set-num-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: var(--bg-card-inner);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-secondary);
+    }
+
+    .num-input {
+      width: 100%;
+      max-width: 84px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 8px 6px;
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .num-input:focus {
+      outline: none;
+      border-color: var(--emerald);
+    }
+
+    .done-check-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-input);
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .done-check-btn.completed {
+      background: var(--emerald);
+      border-color: var(--emerald);
+      color: #04130d;
+    }
+
+    /* Effort Scale 1-5 */
+    .effort-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .effort-buttons {
+      display: flex;
+      gap: 5px;
+    }
+
+    .effort-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card-inner);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .effort-btn.selected {
+      background: var(--emerald);
+      border-color: var(--emerald);
+      color: #04130d;
+    }
+
+    /* Cue Box */
+    .cue-box {
+      margin-top: 10px;
+      background: var(--bg-card-inner);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .ex-title-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .info-i-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-card-inner);
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 800;
+      font-style: italic;
+      font-family: Georgia, serif;
+      line-height: 1;
+      padding: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .info-i-btn.active {
+      background: var(--emerald-soft);
+      border-color: var(--emerald);
+      color: var(--emerald);
+    }
+
+    /* Forms */
+    .field-group {
+      margin-bottom: 10px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+    }
+
+    .text-input, .select-input, .textarea-input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 10px 12px;
+      color: var(--text-primary);
+      font-size: 13px;
+      font-family: inherit;
+    }
+
+    .text-input:focus, .select-input:focus, .textarea-input:focus {
+      outline: none;
+      border-color: var(--emerald);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* Coach Chat */
+    .chat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 12px;
+      max-height: 360px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .chat-bubble {
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+
+    .chat-bubble.chad {
+      background: var(--bg-card-inner);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+    }
+
+    .chat-bubble.user {
+      background: var(--emerald-soft);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #ecfdf5;
+      margin-left: 24px;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 35;
+      background: rgba(6, 9, 17, 0.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border-subtle);
+      padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    }
+
+    .bottom-nav-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      border-radius: 12px;
+      padding: 7px 4px;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .nav-btn.active {
+      background: var(--emerald-soft);
+      color: var(--emerald);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(2, 6, 23, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 480px;
+      max-height: 86vh;
+      overflow-y: auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .sql-box {
+      width: 100%;
+      min-height: 150px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 10px;
+      color: #a7f3d0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.4;
+      resize: vertical;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 58px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 60;
+      background: #064e3b;
+      border: 1px solid var(--emerald);
+      color: #ecfdf5;
+      padding: 9px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      display: none;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .toast.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="container topbar-row">
+        <h1 class="brand-title">
+          <span class="brand-badge">&#9650;</span>
+          <span>THE PROCESS</span>
+        </h1>
+
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button id="cloudSyncPill" type="button" class="sync-pill" onclick="openCloudSettingsModal()" title="Cloud Database Sync">
+            <span id="cloudSyncDot">&#9679;</span>
+            <span id="cloudSyncLabel">Local</span>
+          </button>
+
+          <div class="timer-pill" title="Workout Stopwatch">
+            <span id="headerStopwatch" class="timer-readout">0:00</span>
+            <button id="headerTimerToggle" class="icon-btn" onclick="toggleWorkoutTimer()" aria-label="Start or pause workout timer">&#9654;</button>
+            <button class="icon-btn" onclick="resetWorkoutTimer()" aria-label="Reset workout timer">&#8634;</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="appMain" class="container main-content"></main>
+  </div>
+
+  <div id="toastBanner" class="toast"></div>
+
+  <div id="modalBackdrop" class="modal-backdrop" onclick="handleBackdropClick(event)">
+    <div id="modalCard" class="modal-card"></div>
+  </div>
+
+  <nav class="bottom-nav" aria-label="Primary Navigation">
+    <div class="bottom-nav-inner">
+      <button id="nav-workout" class="nav-btn active" onclick="switchTab('workout')">
+        <span>&#127947;</span>
+        <span>Workout</span>
+      </button>
+      <button id="nav-cardio" class="nav-btn" onclick="switchTab('cardio')">
+        <span>&#127939;</span>
+        <span>Cardio &amp; Sauna</span>
+      </button>
+      <button id="nav-progress" class="nav-btn" onclick="switchTab('progress')">
+        <span>&#128200;</span>
+        <span>Progress</span>
+      </button>
+      <button id="nav-coach" class="nav-btn" onclick="switchTab('coach')">
+        <span>&#129504;</span>
+        <span>Coach</span>
+      </button>
+    </div>
+  </nav>
+
+  <script>
+    const STORAGE_KEY = 'the_process_tracker_v1';
+
+    const SUPABASE_SQL_SETUP = `create table if not exists public.the_process_state (
+  user_key text primary key,
+  payload jsonb not null,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.the_process_state enable row level security;
+
+drop policy if exists "Allow user_key read/write" on public.the_process_state;
+create policy "Allow user_key read/write"
+on public.the_process_state
+for all
+using (true)
+with check (true);`;
+
+    const PROGRAM_DAYS = [
+      {
+        id: 'day1',
+        shortName: 'Day 1',
+        pillLabel: 'Push',
+        title: 'Push (Chest, Shoulders & Triceps)',
+        warmup: '3-4 min light cardio + band pull-aparts + 2 ramp-up sets on incline press.',
+        isLegDay: false,
+        exercises: [
+          {
+            id: 'd1_inc_press',
+            name: '30° Incline Dumbbell or Hammer Press',
+            muscle: 'Upper Chest & Front Delts',
+            defaultSets: 3,
+            defaultWeight: 60,
+            defaultReps: 10,
+            restSec: 120,
+            cue: 'Keep shoulder blades retracted, set bench at 30 degrees, and lower under control without bottoming out.',
+            swapBank: ['Hammer Strength Incline Press', 'Smith Machine 30° Incline Press', 'Cable Low-to-High Fly']
+          },
+          {
+            id: 'd1_chest_press',
+            name: 'Hammer Strength Chest Press (Neutral/Semi)',
+            muscle: 'Mid/Lower Chest',
+            defaultSets: 3,
+            defaultWeight: 135,
+            defaultReps: 10,
+            restSec: 90,
+            cue: 'Drive handles smoothly through mid-range; pause briefly at full stretch without shrugging.',
+            swapBank: ['Seated Cable Chest Press', 'Dumbbell Flat/Low-Incline Press', 'Pec Deck Machine']
+          },
+          {
+            id: 'd1_lat_raise',
+            name: 'Cable or Machine Lateral Raise',
+            muscle: 'Side Delts',
+            defaultSets: 4,
+            defaultWeight: 20,
+            defaultReps: 15,
+            restSec: 60,
+            cue: 'Lead with the elbow in the scapular plane and stop just below shoulder height.',
+            swapBank: ['Seated Dumbbell Lateral Raise', 'Lateral Raise Machine', 'Lean-Away Cable Lateral Raise']
+          },
+          {
+            id: 'd1_tri_pushdown',
+            name: 'Cable Rope Tricep Pressdown',
+            muscle: 'Triceps',
+            defaultSets: 3,
+            defaultWeight: 50,
+            defaultReps: 12,
+            restSec: 60,
+            cue: 'Pin elbows to sides and spread rope ends cleanly at lockout.',
+            swapBank: ['Overhead Cable Tricep Extension', 'V-Bar Cable Pressdown', 'Dip Machine Press']
+          }
+        ]
+      },
+      {
+        id: 'day2',
+        shortName: 'Day 2',
+        pillLabel: 'Pull',
+        title: 'Pull (Back & Biceps)',
+        warmup: '3 min light row/cardio + scapular pulls + 1 light pulldown warm-up.',
+        isLegDay: false,
+        exercises: [
+          {
+            id: 'd2_lat_pulldown',
+            name: 'Wide/Neutral Lat Pulldown',
+            muscle: 'Lats',
+            defaultSets: 3,
+            defaultWeight: 120,
+            defaultReps: 10,
+            restSec: 90,
+            cue: 'Pull elbows down toward hip pockets while keeping chest tall.',
+            swapBank: ['Assisted Pull-Up Machine', 'Single-Arm Cable Pulldown', 'Hammer Strength High Row']
+          },
+          {
+            id: 'd2_chest_row',
+            name: 'Chest-Supported Machine Row',
+            muscle: 'Mid Back & Rhomboids',
+            defaultSets: 3,
+            defaultWeight: 115,
+            defaultReps: 10,
+            restSec: 90,
+            cue: 'Brace chest firmly against pad to remove lower-back momentum and squeeze shoulder blades.',
+            swapBank: ['Seated Cable Row (V-Bar/Mag Grip)', 'Hammer Strength Iso-Row', 'One-Arm Dumbbell Row']
+          },
+          {
+            id: 'd2_rear_delt',
+            name: 'Reverse Pec Deck or Rope Face Pull',
+            muscle: 'Rear Delts & Upper Back',
+            defaultSets: 3,
+            defaultWeight: 45,
+            defaultReps: 15,
+            restSec: 60,
+            cue: 'Sweep hands outward and back rather than yanking with traps.',
+            swapBank: ['Cable Rear Delt Fly', 'Bent-Over Dumbbell Rear Delt Raise', 'Face Pulls']
+          },
+          {
+            id: 'd2_curl',
+            name: 'EZ-Bar or Cable Bicep Curl',
+            muscle: 'Biceps',
+            defaultSets: 3,
+            defaultWeight: 55,
+            defaultReps: 12,
+            restSec: 60,
+            cue: 'Keep elbows stationary and lower slowly for 2-3 seconds.',
+            swapBank: ['Incline Dumbbell Curl', 'Hammer Curl (Rope or DB)', 'Preacher Curl Machine']
+          }
+        ]
+      },
+      {
+        id: 'day3',
+        shortName: 'Day 3',
+        pillLabel: 'Legs',
+        title: 'Legs (Quads, Hamstrings & Calves)',
+        warmup: '4-5 min bike/walk + hip openers + 2 progressive warm-up sets on primary leg movement.',
+        isLegDay: true,
+        exercises: [
+          {
+            id: 'd3_hack_squat',
+            name: 'Hack Squat or Leg Press',
+            muscle: 'Quads & Glutes',
+            defaultSets: 3,
+            defaultWeight: 180,
+            defaultReps: 10,
+            restSec: 120,
+            cue: 'Full controlled depth without lower back rounding; push evenly through mid-foot.',
+            swapBank: ['45° Leg Press', 'Pendulum / V-Squat Machine', 'Goblet or Smith Squat']
+          },
+          {
+            id: 'd3_leg_curl',
+            name: 'Seated or Lying Leg Curl',
+            muscle: 'Hamstrings',
+            defaultSets: 3,
+            defaultWeight: 95,
+            defaultReps: 12,
+            restSec: 75,
+            cue: 'Lock hips down and pause briefly at peak contraction.',
+            swapBank: ['Lying Leg Curl Machine', 'Single-Leg Curl Machine', 'Dumbbell Romanian Deadlift']
+          },
+          {
+            id: 'd3_leg_ext',
+            name: 'Leg Extension Machine',
+            muscle: 'Quads',
+            defaultSets: 3,
+            defaultWeight: 90,
+            defaultReps: 15,
+            restSec: 60,
+            cue: 'Align knee joint with machine pivot and squeeze quads cleanly at top.',
+            swapBank: ['Reverse Sled Drag / Treadmill Incline', 'Split Squat', 'Leg Press High/Narrow']
+          },
+          {
+            id: 'd3_calf',
+            name: 'Standing or Seated Calf Raise',
+            muscle: 'Calves',
+            defaultSets: 3,
+            defaultWeight: 110,
+            defaultReps: 15,
+            restSec: 60,
+            cue: 'Full stretch at bottom and a 1-second pause at the top.',
+            swapBank: ['Seated Calf Raise Machine', 'Leg Press Calf Press', 'Single-Leg Calf Raise']
+          }
+        ]
+      },
+      {
+        id: 'day4',
+        shortName: 'Day 4',
+        pillLabel: 'Chest/Back',
+        title: 'Chest & Back Hypertrophy',
+        warmup: '3-4 min light cardio + shoulder mobility + light warm-up sets.',
+        isLegDay: false,
+        exercises: [
+          {
+            id: 'd4_db_inc',
+            name: 'Incline Dumbbell Press',
+            muscle: 'Upper Chest',
+            defaultSets: 3,
+            defaultWeight: 55,
+            defaultReps: 10,
+            restSec: 90,
+            cue: 'Tuck elbows slightly (~45°) to protect shoulders and stretch chest smoothly.',
+            swapBank: ['Hammer Strength Chest Press', 'Cable Chest Fly', 'Machine Chest Press']
+          },
+          {
+            id: 'd4_cable_row',
+            name: 'Seated Cable Row',
+            muscle: 'Back Thickness',
+            defaultSets: 3,
+            defaultWeight: 110,
+            defaultReps: 12,
+            restSec: 90,
+            cue: 'Sit tall, pull to lower ribs/upper abs, and control the return.',
+            swapBank: ['Chest-Supported Row', 'T-Bar / Landmine Row', 'Lat Pulldown']
+          },
+          {
+            id: 'd4_pec_fly',
+            name: 'Pec Deck or Cable Fly',
+            muscle: 'Chest Isolation',
+            defaultSets: 3,
+            defaultWeight: 85,
+            defaultReps: 15,
+            restSec: 60,
+            cue: 'Soft bend in elbows; focus on bringing upper arms together.',
+            swapBank: ['High-to-Low Cable Fly', 'Dumbbell Pullover', 'Incline Cable Fly']
+          },
+          {
+            id: 'd4_straight_arm',
+            name: 'Straight-Arm Cable Pulldown',
+            muscle: 'Lats',
+            defaultSets: 3,
+            defaultWeight: 45,
+            defaultReps: 15,
+            restSec: 60,
+            cue: 'Keep arms nearly straight and hinge slightly at hips to isolate lats.',
+            swapBank: ['Close-Grip Pulldown', 'Dumbbell Pullover', 'Seated Row']
+          }
+        ]
+      },
+      {
+        id: 'day5',
+        shortName: 'Day 5',
+        pillLabel: 'Delts/Arms',
+        title: 'Shoulders, Arms & Core',
+        warmup: '3 min light cardio + arm circles + light lateral/tricep warm-up.',
+        isLegDay: false,
+        exercises: [
+          {
+            id: 'd5_shoulder_press',
+            name: 'Machine or Dumbbell Shoulder Press',
+            muscle: 'Shoulders',
+            defaultSets: 3,
+            defaultWeight: 50,
+            defaultReps: 10,
+            restSec: 90,
+            cue: 'Use neutral or semi-angled grip and stop pressing just before full elbow lock if shoulders feel tight.',
+            swapBank: ['Hammer Strength Shoulder Press', 'Dumbbell Lateral Raise', 'Cable Lateral Raise']
+          },
+          {
+            id: 'd5_hammer_curl',
+            name: 'Hammer or Cable Curl',
+            muscle: 'Biceps & Brachialis',
+            defaultSets: 3,
+            defaultWeight: 30,
+            defaultReps: 12,
+            restSec: 60,
+            cue: 'Neutral thumbs-up grip with zero swinging.',
+            swapBank: ['EZ-Bar Curl', 'Bayesian Cable Curl', 'Preacher Curl']
+          },
+          {
+            id: 'd5_oh_tri',
+            name: 'Overhead Cable Tricep Extension',
+            muscle: 'Long Head Triceps',
+            defaultSets: 3,
+            defaultWeight: 45,
+            defaultReps: 12,
+            restSec: 60,
+            cue: 'Step forward slightly and feel a clean stretch behind head before extending.',
+            swapBank: ['Rope Pressdown', 'Single-Arm Cable Extension', 'Close-Grip Push-Up']
+          },
+          {
+            id: 'd5_core',
+            name: 'Cable Crunch or Ab Machine',
+            muscle: 'Core',
+            defaultSets: 3,
+            defaultWeight: 60,
+            defaultReps: 15,
+            restSec: 60,
+            cue: 'Curl ribcage toward pelvis with abs rather than hinging at the hips.',
+            swapBank: ['Hanging Knee Raise', 'Ab Wheel / Rollout', 'Plank Hold']
+          }
+        ]
+      }
+    ];
+
+    const state = {
+      activeTab: 'workout',
+      selectedDayId: 'day1',
+      daySwaps: {},
+      customDayTemplates: {},
+      swaps: {},
+      customSwaps: {},
+      targets: {},
+      setsByDay: {},
+      extraExercises: {},
+      efforts: {},
+      openCues: {},
+      notesByDay: {},
+      history: [],
+      cardioLogs: [
+        {
+          id: 'c1',
+          date: 'Nov 24',
+          type: 'Treadmill Walk',
+          environment: 'Inside',
+          durationSeconds: 1800,
+          durationFormatted: '30:00',
+          distance: 1.8,
+          unit: 'mi',
+          paceDisplay: '16:40 /mi',
+          notes: ''
+        }
+      ],
+      stopwatchSeconds: 0,
+      stopwatchRunning: false,
+      lastTickTimestamp: null,
+      geminiApiKey: '',
+      geminiModel: 'gemini-3.8-flash',
+      supabaseUrl: '',
+      supabaseAnonKey: '',
+      supabaseUserKey: 'the-process-athlete-1',
+      syncStatus: 'local',
+      lastSyncedAt: '',
+      coachMessages: [
+        {
+          role: 'chad',
+          text: 'Welcome to THE PROCESS. Log your sets, rate effort 1-5, swap an entire day whenever you need an extra Pull or custom body-part session, and tap Coach anytime for check-ins.'
+        }
+      ]
+    };
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function getBaseDayById(dayId) {
+      if (state.customDayTemplates && state.customDayTemplates[dayId]) {
+        return state.customDayTemplates[dayId];
+      }
+      return PROGRAM_DAYS.find((d) => d.id === dayId) || PROGRAM_DAYS[0];
+    }
+
+    function getEffectiveDay(slotDayId) {
+      const baseSlot = PROGRAM_DAYS.find((d) => d.id === slotDayId) || PROGRAM_DAYS[0];
+      const swappedTemplateId = state.daySwaps && state.daySwaps[slotDayId];
+      if (!swappedTemplateId || swappedTemplateId === slotDayId) {
+        return {
+          ...baseSlot,
+          slotId: baseSlot.id,
+          slotShortName: baseSlot.shortName,
+          isDaySwapped: false
+        };
+      }
+      const sourceTemplate = getBaseDayById(swappedTemplateId);
+      return {
+        ...sourceTemplate,
+        id: baseSlot.id,
+        slotId: baseSlot.id,
+        shortName: baseSlot.shortName,
+        slotShortName: baseSlot.shortName,
+        isDaySwapped: true
+      };
+    }
+
+    function getAllAvailableDayTemplates() {
+      const customs = Object.values(state.customDayTemplates || {});
+      return [...PROGRAM_DAYS, ...customs];
+    }
+
+    function getSerializablePayload() {
+      return {
+        selectedDayId: state.selectedDayId,
+        daySwaps: state.daySwaps,
+        customDayTemplates: state.customDayTemplates,
+        swaps: state.swaps,
+        customSwaps: state.customSwaps,
+        targets: state.targets,
+        setsByDay: state.setsByDay,
+        extraExercises: state.extraExercises,
+        efforts: state.efforts,
+        openCues: state.openCues,
+        notesByDay: state.notesByDay,
+        history: state.history,
+        cardioLogs: state.cardioLogs,
+        stopwatchSeconds: state.stopwatchSeconds,
+        stopwatchRunning: state.stopwatchRunning,
+        lastTickTimestamp: Date.now(),
+        geminiApiKey: state.geminiApiKey,
+        geminiModel: state.geminiModel,
+        supabaseUrl: state.supabaseUrl,
+        supabaseAnonKey: state.supabaseAnonKey,
+        supabaseUserKey: state.supabaseUserKey,
+        coachMessages: state.coachMessages
+      };
+    }
+
+    function updateSyncBadgeUI() {
+      const pill = document.getElementById('cloudSyncPill');
+      const label = document.getElementById('cloudSyncLabel');
+      if (!pill || !label) return;
+      const configured = Boolean(state.supabaseUrl && state.supabaseAnonKey);
+      pill.classList.toggle('cloud', configured && state.syncStatus === 'synced');
+      if (!configured) {
+        label.textContent = 'Local';
+      } else if (state.syncStatus === 'syncing') {
+        label.textContent = 'Syncing';
+      } else if (state.syncStatus === 'error') {
+        label.textContent = 'Retry';
+      } else {
+        label.textContent = 'Cloud';
+      }
+    }
+
+    let _cloudSyncTimer = null;
+    async function pushToSupabase() {
+      const baseUrl = (state.supabaseUrl || '').trim().replace(/\/+$/, '');
+      const anonKey = (state.supabaseAnonKey || '').trim();
+      const userKey = (state.supabaseUserKey || 'the-process-athlete-1').trim() || 'the-process-athlete-1';
+      if (!baseUrl || !anonKey) return;
+
+      state.syncStatus = 'syncing';
+      updateSyncBadgeUI();
+
+      try {
+        const endpoint = `${baseUrl}/rest/v1/the_process_state?on_conflict=user_key`;
+        const resp = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': anonKey,
+            'Authorization': `Bearer ${anonKey}`,
+            'Prefer': 'resolution=merge-duplicates,return=minimal'
+          },
+          body: JSON.stringify([{
+            user_key: userKey,
+            payload: getSerializablePayload(),
+            updated_at: new Date().toISOString()
+          }])
+        });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        state.syncStatus = 'synced';
+        state.lastSyncedAt = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      } catch (e) {
+        state.syncStatus = 'error';
+      }
+      updateSyncBadgeUI();
+    }
+
+    function scheduleCloudSync() {
+      if (!state.supabaseUrl || !state.supabaseAnonKey) return;
+      clearTimeout(_cloudSyncTimer);
+      _cloudSyncTimer = setTimeout(() => {
+        pushToSupabase();
+      }, 600);
+    }
+
+    async function pullFromSupabase(silent) {
+      const baseUrl = (state.supabaseUrl || '').trim().replace(/\/+$/, '');
+      const anonKey = (state.supabaseAnonKey || '').trim();
+      const userKey = (state.supabaseUserKey || 'the-process-athlete-1').trim() || 'the-process-athlete-1';
+      if (!baseUrl || !anonKey) {
+        if (!silent) triggerToast('Add your Supabase URL & anon key first.');
+        return false;
+      }
+
+      state.syncStatus = 'syncing';
+      updateSyncBadgeUI();
+
+      try {
+        const endpoint = `${baseUrl}/rest/v1/the_process_state?user_key=eq.${encodeURIComponent(userKey)}&select=payload,updated_at`;
+        const resp = await fetch(endpoint, {
+          method: 'GET',
+          headers: {
+            'apikey': anonKey,
+            'Authorization': `Bearer ${anonKey}`
+          }
+        });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const rows = await resp.json();
+        if (Array.isArray(rows) && rows.length > 0 && rows[0].payload) {
+          applyParsedState(rows[0].payload, true);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(getSerializablePayload()));
+          state.syncStatus = 'synced';
+          state.lastSyncedAt = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          updateSyncBadgeUI();
+          switchTab(state.activeTab || 'workout');
+          if (!silent) triggerToast('Synced latest progress from Supabase');
+          return true;
+        }
+        await pushToSupabase();
+        if (!silent) triggerToast('Connected to Supabase & uploaded local data');
+        return true;
+      } catch (e) {
+        state.syncStatus = 'error';
+        updateSyncBadgeUI();
+        if (!silent) triggerToast('Could not connect to Supabase. Check URL, key, and table SQL.');
+        return false;
+      }
+    }
+
+    function applyParsedState(parsed, preserveCredentials) {
+      if (!parsed || typeof parsed !== 'object') return;
+      if (parsed.selectedDayId) state.selectedDayId = parsed.selectedDayId;
+      if (parsed.daySwaps) state.daySwaps = parsed.daySwaps;
+      if (parsed.customDayTemplates) state.customDayTemplates = parsed.customDayTemplates;
+      if (parsed.swaps) state.swaps = parsed.swaps;
+      if (parsed.customSwaps) state.customSwaps = parsed.customSwaps;
+      if (parsed.targets) state.targets = parsed.targets;
+      if (parsed.setsByDay) state.setsByDay = parsed.setsByDay;
+      if (parsed.extraExercises) state.extraExercises = parsed.extraExercises;
+      if (parsed.efforts) state.efforts = parsed.efforts;
+      if (parsed.openCues) state.openCues = parsed.openCues;
+      if (parsed.notesByDay) state.notesByDay = parsed.notesByDay;
+      if (Array.isArray(parsed.history)) state.history = parsed.history;
+      if (Array.isArray(parsed.cardioLogs)) state.cardioLogs = parsed.cardioLogs;
+      if (typeof parsed.stopwatchSeconds === 'number') state.stopwatchSeconds = parsed.stopwatchSeconds;
+      if (typeof parsed.stopwatchRunning === 'boolean') state.stopwatchRunning = parsed.stopwatchRunning;
+      if (parsed.stopwatchRunning && typeof parsed.lastTickTimestamp === 'number') {
+        const elapsed = Math.max(0, Math.floor((Date.now() - parsed.lastTickTimestamp) / 1000));
+        state.stopwatchSeconds += elapsed;
+      }
+      if (typeof parsed.geminiApiKey === 'string' && (!preserveCredentials || !state.geminiApiKey)) {
+        state.geminiApiKey = parsed.geminiApiKey;
+      }
+      if (typeof parsed.geminiModel === 'string' && parsed.geminiModel) {
+        state.geminiModel = parsed.geminiModel;
+      }
+      if (!preserveCredentials) {
+        if (typeof parsed.supabaseUrl === 'string') state.supabaseUrl = parsed.supabaseUrl;
+        if (typeof parsed.supabaseAnonKey === 'string') state.supabaseAnonKey = parsed.supabaseAnonKey;
+        if (typeof parsed.supabaseUserKey === 'string' && parsed.supabaseUserKey) {
+          state.supabaseUserKey = parsed.supabaseUserKey;
+        }
+      }
+      if (Array.isArray(parsed.coachMessages) && parsed.coachMessages.length > 0) {
+        state.coachMessages = parsed.coachMessages;
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(getSerializablePayload()));
+      } catch (e) {
+        // Ignore storage quota issues
+      }
+      scheduleCloudSync();
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        applyParsedState(parsed, false);
+      } catch (e) {
+        // Ignore corrupt storage
+      }
+    }
+
+    function openCloudSettingsModal() {
+      openModal(`
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:15px;font-weight:900;">Free Cloud Database (Supabase)</h3>
+          <button class="icon-btn" onclick="closeModal()">&#10005;</button>
+        </div>
+        <p style="font-size:12px;color:var(--text-secondary);margin:0 0 12px 0;">
+          Your app saves immediately on your iPhone and automatically syncs to your Supabase Postgres database when configured.
+        </p>
+
+        <div class="field-group">
+          <label class="field-label" for="sbUrlInput">Supabase Project URL</label>
+          <input id="sbUrlInput" class="text-input" type="url" value="${escapeHtml(state.supabaseUrl)}" placeholder="https://xxxxxxxxxxxx.supabase.co" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="sbAnonKeyInput">Supabase Publishable / Anon Key</label>
+          <input id="sbAnonKeyInput" class="text-input" type="password" value="${escapeHtml(state.supabaseAnonKey)}" placeholder="sb_publishable_... or eyJ..." />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="sbUserKeyInput">Athlete Sync ID</label>
+          <input id="sbUserKeyInput" class="text-input" type="text" value="${escapeHtml(state.supabaseUserKey)}" placeholder="the-process-athlete-1" />
+        </div>
+
+        <div style="display:flex;gap:8px;margin-bottom:14px;">
+          <button class="btn-primary" style="flex:1;" onclick="saveAndSyncSupabase()">Save &amp; Sync Now</button>
+          <button class="btn-secondary" onclick="pullFromSupabase(false)">Pull Cloud</button>
+        </div>
+
+        <div style="border-top:1px solid var(--border-subtle);padding-top:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span class="field-label" style="margin:0;">One-Time SQL Setup (Run in Supabase SQL Editor)</span>
+            <button type="button" class="btn-secondary btn-compact" onclick="copySupabaseSql()">Copy SQL</button>
+          </div>
+          <textarea class="sql-box" readonly>${escapeHtml(SUPABASE_SQL_SETUP)}</textarea>
+        </div>
+      `);
+    }
+
+    function copySupabaseSql() {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(SUPABASE_SQL_SETUP).then(() => {
+          triggerToast('Copied SQL table script');
+        }).catch(() => {
+          triggerToast('Select and copy the SQL box');
+        });
+      } else {
+        triggerToast('Select and copy the SQL box');
+      }
+    }
+
+    async function saveAndSyncSupabase() {
+      const urlEl = document.getElementById('sbUrlInput');
+      const keyEl = document.getElementById('sbAnonKeyInput');
+      const userEl = document.getElementById('sbUserKeyInput');
+
+      state.supabaseUrl = (urlEl ? urlEl.value : '').trim();
+      state.supabaseAnonKey = (keyEl ? keyEl.value : '').trim();
+      state.supabaseUserKey = ((userEl ? userEl.value : '').trim()) || 'the-process-athlete-1';
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(getSerializablePayload()));
+      } catch (e) {}
+
+      updateSyncBadgeUI();
+      if (!state.supabaseUrl || !state.supabaseAnonKey) {
+        state.syncStatus = 'local';
+        updateSyncBadgeUI();
+        closeModal();
+        triggerToast('Saved locally on device');
+        return;
+      }
+
+      const ok = await pullFromSupabase(true);
+      if (ok) {
+        await pushToSupabase();
+        closeModal();
+        triggerToast('Supabase connected & synced');
+      }
+    }
+
+    function triggerToast(message) {
+      const el = document.getElementById('toastBanner');
+      if (!el) return;
+      el.textContent = message;
+      el.classList.add('show');
+      clearTimeout(triggerToast._timer);
+      triggerToast._timer = setTimeout(() => {
+        el.classList.remove('show');
+      }, 2600);
+    }
+
+    function formatStopwatch(totalSec) {
+      const safe = Math.max(0, Math.floor(Number(totalSec) || 0));
+      const hrs = Math.floor(safe / 3600);
+      const mins = Math.floor((safe % 3600) / 60);
+      const secs = safe % 60;
+      if (hrs > 0) {
+        return `${hrs}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      }
+      return `${mins}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function formatDurationMMSS(totalSec) {
+      const safe = Math.max(0, Math.floor(Number(totalSec) || 0));
+      const mins = Math.floor(safe / 60);
+      const secs = safe % 60;
+      return `${mins}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function parseDurationToSeconds(rawVal) {
+      const cleaned = String(rawVal || '').trim();
+      if (!cleaned) return 0;
+      if (cleaned.includes(':')) {
+        const parts = cleaned.split(':');
+        const mins = Math.max(0, parseInt(parts[0], 10) || 0);
+        const secs = Math.max(0, Math.min(59, parseInt(parts[1], 10) || 0));
+        return mins * 60 + secs;
+      }
+      const num = parseFloat(cleaned);
+      if (Number.isNaN(num) || num <= 0) return 0;
+      return Math.round(num * 60);
+    }
+
+    function updateTimerUI() {
+      const headerEl = document.getElementById('headerStopwatch');
+      const toggleBtn = document.getElementById('headerTimerToggle');
+      if (headerEl) headerEl.textContent = formatStopwatch(state.stopwatchSeconds);
+      if (toggleBtn) toggleBtn.innerHTML = state.stopwatchRunning ? '&#9208;' : '&#9654;';
+
+      if (state.activeTab === 'workout') {
+        const bigClock = document.getElementById('liveBigStopwatch');
+        const mainBtn = document.getElementById('mainStopwatchBtn');
+        if (bigClock) bigClock.textContent = formatStopwatch(state.stopwatchSeconds);
+        if (mainBtn) {
+          mainBtn.innerHTML = state.stopwatchRunning
+            ? '&#9208; Pause Workout'
+            : (state.stopwatchSeconds > 0 ? '&#9654; Resume Workout' : '&#9654; Start Workout');
+        }
+      }
+    }
+
+    function toggleWorkoutTimer() {
+      state.stopwatchRunning = !state.stopwatchRunning;
+      saveState();
+      updateTimerUI();
+    }
+
+    function resetWorkoutTimer() {
+      state.stopwatchRunning = false;
+      state.stopwatchSeconds = 0;
+      saveState();
+      updateTimerUI();
+      if (state.activeTab === 'workout') renderWorkoutTab();
+    }
+
+    setInterval(() => {
+      if (state.stopwatchRunning) {
+        state.stopwatchSeconds += 1;
+        updateTimerUI();
+        if (state.stopwatchSeconds % 5 === 0) saveState();
+      }
+    }, 1000);
+
+    function getExerciseName(ex) {
+      if (state.swaps && state.swaps[ex.id]) return state.swaps[ex.id];
+      return ex.name;
+    }
+
+    function getDayExercises(dayId) {
+      const day = getEffectiveDay(dayId);
+      const extras = state.extraExercises[dayId] || [];
+      return [...day.exercises, ...extras];
+    }
+
+    function ensureDayInitialized(dayId) {
+      const exercises = getDayExercises(dayId);
+      if (!state.setsByDay[dayId]) state.setsByDay[dayId] = {};
+      exercises.forEach((ex) => {
+        if (!state.setsByDay[dayId][ex.id]) {
+          const target = state.targets[ex.id];
+          const baseWeight = target ? target.weight : ex.defaultWeight;
+          const baseReps = target ? target.reps : ex.defaultReps;
+          const rows = [];
+          for (let i = 0; i < ex.defaultSets; i++) {
+            rows.push({
+              setNum: i + 1,
+              weight: baseWeight,
+              reps: baseReps,
+              done: false
+            });
+          }
+          state.setsByDay[dayId][ex.id] = rows;
+        }
+      });
+    }
+
+    function handleWeightChange(dayId, exId, setIndex, newWeightRaw) {
+      ensureDayInitialized(dayId);
+      const rows = state.setsByDay[dayId][exId];
+      if (!rows || !rows[setIndex]) return;
+      const parsedWeight = Math.max(0, parseFloat(newWeightRaw) || 0);
+      for (let i = setIndex; i < rows.length; i++) {
+        rows[i].weight = parsedWeight;
+        const inputEl = document.getElementById(`w_${dayId}_${exId}_${i}`);
+        if (inputEl && i > setIndex) {
+          inputEl.value = parsedWeight;
+        }
+      }
+      saveState();
+    }
+
+    function handleRepsChange(dayId, exId, setIndex, newRepsRaw) {
+      ensureDayInitialized(dayId);
+      const rows = state.setsByDay[dayId][exId];
+      if (!rows || !rows[setIndex]) return;
+      rows[setIndex].reps = Math.max(0, parseInt(newRepsRaw, 10) || 0);
+      saveState();
+    }
+
+    function toggleSetDone(dayId, exId, setIndex) {
+      ensureDayInitialized(dayId);
+      const rows = state.setsByDay[dayId][exId];
+      if (!rows || !rows[setIndex]) return;
+      const nextDone = !rows[setIndex].done;
+      rows[setIndex].done = nextDone;
+
+      if (nextDone && !state.stopwatchRunning) {
+        state.stopwatchRunning = true;
+      }
+      saveState();
+      renderWorkoutTab();
+    }
+
+    function addSetToExercise(dayId, exId) {
+      ensureDayInitialized(dayId);
+      const rows = state.setsByDay[dayId][exId] || [];
+      const lastRow = rows[rows.length - 1] || { weight: 50, reps: 10 };
+      rows.push({
+        setNum: rows.length + 1,
+        weight: lastRow.weight,
+        reps: lastRow.reps,
+        done: false
+      });
+      state.setsByDay[dayId][exId] = rows;
+      saveState();
+      renderWorkoutTab();
+    }
+
+    function setEffortRating(exId, rating) {
+      state.efforts[exId] = rating;
+      saveState();
+      renderWorkoutTab();
+    }
+
+    function toggleExerciseCue(exId) {
+      state.openCues[exId] = !state.openCues[exId];
+      saveState();
+      renderWorkoutTab();
+    }
+
+    function handleWorkoutNoteChange(val) {
+      state.notesByDay[state.selectedDayId] = val;
+      saveState();
+    }
+
+    function selectDay(dayId) {
+      state.selectedDayId = dayId;
+      saveState();
+      renderWorkoutTab();
+    }
+
+    function openSwapDayModal(slotDayId) {
+      const currentEff = getEffectiveDay(slotDayId);
+      const currentTemplateId = state.daySwaps[slotDayId] || slotDayId;
+      const templates = getAllAvailableDayTemplates();
+
+      const optionsHtml = templates.map((tpl) => {
+        const isSelected = tpl.id === currentTemplateId;
+        const exSummary = tpl.exercises.slice(0, 3).map((e) => e.name).join(' • ');
+        return `
+          <div class="day-option-card ${isSelected ? 'active' : ''}" onclick="applyFullDaySwap('${slotDayId}', '${tpl.id}')">
+            <div>
+              <div style="font-size:13px;font-weight:800;color:#fff;">
+                ${escapeHtml(tpl.pillLabel)} — ${escapeHtml(tpl.title)}
+              </div>
+              <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">
+                ${escapeHtml(exSummary)}
+              </div>
+            </div>
+            <span class="badge day-option-badge ${isSelected ? 'badge-emerald' : 'badge-indigo'}">${isSelected ? 'Active' : 'Use Day'}</span>
+          </div>
+        `;
+      }).join('');
+
+      openModal(`
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:15px;font-weight:900;">Swap Entire ${escapeHtml(currentEff.shortName)} Routine</h3>
+          <button class="icon-btn" onclick="closeModal()">&#10005;</button>
+        </div>
+        <p style="font-size:12px;color:var(--text-secondary);margin:0 0 12px 0;">
+          Switch all exercises for today (great for an extra Pull day, upper/lower pivot, or custom body-part focus).
+        </p>
+        <div style="margin-bottom:14px;">${optionsHtml}</div>
+        <div style="border-top:1px solid var(--border-subtle);padding-top:12px;">
+          <div class="field-label">Or Create Custom Body-Part Day</div>
+          <div class="field-group">
+            <input id="customDayTitleInput" class="text-input" placeholder="e.g. Back & Rear Delts, Arms & Abs, Glutes/Hams" />
+          </div>
+          <div class="field-group">
+            <input id="customDayExercisesInput" class="text-input" placeholder="Exercises separated by commas (optional)" />
+          </div>
+          <button class="btn-secondary btn-block" onclick="createAndApplyCustomDay('${slotDayId}')">
+            + Create &amp; Switch to Custom Day
+          </button>
+        </div>
+      `);
+    }
+
+    function applyFullDaySwap(slotDayId, templateId) {
+      state.daySwaps[slotDayId] = templateId;
+      const exercises = getDayExercises(slotDayId);
+      const rebuilt = {};
+      exercises.forEach((ex) => {
+        const target = state.targets[ex.id];
+        const baseWeight = target ? target.weight : ex.defaultWeight;
+        const baseReps = target ? target.reps : ex.defaultReps;
+        const rows = [];
+        for (let i = 0; i < ex.defaultSets; i++) {
+          rows.push({
+            setNum: i + 1,
+            weight: baseWeight,
+            reps: baseReps,
+            done: false
+          });
+        }
+        rebuilt[ex.id] = rows;
+      });
+      state.setsByDay[slotDayId] = rebuilt;
+      saveState();
+      closeModal();
+      renderWorkoutTab();
+      const eff = getEffectiveDay(slotDayId);
+      triggerToast(`Swapped ${eff.shortName} to ${eff.title}`);
+    }
+
+    function createAndApplyCustomDay(slotDayId) {
+      const titleEl = document.getElementById('customDayTitleInput');
+      const exEl = document.getElementById('customDayExercisesInput');
+      const rawTitle = (titleEl ? titleEl.value : '').trim();
+      if (!rawTitle) {
+        triggerToast('Enter a name for your custom day (e.g. Arms & Abs)');
+        return;
+      }
+      const rawExList = (exEl ? exEl.value : '')
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      const namesToUse = rawExList.length > 0
+        ? rawExList
+        : [
+            `${rawTitle} Compound Movement`,
+            `${rawTitle} Machine / Cable Press or Row`,
+            `${rawTitle} Isolation Finisher`
+          ];
+
+      const customId = `custom_${Date.now()}`;
+      const shortWord = rawTitle.split(/[\s&/]+/)[0].slice(0, 10) || 'Custom';
+      state.customDayTemplates[customId] = {
+        id: customId,
+        shortName: 'Custom',
+        pillLabel: shortWord,
+        title: rawTitle,
+        warmup: '3-4 min light cardio/mobility + 2 controlled warm-up sets on your first lift.',
+        isLegDay: /leg|quad|ham|glute|calf|lower/i.test(rawTitle),
+        exercises: namesToUse.map((exName, idx) => ({
+          id: `${customId}_ex_${idx}`,
+          name: exName,
+          muscle: rawTitle,
+          defaultSets: 3,
+          defaultWeight: 50,
+          defaultReps: 12,
+          restSec: idx === 0 ? 120 : 75,
+          cue: 'Control the eccentric (2-3 seconds), brace core, and train with clean mechanics.',
+          swapBank: [
+            'Hammer Strength Machine Alternative',
+            'Dual Cable / Pulley Alternative',
+            'Dumbbell / Bodyweight Alternative'
+          ]
+        }))
+      };
+
+      applyFullDaySwap(slotDayId, customId);
+    }
+
+    function resetSwappedDay(slotDayId) {
+      delete state.daySwaps[slotDayId];
+      delete state.setsByDay[slotDayId];
+      saveState();
+      renderWorkoutTab();
+      const base = PROGRAM_DAYS.find((d) => d.id === slotDayId);
+      triggerToast(`Restored ${base ? base.shortName : 'day'} to default`);
+    }
+
+    function openSwapModal(exId) {
+      const allEx = PROGRAM_DAYS.flatMap((d) => d.exercises).concat(Object.values(state.extraExercises).flat());
+      const ex = allEx.find((item) => item.id === exId);
+      if (!ex) return;
+      const currentName = getExerciseName(ex);
+      const bank = Array.from(new Set([ex.name, ...(ex.swapBank || []), ...(state.customSwaps[exId] || [])]));
+
+      const buttonsHtml = bank.map((alt) => {
+        const active = alt === currentName;
+        return `
+          <button class="${active ? 'btn-primary' : 'btn-secondary'} btn-block" style="justify-content:flex-start;margin-bottom:8px;" onclick="applyExerciseSwap('${exId}', '${escapeHtml(alt).replace(/'/g, "\\'")}')">
+            ${active ? '&#10003; ' : '&#8644; '}${escapeHtml(alt)}
+          </button>
+        `;
+      }).join('');
+
+      openModal(`
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:15px;font-weight:900;">Swap Exercise</h3>
+          <button class="icon-btn" onclick="closeModal()">&#10005;</button>
+        </div>
+        <p style="font-size:12px;color:var(--text-secondary);margin:0 0 12px 0;">Target: ${escapeHtml(ex.muscle)}</p>
+        <div>${buttonsHtml}</div>
+        <div class="field-group" style="margin-top:12px;">
+          <label class="field-label" for="customSwapInput">Custom Crunch Machine / Exercise</label>
+          <input id="customSwapInput" class="text-input" placeholder="e.g. Hammer Strength Row" />
+        </div>
+        <button class="btn-secondary btn-block" onclick="applyCustomSwap('${exId}')">Save &amp; Use Custom Swap</button>
+      `);
+    }
+
+    function applyExerciseSwap(exId, newName) {
+      state.swaps[exId] = newName;
+      saveState();
+      closeModal();
+      renderWorkoutTab();
+      triggerToast(`Swapped to ${newName}`);
+    }
+
+    function applyCustomSwap(exId) {
+      const input = document.getElementById('customSwapInput');
+      const val = (input ? input.value : '').trim();
+      if (!val) return;
+      if (!state.customSwaps[exId]) state.customSwaps[exId] = [];
+      if (!state.customSwaps[exId].includes(val)) state.customSwaps[exId].push(val);
+      state.swaps[exId] = val;
+      saveState();
+      closeModal();
+      renderWorkoutTab();
+      triggerToast(`Swapped to ${val}`);
+    }
+
+    function openAddExerciseModal() {
+      openModal(`
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:15px;font-weight:900;">Add Extra Exercise</h3>
+          <button class="icon-btn" onclick="closeModal()">&#10005;</button>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="extraExName">Exercise Name</label>
+          <input id="extraExName" class="text-input" placeholder="e.g. Cable Lateral Raise or Rear Delt Fly" />
+        </div>
+        <div class="grid-2">
+          <div class="field-group">
+            <label class="field-label" for="extraExSets">Sets</label>
+            <input id="extraExSets" class="text-input" type="number" value="3" min="1" max="8" />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="extraExWeight">Starting Weight (lbs)</label>
+            <input id="extraExWeight" class="text-input" type="number" value="40" min="0" />
+          </div>
+        </div>
+        <button class="btn-primary btn-block" onclick="saveExtraExercise()">Add to Today's Workout</button>
+      `);
+    }
+
+    function saveExtraExercise() {
+      const nameEl = document.getElementById('extraExName');
+      const setsEl = document.getElementById('extraExSets');
+      const weightEl = document.getElementById('extraExWeight');
+      const name = (nameEl ? nameEl.value : '').trim();
+      if (!name) return;
+      const setsCount = Math.max(1, Math.min(8, parseInt(setsEl ? setsEl.value : '3', 10) || 3));
+      const weightVal = Math.max(0, parseFloat(weightEl ? weightEl.value : '40') || 0);
+      const dayId = state.selectedDayId;
+      const newEx = {
+        id: `extra_${Date.now()}`,
+        name,
+        muscle: 'Bonus Volume',
+        defaultSets: setsCount,
+        defaultWeight: weightVal,
+        defaultReps: 12,
+        restSec: 60,
+        cue: 'Controlled tempo, full range of motion, clean finish.',
+        swapBank: []
+      };
+      if (!state.extraExercises[dayId]) state.extraExercises[dayId] = [];
+      state.extraExercises[dayId].push(newEx);
+      ensureDayInitialized(dayId);
+      saveState();
+      closeModal();
+      renderWorkoutTab();
+      triggerToast(`Added ${name}`);
+    }
+
+    function completeWorkout() {
+      const day = getEffectiveDay(state.selectedDayId);
+      const exercises = getDayExercises(day.id);
+      ensureDayInitialized(day.id);
+
+      const completedEx = [];
+      let totalSets = 0;
+      let totalVolume = 0;
+
+      exercises.forEach((ex) => {
+        const rows = state.setsByDay[day.id][ex.id] || [];
+        const doneRows = rows.filter((r) => r.done);
+        if (doneRows.length > 0) {
+          const exVol = doneRows.reduce((sum, r) => sum + (Number(r.weight) || 0) * (Number(r.reps) || 0), 0);
+          const effort = state.efforts[ex.id] || 3;
+          totalSets += doneRows.length;
+          totalVolume += exVol;
+          completedEx.push({
+            id: ex.id,
+            name: getExerciseName(ex),
+            effort,
+            volume: exVol,
+            sets: doneRows.map((r) => ({ setNum: r.setNum, weight: r.weight, reps: r.reps }))
+          });
+
+          const topWeight = Math.max(...doneRows.map((r) => Number(r.weight) || 0));
+          const minReps = Math.min(...doneRows.map((r) => Number(r.reps) || 0));
+          if (effort <= 2 && minReps >= ex.defaultReps && topWeight > 0) {
+            const bump = topWeight >= 100 ? 5 : 2.5;
+            state.targets[ex.id] = { weight: topWeight + bump, reps: ex.defaultReps };
+          } else if (effort >= 5 && topWeight > 0) {
+            state.targets[ex.id] = { weight: topWeight, reps: ex.defaultReps };
+          }
+        }
+      });
+
+      if (completedEx.length === 0) {
+        triggerToast('Check off at least one completed set before logging.');
+        return;
+      }
+
+      const elapsedSec = state.stopwatchSeconds;
+      const sessionNote = (state.notesByDay[day.id] || '').trim();
+
+      state.history.unshift({
+        id: `h_${Date.now()}`,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        dayId: day.id,
+        dayTitle: `${day.shortName}: ${day.title}`,
+        durationFormatted: formatStopwatch(elapsedSec),
+        durationSeconds: elapsedSec,
+        totalSets,
+        totalVolume,
+        sessionNote,
+        exercises: completedEx
+      });
+
+      state.stopwatchRunning = false;
+      state.stopwatchSeconds = 0;
+      delete state.setsByDay[day.id];
+      delete state.notesByDay[day.id];
+      ensureDayInitialized(day.id);
+
+      saveState();
+      updateTimerUI();
+      renderWorkoutTab();
+      triggerToast(`Logged ${day.title} (${formatStopwatch(elapsedSec)})`);
+    }
+
+    function renderWorkoutTab() {
+      const day = getEffectiveDay(state.selectedDayId);
+      ensureDayInitialized(day.id);
+      const exercises = getDayExercises(day.id);
+
+      const dayPillsHtml = PROGRAM_DAYS.map((d) => {
+        const active = d.id === state.selectedDayId ? 'active' : '';
+        const eff = getEffectiveDay(d.id);
+        const label = eff.isDaySwapped ? `${eff.pillLabel}*` : eff.pillLabel;
+        return `
+          <button class="day-pill ${active}" onclick="selectDay('${d.id}')">
+            <span class="day-pill-num">${d.shortName}</span>
+            <span class="day-pill-name">${escapeHtml(label)}</span>
+          </button>
+        `;
+      }).join('');
+
+      const recentLegCardioSec = state.cardioLogs
+        .slice(0, 4)
+        .filter((c) => ['Running', 'Stair Stepper', 'Biking', 'Treadmill Walk'].includes(c.type))
+        .reduce((sum, c) => sum + (Number(c.durationSeconds) || 0), 0);
+
+      const fatigueBannerHtml = (day.isLegDay && recentLegCardioSec >= 3600)
+        ? `
+          <div class="card" style="border-color:rgba(245,158,11,0.45);background:rgba(245,158,11,0.08);">
+            <div style="font-size:12px;font-weight:800;color:#fcd34d;">Leg Recovery Note</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">
+              You have ${Math.round(recentLegCardioSec / 60)} mins of recent cardio logged. Manage lower-body fatigue smartly on your main leg lift today.
+            </div>
+          </div>
+        `
+        : '';
+
+      const exerciseCardsHtml = exercises.map((ex) => {
+        const displayName = getExerciseName(ex);
+        const isSwapped = displayName !== ex.name;
+        const rows = state.setsByDay[day.id][ex.id] || [];
+        const selectedEffort = state.efforts[ex.id] || 0;
+        const isCueOpen = Boolean(state.openCues && state.openCues[ex.id]);
+
+        const setRowsHtml = rows.map((row, idx) => `
+          <tr>
+            <td><span class="set-num-pill">${idx + 1}</span></td>
+            <td>
+              <input
+                id="w_${day.id}_${ex.id}_${idx}"
+                class="num-input"
+                type="number"
+                step="any"
+                inputmode="decimal"
+                value="${row.weight}"
+                onchange="handleWeightChange('${day.id}', '${ex.id}', ${idx}, this.value)"
+              />
+            </td>
+            <td>
+              <input
+                class="num-input"
+                type="number"
+                inputmode="numeric"
+                value="${row.reps}"
+                onchange="handleRepsChange('${day.id}', '${ex.id}', ${idx}, this.value)"
+              />
+            </td>
+            <td>
+              <button
+                class="done-check-btn ${row.done ? 'completed' : ''}"
+                onclick="toggleSetDone('${day.id}', '${ex.id}', ${idx})"
+                aria-label="Mark set ${idx + 1} complete"
+              >
+                &#10003;
+              </button>
+            </td>
+          </tr>
+        `).join('');
+
+        const effortBtnsHtml = [1, 2, 3, 4, 5].map((n) => `
+          <button
+            class="effort-btn ${selectedEffort === n ? 'selected' : ''}"
+            onclick="setEffortRating('${ex.id}', ${n})"
+            title="Effort ${n} of 5"
+          >${n}</button>
+        `).join('');
+
+        return `
+          <div class="card">
+            <div class="card-header-row">
+              <div>
+                <div class="ex-title-wrap">
+                  <h3 class="card-title">${escapeHtml(displayName)}</h3>
+                  <button
+                    type="button"
+                    class="info-i-btn ${isCueOpen ? 'active' : ''}"
+                    onclick="toggleExerciseCue('${ex.id}')"
+                    aria-label="Toggle form cue for ${escapeHtml(displayName)}"
+                    aria-expanded="${isCueOpen}"
+                    title="Show form cue"
+                  >i</button>
+                </div>
+                <p class="card-subtitle">${escapeHtml(ex.muscle)}${isSwapped ? ' • Swapped' : ''}</p>
+              </div>
+              <button class="btn-secondary" onclick="openSwapModal('${ex.id}')">&#8644; Swap</button>
+            </div>
+
+            <table class="sets-table">
+              <thead>
+                <tr>
+                  <th>Set</th>
+                  <th>Weight</th>
+                  <th>Reps</th>
+                  <th>Done</th>
+                </tr>
+              </thead>
+              <tbody>${setRowsHtml}</tbody>
+            </table>
+
+            <div style="margin-top:8px;">
+              <button type="button" class="btn-secondary btn-compact" onclick="addSetToExercise('${day.id}', '${ex.id}')">+ Add Set</button>
+            </div>
+
+            <div class="effort-row">
+              <span style="font-size:11px;font-weight:700;color:var(--text-secondary);">Effort (1 Easy – 5 Max)</span>
+              <div class="effort-buttons">${effortBtnsHtml}</div>
+            </div>
+
+            ${isCueOpen ? `<div class="cue-box"><strong>Form Cue:</strong> ${escapeHtml(ex.cue)}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+
+      const startBtnLabel = state.stopwatchRunning
+        ? '&#9208; Pause Workout'
+        : (state.stopwatchSeconds > 0 ? '&#9654; Resume Workout' : '&#9654; Start Workout');
+
+      const noteText = state.notesByDay[day.id] || '';
+      const resetDayBtnHtml = day.isDaySwapped
+        ? `<button class="btn-secondary btn-compact" onclick="resetSwappedDay('${day.slotId}')">&#8634; Default</button>`
+        : '';
+
+      const html = `
+        <div class="day-scroller">${dayPillsHtml}</div>
+
+        <div class="stopwatch-bar">
+          <div>
+            <div style="font-size:10px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--emerald);">Workout Timer</div>
+            <div id="liveBigStopwatch" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:20px;font-weight:900;color:#fff;">${formatStopwatch(state.stopwatchSeconds)}</div>
+          </div>
+          <button id="mainStopwatchBtn" class="btn-primary" onclick="toggleWorkoutTimer()">${startBtnLabel}</button>
+        </div>
+
+        ${fatigueBannerHtml}
+
+        <div class="card">
+          <div class="day-banner">
+            <div>
+              <h2 class="card-title">${escapeHtml(day.shortName)}: ${escapeHtml(day.title)}${day.isDaySwapped ? ' <span class="badge badge-indigo">Swapped Day</span>' : ''}</h2>
+              <p class="card-subtitle">${escapeHtml(day.warmup)}</p>
+            </div>
+            <div class="swap-day-actions">
+              <button class="btn-secondary btn-compact" onclick="openSwapDayModal('${day.slotId}')">&#8644; Swap Day</button>
+              ${resetDayBtnHtml}
+            </div>
+          </div>
+        </div>
+
+        ${exerciseCardsHtml}
+
+        <button class="btn-secondary btn-block" style="margin-bottom:12px;" onclick="openAddExerciseModal()">
+          + Add Extra Exercise for Today
+        </button>
+
+        <div class="card">
+          <div class="field-group" style="margin-bottom:0;">
+            <label class="field-label" for="workoutSessionNote">Workout Session Notes</label>
+            <textarea
+              id="workoutSessionNote"
+              class="textarea-input"
+              rows="3"
+              placeholder="How did the session feel overall? Energy, joints, pump, sleep, or notes for Coach Chad..."
+              oninput="handleWorkoutNoteChange(this.value)"
+            >${escapeHtml(noteText)}</textarea>
+          </div>
+        </div>
+
+        <button class="btn-primary btn-block" style="padding:14px;font-size:14px;" onclick="completeWorkout()">
+          &#10003; Complete &amp; Log Workout
+        </button>
+      `;
+
+      document.getElementById('appMain').innerHTML = html;
+    }
+
+    function computePaceDisplay(type, durationSeconds, distance, tempF) {
+      if (type === 'Sauna') {
+        return tempF ? `${tempF}°F Sauna` : 'Heat Recovery';
+      }
+      const dist = parseFloat(distance) || 0;
+      if (!durationSeconds || dist <= 0) return 'Logged';
+      const mins = durationSeconds / 60;
+      if (type === 'Row Indoor') {
+        const pace500Sec = durationSeconds / (dist / 0.5);
+        return `${formatDurationMMSS(pace500Sec)} /500m`;
+      }
+      if (type === 'Stair Stepper') {
+        return `${(dist / mins).toFixed(1)} flr/min`;
+      }
+      if (type === 'Biking') {
+        return `${(dist / (durationSeconds / 3600)).toFixed(1)} mph`;
+      }
+      const paceSecPerMile = durationSeconds / dist;
+      return `${formatDurationMMSS(paceSecPerMile)} /mi`;
+    }
+
+    function handleCardioTypeChange() {
+      const typeEl = document.getElementById('cardioType');
+      const saunaRow = document.getElementById('saunaTempGroup');
+      const distRow = document.getElementById('cardioDistanceGroup');
+      if (!typeEl || !saunaRow || !distRow) return;
+      const isSauna = typeEl.value === 'Sauna';
+      saunaRow.style.display = isSauna ? 'block' : 'none';
+      distRow.style.display = isSauna ? 'none' : 'block';
+    }
+
+    function addCardioLog(event) {
+      event.preventDefault();
+      const type = document.getElementById('cardioType').value;
+      const env = document.getElementById('cardioEnv').value;
+      const rawDuration = document.getElementById('cardioDuration').value;
+      const durationSeconds = parseDurationToSeconds(rawDuration);
+      const distance = parseFloat(document.getElementById('cardioDistance').value) || 0;
+      const saunaTemp = document.getElementById('saunaTemp') ? document.getElementById('saunaTemp').value.trim() : '';
+      const notes = document.getElementById('cardioNotes').value.trim();
+
+      if (durationSeconds <= 0) {
+        triggerToast('Enter duration like 9:33 or 25:00');
+        return;
+      }
+
+      const unit = type === 'Row Indoor' ? 'm' : (type === 'Stair Stepper' ? 'floors' : 'mi');
+      const durationFormatted = formatDurationMMSS(durationSeconds);
+      const paceDisplay = computePaceDisplay(type, durationSeconds, distance, saunaTemp);
+
+      state.cardioLogs.unshift({
+        id: `c_${Date.now()}`,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        type,
+        environment: type === 'Sauna' ? 'Inside' : env,
+        durationSeconds,
+        durationFormatted,
+        distance: type === 'Sauna' ? 0 : distance,
+        unit,
+        saunaTemp,
+        paceDisplay,
+        notes
+      });
+
+      saveState();
+      renderCardioTab();
+      triggerToast(`Logged ${type} (${durationFormatted})`);
+    }
+
+    function renderCardioTab() {
+      const logsHtml = state.cardioLogs.map((item) => `
+        <div class="card">
+          <div class="card-header-row">
+            <div>
+              <h3 class="card-title">${escapeHtml(item.type)}</h3>
+              <p class="card-subtitle">${escapeHtml(item.date)} • ${escapeHtml(item.environment)} • ${escapeHtml(item.durationFormatted)}${item.distance > 0 ? ` • ${item.distance} ${escapeHtml(item.unit)}` : ''}</p>
+            </div>
+            <span class="badge badge-emerald">${escapeHtml(item.paceDisplay)}</span>
+          </div>
+          ${item.notes ? `<p class="card-subtitle" style="margin-top:8px;">${escapeHtml(item.notes)}</p>` : ''}
+        </div>
+      `).join('');
+
+      const html = `
+        <div class="card">
+          <h2 class="card-title" style="margin-bottom:10px;">Log Cardio or Sauna</h2>
+          <form onsubmit="addCardioLog(event)">
+            <div class="grid-2">
+              <div class="field-group">
+                <label class="field-label" for="cardioType">Activity</label>
+                <select id="cardioType" class="select-input" onchange="handleCardioTypeChange()">
+                  <option value="Running">Running</option>
+                  <option value="Treadmill Walk">Treadmill Walk</option>
+                  <option value="Biking">Biking</option>
+                  <option value="Row Indoor">Row Indoor</option>
+                  <option value="Stair Stepper">Stair Stepper</option>
+                  <option value="Sauna">Sauna</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="cardioEnv">Setting</label>
+                <select id="cardioEnv" class="select-input">
+                  <option value="Outside">Outside</option>
+                  <option value="Inside">Inside</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field-group">
+                <label class="field-label" for="cardioDuration">Duration (MM:SS)</label>
+                <input id="cardioDuration" class="text-input" type="text" placeholder="e.g. 9:33 or 25:00" required />
+              </div>
+              <div id="cardioDistanceGroup" class="field-group">
+                <label class="field-label" for="cardioDistance">Distance (mi / m / floors)</label>
+                <input id="cardioDistance" class="text-input" type="number" step="any" inputmode="decimal" placeholder="e.g. 1.5" />
+              </div>
+              <div id="saunaTempGroup" class="field-group" style="display:none;">
+                <label class="field-label" for="saunaTemp">Sauna Temp (°F, optional)</label>
+                <input id="saunaTemp" class="text-input" type="number" inputmode="numeric" placeholder="e.g. 185" />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="cardioNotes">Session Notes</label>
+              <input id="cardioNotes" class="text-input" type="text" placeholder="How did breathing, legs, or heat feel?" />
+            </div>
+
+            <button type="submit" class="btn-primary btn-block">+ Save Session</button>
+          </form>
+        </div>
+
+        ${logsHtml}
+      `;
+
+      document.getElementById('appMain').innerHTML = html;
+    }
+
+    function renderProgressTab() {
+      const totalSessions = state.history.length;
+      const totalVolumeAll = state.history.reduce((sum, w) => sum + (Number(w.totalVolume) || 0), 0);
+
+      const historyHtml = totalSessions === 0
+        ? `<div class="card"><p class="card-subtitle">No completed workouts logged yet. Finish a workout on the Workout tab to see your history here.</p></div>`
+        : state.history.map((w) => {
+            const exSummary = (w.exercises || [])
+              .map((e) => `${escapeHtml(e.name)} (${e.sets.length} sets, Effort ${e.effort}/5)`)
+              .join(' • ');
+            return `
+              <div class="card">
+                <div class="card-header-row">
+                  <div>
+                    <h3 class="card-title">${escapeHtml(w.dayTitle)}</h3>
+                    <p class="card-subtitle">${escapeHtml(w.date)} • Time: ${escapeHtml(w.durationFormatted || '0:00')} • ${w.totalSets} sets</p>
+                  </div>
+                  <span class="badge badge-emerald">${Number(w.totalVolume || 0).toLocaleString()} lbs</span>
+                </div>
+                <p class="card-subtitle" style="margin-top:8px;">${exSummary}</p>
+                ${w.sessionNote ? `<div class="cue-box"><strong>Session Note:</strong> ${escapeHtml(w.sessionNote)}</div>` : ''}
+              </div>
+            `;
+          }).join('');
+
+      const html = `
+        <div class="grid-2" style="margin-bottom:12px;">
+          <div class="card" style="margin-bottom:0;">
+            <div class="field-label">Completed Workouts</div>
+            <div style="font-size:22px;font-weight:900;color:#fff;">${totalSessions}</div>
+          </div>
+          <div class="card" style="margin-bottom:0;">
+            <div class="field-label">Total Volume Lifted</div>
+            <div style="font-size:22px;font-weight:900;color:var(--emerald);">${totalVolumeAll.toLocaleString()}</div>
+          </div>
+        </div>
+
+        ${historyHtml}
+      `;
+
+      document.getElementById('appMain').innerHTML = html;
+    }
+
+    function buildCoachContext() {
+      const day = getEffectiveDay(state.selectedDayId);
+      const exercises = getDayExercises(day.id);
+      const exLines = exercises.map((ex) => {
+        const rows = (state.setsByDay[day.id] && state.setsByDay[day.id][ex.id]) || [];
+        const effort = state.efforts[ex.id] || 3;
+        const setStr = rows.map((r) => `${r.weight}x${r.reps}${r.done ? '(done)' : ''}`).join(', ');
+        return `- ${getExerciseName(ex)} [Effort ${effort}/5]: ${setStr}`;
+      }).join('\n');
+
+      const recentHistory = state.history.slice(0, 3).map((w) => {
+        const notePart = w.sessionNote ? ` | Note: "${w.sessionNote}"` : '';
+        return `- ${w.date} ${w.dayTitle} (${w.durationFormatted}, ${w.totalVolume} lbs vol)${notePart}`;
+      }).join('\n');
+
+      const recentCardio = state.cardioLogs.slice(0, 4).map((c) => {
+        const notePart = c.notes ? ` (${c.notes})` : '';
+        return `- ${c.date}: ${c.type} ${c.durationFormatted} @ ${c.paceDisplay}${notePart}`;
+      }).join('\n');
+
+      return `Active Day: ${day.shortName} - ${day.title}\nCurrent Sets:\n${exLines}\n\nRecent Workouts:\n${recentHistory || 'None'}\n\nRecent Cardio/Sauna:\n${recentCardio || 'None'}`;
+    }
+
+    function saveCoachKey() {
+      const input = document.getElementById('geminiKeyInput');
+      const modelEl = document.getElementById('geminiModelSelect');
+      if (input) state.geminiApiKey = input.value.trim();
+      if (modelEl && modelEl.value) state.geminiModel = modelEl.value;
+      saveState();
+      triggerToast('Saved Gemini settings');
+    }
+
+    async function sendCoachMessage(customPrompt) {
+      const input = document.getElementById('coachPromptInput');
+      const text = (customPrompt || (input ? input.value : '')).trim();
+      if (!text) return;
+      if (!customPrompt && input) input.value = '';
+
+      state.coachMessages.push({ role: 'user', text });
+      saveState();
+      renderCoachTab();
+
+      const context = buildCoachContext();
+      const systemInstruction = `You are Coach Chad, a sharp, encouraging strength & conditioning coach inside THE PROCESS app. Keep replies concise, actionable, and easy to read on a phone between sets. Reference the athlete's actual logged sets, effort ratings, day swaps, and session notes.\n\nAthlete Context:\n${context}`;
+
+      if (!state.geminiApiKey) {
+        const fallback = `Coach Chad (Offline Mode): Paste your Gemini API key above to get live AI coaching and workout progression updates. Based on your current ${getEffectiveDay(state.selectedDayId).title} log, bump weight next time on any exercise rated 1-2/5 effort with clean reps, hold weight on 5/5 grinders, and note any joint or energy feedback in your Workout Session Notes.`;
+        state.coachMessages.push({ role: 'chad', text: fallback });
+        saveState();
+        renderCoachTab();
+        return;
+      }
+
+      const modelId = state.geminiModel || 'gemini-3.8-flash';
+
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(modelId)}:generateContent?key=${encodeURIComponent(state.geminiApiKey)}`;
+        const resp = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            systemInstruction: { parts: [{ text: systemInstruction }] },
+            contents: [{ role: 'user', parts: [{ text }] }]
+          })
+        });
+        const data = await resp.json();
+        const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No response received from Gemini.';
+        state.coachMessages.push({ role: 'chad', text: reply });
+      } catch (err) {
+        state.coachMessages.push({ role: 'chad', text: 'Could not reach Gemini API right now. Check your API key or connection and try again.' });
+      }
+
+      saveState();
+      renderCoachTab();
+    }
+
+    function renderCoachTab() {
+      const bubblesHtml = state.coachMessages.map((m) => `
+        <div class="chat-bubble ${m.role === 'user' ? 'user' : 'chad'}">${escapeHtml(m.text)}</div>
+      `).join('');
+
+      const html = `
+        <div class="card">
+          <div class="field-group">
+            <label class="field-label" for="geminiKeyInput">Gemini API Key (Saved on Device &amp; Cloud)</label>
+            <div style="display:flex;gap:8px;">
+              <input id="geminiKeyInput" class="text-input" type="password" value="${escapeHtml(state.geminiApiKey)}" placeholder="Paste Google AI Studio API key..." />
+              <button class="btn-secondary" onclick="saveCoachKey()">Save</button>
+            </div>
+          </div>
+          <div class="field-group" style="margin-bottom:8px;">
+            <label class="field-label" for="geminiModelSelect">Gemini Model</label>
+            <select id="geminiModelSelect" class="select-input" onchange="saveCoachKey()">
+              <option value="gemini-3.8-flash" ${state.geminiModel === 'gemini-3.8-flash' ? 'selected' : ''}>Gemini 3.8 Flash</option>
+              <option value="gemini-3.5-flash-lite" ${state.geminiModel === 'gemini-3.5-flash-lite' ? 'selected' : ''}>Gemini 3.5 Flash-Lite</option>
+              <option value="gemini-2.5-flash" ${state.geminiModel === 'gemini-2.5-flash' ? 'selected' : ''}>Gemini 2.5 Flash</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn-secondary" onclick="sendCoachMessage('Review my current workout sets, effort ratings, and recent session notes and give me my next progression step.')">Analyze Today's Session</button>
+            <button class="btn-secondary" onclick="sendCoachMessage('Check my recent cardio and sauna sessions alongside my lifting and tell me how to pace recovery.')">Cardio &amp; Recovery Check</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div id="coachChatList" class="chat-list">${bubblesHtml}</div>
+          <div style="display:flex;gap:8px;">
+            <input id="coachPromptInput" class="text-input" type="text" placeholder="Ask Coach Chad anything..." onkeydown="if(event.key==='Enter'){sendCoachMessage();}" />
+            <button class="btn-primary" onclick="sendCoachMessage()">Send</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('appMain').innerHTML = html;
+      const listEl = document.getElementById('coachChatList');
+      if (listEl) listEl.scrollTop = listEl.scrollHeight;
+    }
+
+    function openModal(innerHtml) {
+      const backdrop = document.getElementById('modalBackdrop');
+      const card = document.getElementById('modalCard');
+      if (!backdrop || !card) return;
+      card.innerHTML = innerHtml;
+      backdrop.classList.add('open');
+    }
+
+    function closeModal() {
+      const backdrop = document.getElementById('modalBackdrop');
+      if (backdrop) backdrop.classList.remove('open');
+    }
+
+    function handleBackdropClick(e) {
+      if (e.target && e.target.id === 'modalBackdrop') closeModal();
+    }
+
+    function switchTab(tabName) {
+      state.activeTab = tabName;
+      saveState();
+      ['workout', 'cardio', 'progress', 'coach'].forEach((t) => {
+        const btn = document.getElementById(`nav-${t}`);
+        if (btn) btn.classList.toggle('active', t === tabName);
+      });
+
+      if (tabName === 'cardio') renderCardioTab();
+      else if (tabName === 'progress') renderProgressTab();
+      else if (tabName === 'coach') renderCoachTab();
+      else renderWorkoutTab();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      updateTimerUI();
+      updateSyncBadgeUI();
+      switchTab(state.activeTab || 'workout');
+      if (state.supabaseUrl && state.supabaseAnonKey) {
+        pullFromSupabase(true);
+      }
+    });
+  </script>
+</body>
+</html>
