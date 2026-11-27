@@ -56,8 +56,7 @@
 
     /* Top Header */
     .topbar {
-      position: sticky;
-      top: 0;
+      position: relative;
       z-index: 30;
       background: rgba(6, 9, 17, 0.94);
       backdrop-filter: blur(10px);
@@ -1317,92 +1316,27 @@ with check (true);`;
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return;
-        const parsed = JSON.parse(raw);
-        applyParsedState(parsed, false);
+        applyParsedState(JSON.parse(raw), false);
       } catch (e) {
         // Ignore corrupt storage
       }
     }
 
-    function openCloudSettingsModal() {
-      openModal(`
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <h3 style="margin:0;font-size:15px;font-weight:900;">Free Cloud Database (Supabase)</h3>
-          <button class="icon-btn" onclick="closeModal()">&#10005;</button>
-        </div>
-        <p style="font-size:12px;color:var(--text-secondary);margin:0 0 12px 0;">
-          Your app saves immediately on your iPhone and automatically syncs to your Supabase Postgres database when configured.
-        </p>
-
-        <div class="field-group">
-          <label class="field-label" for="sbUrlInput">Supabase Project URL</label>
-          <input id="sbUrlInput" class="text-input" type="url" value="${escapeHtml(state.supabaseUrl)}" placeholder="https://xxxxxxxxxxxx.supabase.co" />
-        </div>
-
-        <div class="field-group">
-          <label class="field-label" for="sbAnonKeyInput">Supabase Publishable / Anon Key</label>
-          <input id="sbAnonKeyInput" class="text-input" type="password" value="${escapeHtml(state.supabaseAnonKey)}" placeholder="sb_publishable_... or eyJ..." />
-        </div>
-
-        <div class="field-group">
-          <label class="field-label" for="sbUserKeyInput">Athlete Sync ID</label>
-          <input id="sbUserKeyInput" class="text-input" type="text" value="${escapeHtml(state.supabaseUserKey)}" placeholder="the-process-athlete-1" />
-        </div>
-
-        <div style="display:flex;gap:8px;margin-bottom:14px;">
-          <button class="btn-primary" style="flex:1;" onclick="saveAndSyncSupabase()">Save &amp; Sync Now</button>
-          <button class="btn-secondary" onclick="pullFromSupabase(false)">Pull Cloud</button>
-        </div>
-
-        <div style="border-top:1px solid var(--border-subtle);padding-top:12px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-            <span class="field-label" style="margin:0;">One-Time SQL Setup (Run in Supabase SQL Editor)</span>
-            <button type="button" class="btn-secondary btn-compact" onclick="copySupabaseSql()">Copy SQL</button>
-          </div>
-          <textarea class="sql-box" readonly>${escapeHtml(SUPABASE_SQL_SETUP)}</textarea>
-        </div>
-      `);
-    }
-
-    function copySupabaseSql() {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(SUPABASE_SQL_SETUP).then(() => {
-          triggerToast('Copied SQL table script');
-        }).catch(() => {
-          triggerToast('Select and copy the SQL box');
-        });
-      } else {
-        triggerToast('Select and copy the SQL box');
-      }
-    }
-
-    async function saveAndSyncSupabase() {
+    function saveAndSyncSupabase() {
       const urlEl = document.getElementById('sbUrlInput');
       const keyEl = document.getElementById('sbAnonKeyInput');
       const userEl = document.getElementById('sbUserKeyInput');
-
       state.supabaseUrl = (urlEl ? urlEl.value : '').trim();
       state.supabaseAnonKey = (keyEl ? keyEl.value : '').trim();
-      state.supabaseUserKey = ((userEl ? userEl.value : '').trim()) || 'the-process-athlete-1';
-
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(getSerializablePayload()));
-      } catch (e) {}
-
+      state.supabaseUserKey = (userEl ? userEl.value : '').trim() || 'the-process-athlete-1';
+      saveState();
       updateSyncBadgeUI();
-      if (!state.supabaseUrl || !state.supabaseAnonKey) {
-        state.syncStatus = 'local';
-        updateSyncBadgeUI();
-        closeModal();
-        triggerToast('Saved locally on device');
-        return;
-      }
-
-      const ok = await pullFromSupabase(true);
-      if (ok) {
-        await pushToSupabase();
-        closeModal();
-        triggerToast('Supabase connected & synced');
+      closeModal();
+      if (state.supabaseUrl && state.supabaseAnonKey) {
+        pushToSupabase();
+        triggerToast('Saved Supabase settings & syncing...');
+      } else {
+        triggerToast('Saved local-only mode');
       }
     }
 
