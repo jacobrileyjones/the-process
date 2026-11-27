@@ -2,10 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="THE PROCESS" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>THE PROCESS</title>
   <style>
     :root {
@@ -44,28 +41,8 @@
 
     .app-shell {
       min-height: 100vh;
-      padding-top: calc(52px + env(safe-area-inset-top));
-      padding-bottom: calc(96px + env(safe-area-inset-bottom));
-    }
-
-    .container {
-      width: 100%;
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 14px;
-    }
-
-    /* Top Header */
-    .topbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 30;
-      background: rgba(6, 9, 17, 0.94);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: calc(10px + env(safe-area-inset-top)) 0 10px 0;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: 92px;
     }
 
     .container {
@@ -115,28 +92,6 @@
       border: 1px solid rgba(16, 185, 129, 0.45);
       color: var(--emerald);
       font-size: 12px;
-    }
-
-    .sync-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-secondary);
-      cursor: pointer;
-    }
-
-    .sync-pill.cloud {
-      color: #6ee7b7;
-      border-color: rgba(16, 185, 129, 0.4);
-      background: rgba(16, 185, 129, 0.1);
     }
 
     .timer-pill {
@@ -303,12 +258,6 @@
       border-color: rgba(16, 185, 129, 0.35);
     }
 
-    .badge-amber {
-      background: rgba(245, 158, 11, 0.14);
-      color: #fcd34d;
-      border-color: rgba(245, 158, 11, 0.35);
-    }
-
     .badge-indigo {
       background: rgba(129, 140, 248, 0.14);
       color: #c7d2fe;
@@ -366,6 +315,24 @@
 
     .btn-block {
       width: 100%;
+    }
+
+    .delete-row-btn {
+      background: rgba(244, 63, 94, 0.12);
+      color: #fda4af;
+      border: 1px solid rgba(244, 63, 94, 0.35);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .delete-row-btn:active {
+      transform: scale(0.96);
     }
 
     .day-option-card {
@@ -503,7 +470,7 @@
       color: #04130d;
     }
 
-    /* Cue Box */
+    /* Cue Box & History Details */
     .cue-box {
       margin-top: 10px;
       background: var(--bg-card-inner);
@@ -512,6 +479,12 @@
       padding: 10px 12px;
       font-size: 12px;
       color: var(--text-secondary);
+    }
+
+    .history-detail-panel {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-subtle);
     }
 
     .ex-title-wrap {
@@ -674,27 +647,13 @@
 
     .modal-card {
       width: 100%;
-      max-width: 480px;
-      max-height: 86vh;
+      max-width: 460px;
+      max-height: 85vh;
       overflow-y: auto;
       background: var(--bg-card);
       border: 1px solid var(--border-strong);
       border-radius: 18px;
       padding: 16px;
-    }
-
-    .sql-box {
-      width: 100%;
-      min-height: 150px;
-      background: var(--bg-input);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 10px;
-      color: #a7f3d0;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 11px;
-      line-height: 1.4;
-      resize: vertical;
     }
 
     /* Toast */
@@ -730,17 +689,10 @@
           <span>THE PROCESS</span>
         </h1>
 
-        <div style="display:flex;align-items:center;gap:6px;">
-          <button id="cloudSyncPill" type="button" class="sync-pill" onclick="openCloudSettingsModal()" title="Cloud Database Sync">
-            <span id="cloudSyncDot">&#9679;</span>
-            <span id="cloudSyncLabel">Local</span>
-          </button>
-
-          <div class="timer-pill" title="Workout Stopwatch">
-            <span id="headerStopwatch" class="timer-readout">0:00</span>
-            <button id="headerTimerToggle" class="icon-btn" onclick="toggleWorkoutTimer()" aria-label="Start or pause workout timer">&#9654;</button>
-            <button class="icon-btn" onclick="resetWorkoutTimer()" aria-label="Reset workout timer">&#8634;</button>
-          </div>
+        <div class="timer-pill" title="Workout Stopwatch">
+          <span id="headerStopwatch" class="timer-readout">0:00</span>
+          <button id="headerTimerToggle" class="icon-btn" onclick="toggleWorkoutTimer()" aria-label="Start or pause workout timer">&#9654;</button>
+          <button class="icon-btn" onclick="resetWorkoutTimer()" aria-label="Reset workout timer">&#8634;</button>
         </div>
       </div>
     </header>
@@ -777,21 +729,6 @@
 
   <script>
     const STORAGE_KEY = 'the_process_tracker_v1';
-
-    const SUPABASE_SQL_SETUP = `create table if not exists public.the_process_state (
-  user_key text primary key,
-  payload jsonb not null,
-  updated_at timestamptz not null default now()
-);
-
-alter table public.the_process_state enable row level security;
-
-drop policy if exists "Allow user_key read/write" on public.the_process_state;
-create policy "Allow user_key read/write"
-on public.the_process_state
-for all
-using (true)
-with check (true);`;
 
     const PROGRAM_DAYS = [
       {
@@ -1078,6 +1015,7 @@ with check (true);`;
       extraExercises: {},
       efforts: {},
       openCues: {},
+      expandedHistory: {},
       notesByDay: {},
       history: [],
       cardioLogs: [
@@ -1098,12 +1036,6 @@ with check (true);`;
       stopwatchRunning: false,
       lastTickTimestamp: null,
       geminiApiKey: '',
-      geminiModel: 'gemini-3.8-flash',
-      supabaseUrl: '',
-      supabaseAnonKey: '',
-      supabaseUserKey: 'the-process-athlete-1',
-      syncStatus: 'local',
-      lastSyncedAt: '',
       coachMessages: [
         {
           role: 'chad',
@@ -1154,210 +1086,65 @@ with check (true);`;
       return [...PROGRAM_DAYS, ...customs];
     }
 
-    function getSerializablePayload() {
-      return {
-        selectedDayId: state.selectedDayId,
-        daySwaps: state.daySwaps,
-        customDayTemplates: state.customDayTemplates,
-        swaps: state.swaps,
-        customSwaps: state.customSwaps,
-        targets: state.targets,
-        setsByDay: state.setsByDay,
-        extraExercises: state.extraExercises,
-        efforts: state.efforts,
-        openCues: state.openCues,
-        notesByDay: state.notesByDay,
-        history: state.history,
-        cardioLogs: state.cardioLogs,
-        stopwatchSeconds: state.stopwatchSeconds,
-        stopwatchRunning: state.stopwatchRunning,
-        lastTickTimestamp: Date.now(),
-        geminiApiKey: state.geminiApiKey,
-        geminiModel: state.geminiModel,
-        supabaseUrl: state.supabaseUrl,
-        supabaseAnonKey: state.supabaseAnonKey,
-        supabaseUserKey: state.supabaseUserKey,
-        coachMessages: state.coachMessages
-      };
-    }
-
-    function updateSyncBadgeUI() {
-      const pill = document.getElementById('cloudSyncPill');
-      const label = document.getElementById('cloudSyncLabel');
-      if (!pill || !label) return;
-      const configured = Boolean(state.supabaseUrl && state.supabaseAnonKey);
-      pill.classList.toggle('cloud', configured && state.syncStatus === 'synced');
-      if (!configured) {
-        label.textContent = 'Local';
-      } else if (state.syncStatus === 'syncing') {
-        label.textContent = 'Syncing';
-      } else if (state.syncStatus === 'error') {
-        label.textContent = 'Retry';
-      } else {
-        label.textContent = 'Cloud';
-      }
-    }
-
-    let _cloudSyncTimer = null;
-    async function pushToSupabase() {
-      const baseUrl = (state.supabaseUrl || '').trim().replace(/\/+$/, '');
-      const anonKey = (state.supabaseAnonKey || '').trim();
-      const userKey = (state.supabaseUserKey || 'the-process-athlete-1').trim() || 'the-process-athlete-1';
-      if (!baseUrl || !anonKey) return;
-
-      state.syncStatus = 'syncing';
-      updateSyncBadgeUI();
-
-      try {
-        const endpoint = `${baseUrl}/rest/v1/the_process_state?on_conflict=user_key`;
-        const resp = await fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': anonKey,
-            'Authorization': `Bearer ${anonKey}`,
-            'Prefer': 'resolution=merge-duplicates,return=minimal'
-          },
-          body: JSON.stringify([{
-            user_key: userKey,
-            payload: getSerializablePayload(),
-            updated_at: new Date().toISOString()
-          }])
-        });
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        state.syncStatus = 'synced';
-        state.lastSyncedAt = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      } catch (e) {
-        state.syncStatus = 'error';
-      }
-      updateSyncBadgeUI();
-    }
-
-    function scheduleCloudSync() {
-      if (!state.supabaseUrl || !state.supabaseAnonKey) return;
-      clearTimeout(_cloudSyncTimer);
-      _cloudSyncTimer = setTimeout(() => {
-        pushToSupabase();
-      }, 600);
-    }
-
-    async function pullFromSupabase(silent) {
-      const baseUrl = (state.supabaseUrl || '').trim().replace(/\/+$/, '');
-      const anonKey = (state.supabaseAnonKey || '').trim();
-      const userKey = (state.supabaseUserKey || 'the-process-athlete-1').trim() || 'the-process-athlete-1';
-      if (!baseUrl || !anonKey) {
-        if (!silent) triggerToast('Add your Supabase URL & anon key first.');
-        return false;
-      }
-
-      state.syncStatus = 'syncing';
-      updateSyncBadgeUI();
-
-      try {
-        const endpoint = `${baseUrl}/rest/v1/the_process_state?user_key=eq.${encodeURIComponent(userKey)}&select=payload,updated_at`;
-        const resp = await fetch(endpoint, {
-          method: 'GET',
-          headers: {
-            'apikey': anonKey,
-            'Authorization': `Bearer ${anonKey}`
-          }
-        });
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        const rows = await resp.json();
-        if (Array.isArray(rows) && rows.length > 0 && rows[0].payload) {
-          applyParsedState(rows[0].payload, true);
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(getSerializablePayload()));
-          state.syncStatus = 'synced';
-          state.lastSyncedAt = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-          updateSyncBadgeUI();
-          switchTab(state.activeTab || 'workout');
-          if (!silent) triggerToast('Synced latest progress from Supabase');
-          return true;
-        }
-        await pushToSupabase();
-        if (!silent) triggerToast('Connected to Supabase & uploaded local data');
-        return true;
-      } catch (e) {
-        state.syncStatus = 'error';
-        updateSyncBadgeUI();
-        if (!silent) triggerToast('Could not connect to Supabase. Check URL, key, and table SQL.');
-        return false;
-      }
-    }
-
-    function applyParsedState(parsed, preserveCredentials) {
-      if (!parsed || typeof parsed !== 'object') return;
-      if (parsed.selectedDayId) state.selectedDayId = parsed.selectedDayId;
-      if (parsed.daySwaps) state.daySwaps = parsed.daySwaps;
-      if (parsed.customDayTemplates) state.customDayTemplates = parsed.customDayTemplates;
-      if (parsed.swaps) state.swaps = parsed.swaps;
-      if (parsed.customSwaps) state.customSwaps = parsed.customSwaps;
-      if (parsed.targets) state.targets = parsed.targets;
-      if (parsed.setsByDay) state.setsByDay = parsed.setsByDay;
-      if (parsed.extraExercises) state.extraExercises = parsed.extraExercises;
-      if (parsed.efforts) state.efforts = parsed.efforts;
-      if (parsed.openCues) state.openCues = parsed.openCues;
-      if (parsed.notesByDay) state.notesByDay = parsed.notesByDay;
-      if (Array.isArray(parsed.history)) state.history = parsed.history;
-      if (Array.isArray(parsed.cardioLogs)) state.cardioLogs = parsed.cardioLogs;
-      if (typeof parsed.stopwatchSeconds === 'number') state.stopwatchSeconds = parsed.stopwatchSeconds;
-      if (typeof parsed.stopwatchRunning === 'boolean') state.stopwatchRunning = parsed.stopwatchRunning;
-      if (parsed.stopwatchRunning && typeof parsed.lastTickTimestamp === 'number') {
-        const elapsed = Math.max(0, Math.floor((Date.now() - parsed.lastTickTimestamp) / 1000));
-        state.stopwatchSeconds += elapsed;
-      }
-      if (typeof parsed.geminiApiKey === 'string' && (!preserveCredentials || !state.geminiApiKey)) {
-        state.geminiApiKey = parsed.geminiApiKey;
-      }
-      if (typeof parsed.geminiModel === 'string' && parsed.geminiModel) {
-        state.geminiModel = parsed.geminiModel;
-      }
-      if (!preserveCredentials) {
-        if (typeof parsed.supabaseUrl === 'string') state.supabaseUrl = parsed.supabaseUrl;
-        if (typeof parsed.supabaseAnonKey === 'string') state.supabaseAnonKey = parsed.supabaseAnonKey;
-        if (typeof parsed.supabaseUserKey === 'string' && parsed.supabaseUserKey) {
-          state.supabaseUserKey = parsed.supabaseUserKey;
-        }
-      }
-      if (Array.isArray(parsed.coachMessages) && parsed.coachMessages.length > 0) {
-        state.coachMessages = parsed.coachMessages;
-      }
-    }
-
     function saveState() {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(getSerializablePayload()));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          selectedDayId: state.selectedDayId,
+          daySwaps: state.daySwaps,
+          customDayTemplates: state.customDayTemplates,
+          swaps: state.swaps,
+          customSwaps: state.customSwaps,
+          targets: state.targets,
+          setsByDay: state.setsByDay,
+          extraExercises: state.extraExercises,
+          efforts: state.efforts,
+          openCues: state.openCues,
+          expandedHistory: state.expandedHistory,
+          notesByDay: state.notesByDay,
+          history: state.history,
+          cardioLogs: state.cardioLogs,
+          stopwatchSeconds: state.stopwatchSeconds,
+          stopwatchRunning: state.stopwatchRunning,
+          lastTickTimestamp: Date.now(),
+          geminiApiKey: state.geminiApiKey,
+          coachMessages: state.coachMessages
+        }));
       } catch (e) {
         // Ignore storage quota issues
       }
-      scheduleCloudSync();
     }
 
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return;
-        applyParsedState(JSON.parse(raw), false);
+        const parsed = JSON.parse(raw);
+        if (parsed.selectedDayId) state.selectedDayId = parsed.selectedDayId;
+        if (parsed.daySwaps) state.daySwaps = parsed.daySwaps;
+        if (parsed.customDayTemplates) state.customDayTemplates = parsed.customDayTemplates;
+        if (parsed.swaps) state.swaps = parsed.swaps;
+        if (parsed.customSwaps) state.customSwaps = parsed.customSwaps;
+        if (parsed.targets) state.targets = parsed.targets;
+        if (parsed.setsByDay) state.setsByDay = parsed.setsByDay;
+        if (parsed.extraExercises) state.extraExercises = parsed.extraExercises;
+        if (parsed.efforts) state.efforts = parsed.efforts;
+        if (parsed.openCues) state.openCues = parsed.openCues;
+        if (parsed.expandedHistory) state.expandedHistory = parsed.expandedHistory;
+        if (parsed.notesByDay) state.notesByDay = parsed.notesByDay;
+        if (Array.isArray(parsed.history)) state.history = parsed.history;
+        if (Array.isArray(parsed.cardioLogs)) state.cardioLogs = parsed.cardioLogs;
+        if (typeof parsed.stopwatchSeconds === 'number') state.stopwatchSeconds = parsed.stopwatchSeconds;
+        if (typeof parsed.stopwatchRunning === 'boolean') state.stopwatchRunning = parsed.stopwatchRunning;
+        if (parsed.stopwatchRunning && typeof parsed.lastTickTimestamp === 'number') {
+          const elapsed = Math.max(0, Math.floor((Date.now() - parsed.lastTickTimestamp) / 1000));
+          state.stopwatchSeconds += elapsed;
+        }
+        if (typeof parsed.geminiApiKey === 'string') state.geminiApiKey = parsed.geminiApiKey;
+        if (Array.isArray(parsed.coachMessages) && parsed.coachMessages.length > 0) {
+          state.coachMessages = parsed.coachMessages;
+        }
       } catch (e) {
         // Ignore corrupt storage
-      }
-    }
-
-    function saveAndSyncSupabase() {
-      const urlEl = document.getElementById('sbUrlInput');
-      const keyEl = document.getElementById('sbAnonKeyInput');
-      const userEl = document.getElementById('sbUserKeyInput');
-      state.supabaseUrl = (urlEl ? urlEl.value : '').trim();
-      state.supabaseAnonKey = (keyEl ? keyEl.value : '').trim();
-      state.supabaseUserKey = (userEl ? userEl.value : '').trim() || 'the-process-athlete-1';
-      saveState();
-      updateSyncBadgeUI();
-      closeModal();
-      if (state.supabaseUrl && state.supabaseAnonKey) {
-        pushToSupabase();
-        triggerToast('Saved Supabase settings & syncing...');
-      } else {
-        triggerToast('Saved local-only mode');
       }
     }
 
@@ -1496,8 +1283,33 @@ with check (true);`;
       ensureDayInitialized(dayId);
       const rows = state.setsByDay[dayId][exId];
       if (!rows || !rows[setIndex]) return;
-      rows[setIndex].reps = Math.max(0, parseInt(newRepsRaw, 10) || 0);
+      // Cascade the updated rep count to this set and every subsequent set below it
+      const parsedReps = Math.max(0, parseInt(newRepsRaw, 10) || 0);
+      for (let i = setIndex; i < rows.length; i++) {
+        rows[i].reps = parsedReps;
+        const inputEl = document.getElementById(`r_${dayId}_${exId}_${i}`);
+        if (inputEl && i > setIndex) {
+          inputEl.value = parsedReps;
+        }
+      }
       saveState();
+    }
+
+    function deleteSetFromExercise(dayId, exId, setIndex) {
+      ensureDayInitialized(dayId);
+      const rows = state.setsByDay[dayId][exId] || [];
+      if (rows.length <= 1) {
+        triggerToast('Keep at least 1 set on the exercise.');
+        return;
+      }
+      rows.splice(setIndex, 1);
+      rows.forEach((r, idx) => {
+        r.setNum = idx + 1;
+      });
+      state.setsByDay[dayId][exId] = rows;
+      saveState();
+      renderWorkoutTab();
+      triggerToast('Set removed');
     }
 
     function toggleSetDone(dayId, exId, setIndex) {
@@ -1915,6 +1727,7 @@ with check (true);`;
             </td>
             <td>
               <input
+                id="r_${day.id}_${ex.id}_${idx}"
                 class="num-input"
                 type="number"
                 inputmode="numeric"
@@ -1930,6 +1743,15 @@ with check (true);`;
               >
                 &#10003;
               </button>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="delete-row-btn"
+                onclick="deleteSetFromExercise('${day.id}', '${ex.id}', ${idx})"
+                aria-label="Delete set ${idx + 1}"
+                title="Delete set ${idx + 1}"
+              >&#10005;</button>
             </td>
           </tr>
         `).join('');
@@ -1969,6 +1791,7 @@ with check (true);`;
                   <th>Weight</th>
                   <th>Reps</th>
                   <th>Done</th>
+                  <th>Del</th>
                 </tr>
               </thead>
               <tbody>${setRowsHtml}</tbody>
@@ -2119,6 +1942,13 @@ with check (true);`;
       triggerToast(`Logged ${type} (${durationFormatted})`);
     }
 
+    function deleteCardioLog(logId) {
+      state.cardioLogs = state.cardioLogs.filter((item) => item.id !== logId);
+      saveState();
+      renderCardioTab();
+      triggerToast('Removed cardio/sauna entry');
+    }
+
     function renderCardioTab() {
       const logsHtml = state.cardioLogs.map((item) => `
         <div class="card">
@@ -2127,7 +1957,10 @@ with check (true);`;
               <h3 class="card-title">${escapeHtml(item.type)}</h3>
               <p class="card-subtitle">${escapeHtml(item.date)} • ${escapeHtml(item.environment)} • ${escapeHtml(item.durationFormatted)}${item.distance > 0 ? ` • ${item.distance} ${escapeHtml(item.unit)}` : ''}</p>
             </div>
-            <span class="badge badge-emerald">${escapeHtml(item.paceDisplay)}</span>
+            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+              <span class="badge badge-emerald">${escapeHtml(item.paceDisplay)}</span>
+              <button type="button" class="delete-row-btn" onclick="deleteCardioLog('${item.id}')" aria-label="Delete cardio entry">Delete</button>
+            </div>
           </div>
           ${item.notes ? `<p class="card-subtitle" style="margin-top:8px;">${escapeHtml(item.notes)}</p>` : ''}
         </div>
@@ -2188,27 +2021,162 @@ with check (true);`;
       document.getElementById('appMain').innerHTML = html;
     }
 
+    function formatDateInputToShortLabel(dateStr) {
+      if (!dateStr) {
+        return new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      }
+      const parts = dateStr.split('-');
+      if (parts.length === 3) {
+        const dt = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        if (!Number.isNaN(dt.getTime())) {
+          return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+      }
+      return dateStr;
+    }
+
+    function openPastWorkoutModal() {
+      const todayIso = new Date().toISOString().slice(0, 10);
+      const dayOptions = PROGRAM_DAYS.map((d) => {
+        const eff = getEffectiveDay(d.id);
+        return `<option value="${d.id}">${escapeHtml(d.shortName)}: ${escapeHtml(eff.title)}</option>`;
+      }).join('');
+
+      openModal(`
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:15px;font-weight:900;">Log Past Workout</h3>
+          <button class="icon-btn" onclick="closeModal()">&#10005;</button>
+        </div>
+        <p style="font-size:12px;color:var(--text-secondary);margin:0 0 12px 0;">
+          Record a workout from an earlier day or a session done without your phone.
+        </p>
+        <div class="grid-2">
+          <div class="field-group">
+            <label class="field-label" for="pastWorkoutDate">Date</label>
+            <input id="pastWorkoutDate" class="text-input" type="date" value="${todayIso}" />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="pastWorkoutDuration">Time Logged (MM:SS)</label>
+            <input id="pastWorkoutDuration" class="text-input" type="text" value="42:00" placeholder="e.g. 42:00" />
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="pastWorkoutDay">Workout Day</label>
+          <select id="pastWorkoutDay" class="select-input">${dayOptions}</select>
+        </div>
+        <div class="grid-2">
+          <div class="field-group">
+            <label class="field-label" for="pastWorkoutSets">Completed Sets</label>
+            <input id="pastWorkoutSets" class="text-input" type="number" min="1" max="60" value="12" />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="pastWorkoutVolume">Total Volume (lbs)</label>
+            <input id="pastWorkoutVolume" class="text-input" type="number" min="0" step="any" value="8500" />
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="pastWorkoutNote">Session Notes (Optional)</label>
+          <textarea id="pastWorkoutNote" class="textarea-input" rows="2" placeholder="Exercises, top weights, effort, or notes..."></textarea>
+        </div>
+        <button class="btn-primary btn-block" onclick="savePastWorkout()">+ Save Past Workout</button>
+      `);
+    }
+
+    function savePastWorkout() {
+      const dateEl = document.getElementById('pastWorkoutDate');
+      const durEl = document.getElementById('pastWorkoutDuration');
+      const dayEl = document.getElementById('pastWorkoutDay');
+      const setsEl = document.getElementById('pastWorkoutSets');
+      const volEl = document.getElementById('pastWorkoutVolume');
+      const noteEl = document.getElementById('pastWorkoutNote');
+
+      const slotDayId = dayEl ? dayEl.value : 'day1';
+      const effDay = getEffectiveDay(slotDayId);
+      const durationSec = parseDurationToSeconds(durEl ? durEl.value : '40:00');
+      const durationFormatted = formatStopwatch(durationSec);
+      const totalSets = Math.max(1, parseInt(setsEl ? setsEl.value : '12', 10) || 12);
+      const totalVolume = Math.max(0, parseFloat(volEl ? volEl.value : '0') || 0);
+      const noteText = (noteEl ? noteEl.value : '').trim();
+      const shortDate = formatDateInputToShortLabel(dateEl ? dateEl.value : '');
+
+      const exercises = noteText
+        ? [{
+            id: `past_${Date.now()}`,
+            name: noteText,
+            effort: 3,
+            volume: totalVolume,
+            sets: []
+          }]
+        : [];
+
+      state.history.unshift({
+        id: `h_${Date.now()}`,
+        date: shortDate,
+        dayId: effDay.id,
+        dayTitle: `${effDay.shortName}: ${effDay.title}`,
+        durationFormatted,
+        durationSeconds: durationSec,
+        totalSets,
+        totalVolume,
+        sessionNote: noteText,
+        exercises
+      });
+
+      saveState();
+      closeModal();
+      renderProgressTab();
+      triggerToast(`Logged past ${effDay.shortName} workout (${shortDate})`);
+    }
+
+    function toggleHistoryExpand(historyId) {
+      state.expandedHistory[historyId] = !state.expandedHistory[historyId];
+      saveState();
+      renderProgressTab();
+    }
+
+    function deleteWorkoutLog(historyId) {
+      state.history = state.history.filter((w) => w.id !== historyId);
+      delete state.expandedHistory[historyId];
+      saveState();
+      renderProgressTab();
+      triggerToast('Removed workout entry');
+    }
+
     function renderProgressTab() {
       const totalSessions = state.history.length;
       const totalVolumeAll = state.history.reduce((sum, w) => sum + (Number(w.totalVolume) || 0), 0);
 
       const historyHtml = totalSessions === 0
-        ? `<div class="card"><p class="card-subtitle">No completed workouts logged yet. Finish a workout on the Workout tab to see your history here.</p></div>`
+        ? `<div class="card"><p class="card-subtitle">No completed workouts logged yet. Finish a workout on the Workout tab or log a past session above.</p></div>`
         : state.history.map((w) => {
+            const isExpanded = Boolean(state.expandedHistory && state.expandedHistory[w.id]);
             const exSummary = (w.exercises || [])
-              .map((e) => `${escapeHtml(e.name)} (${e.sets.length} sets, Effort ${e.effort}/5)`)
+              .map((e) => e.sets && e.sets.length > 0
+                ? `${escapeHtml(e.name)} (${e.sets.length} sets, Effort ${e.effort}/5)`
+                : escapeHtml(e.name))
               .join(' • ');
+
             return `
               <div class="card">
-                <div class="card-header-row">
-                  <div>
+                <div class="card-header-row" style="align-items:center;">
+                  <div style="cursor:pointer;flex:1;" onclick="toggleHistoryExpand('${w.id}')">
                     <h3 class="card-title">${escapeHtml(w.dayTitle)}</h3>
-                    <p class="card-subtitle">${escapeHtml(w.date)} • Time: ${escapeHtml(w.durationFormatted || '0:00')} • ${w.totalSets} sets</p>
+                    <p class="card-subtitle">${escapeHtml(w.date)} • Time Logged: <strong>${escapeHtml(w.durationFormatted || '0:00')}</strong></p>
                   </div>
-                  <span class="badge badge-emerald">${Number(w.totalVolume || 0).toLocaleString()} lbs</span>
+                  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+                    <button type="button" class="btn-secondary btn-compact" onclick="toggleHistoryExpand('${w.id}')">${isExpanded ? 'Hide' : 'Details'}</button>
+                    <button type="button" class="delete-row-btn" onclick="deleteWorkoutLog('${w.id}')" aria-label="Delete workout entry">Delete</button>
+                  </div>
                 </div>
-                <p class="card-subtitle" style="margin-top:8px;">${exSummary}</p>
-                ${w.sessionNote ? `<div class="cue-box"><strong>Session Note:</strong> ${escapeHtml(w.sessionNote)}</div>` : ''}
+                ${isExpanded ? `
+                  <div class="history-detail-panel">
+                    <p class="card-subtitle" style="margin:0;">
+                      <strong>${Number(w.totalSets || 0)}</strong> sets • <strong>${Number(w.totalVolume || 0).toLocaleString()}</strong> lbs total volume
+                    </p>
+                    ${exSummary ? `<p class="card-subtitle" style="margin-top:6px;">${exSummary}</p>` : ''}
+                    ${w.sessionNote ? `<div class="cue-box"><strong>Session Note:</strong> ${escapeHtml(w.sessionNote)}</div>` : ''}
+                  </div>
+                ` : ''}
               </div>
             `;
           }).join('');
@@ -2224,6 +2192,10 @@ with check (true);`;
             <div style="font-size:22px;font-weight:900;color:var(--emerald);">${totalVolumeAll.toLocaleString()}</div>
           </div>
         </div>
+
+        <button type="button" class="btn-secondary btn-block" style="margin-bottom:12px;" onclick="openPastWorkoutModal()">
+          + Log Past Workout
+        </button>
 
         ${historyHtml}
       `;
@@ -2256,11 +2228,10 @@ with check (true);`;
 
     function saveCoachKey() {
       const input = document.getElementById('geminiKeyInput');
-      const modelEl = document.getElementById('geminiModelSelect');
-      if (input) state.geminiApiKey = input.value.trim();
-      if (modelEl && modelEl.value) state.geminiModel = modelEl.value;
+      if (!input) return;
+      state.geminiApiKey = input.value.trim();
       saveState();
-      triggerToast('Saved Gemini settings');
+      triggerToast('Saved Gemini API key on this device');
     }
 
     async function sendCoachMessage(customPrompt) {
@@ -2274,20 +2245,18 @@ with check (true);`;
       renderCoachTab();
 
       const context = buildCoachContext();
-      const systemInstruction = `You are Coach Chad, a sharp, encouraging strength & conditioning coach inside THE PROCESS app. Keep replies concise, actionable, and easy to read on a phone between sets. Reference the athlete's actual logged sets, effort ratings, day swaps, and session notes.\n\nAthlete Context:\n${context}`;
+      const systemInstruction = `You are Coach Chad, a sharp, encouraging strength & conditioning coach inside THE PROCESS app. Keep replies concise, actionable, and easy to read on a phone between sets.\n\nAthlete Context:\n${context}`;
 
       if (!state.geminiApiKey) {
-        const fallback = `Coach Chad (Offline Mode): Paste your Gemini API key above to get live AI coaching and workout progression updates. Based on your current ${getEffectiveDay(state.selectedDayId).title} log, bump weight next time on any exercise rated 1-2/5 effort with clean reps, hold weight on 5/5 grinders, and note any joint or energy feedback in your Workout Session Notes.`;
+        const fallback = `Coach Chad (Offline Mode): Add your free Gemini API key above for live AI coaching. Based on your current ${getEffectiveDay(state.selectedDayId).title} log, keep rest timers steady, bump weight next time on any exercise rated 1-2/5 effort with clean reps, and use your session notes to track how your body feels.`;
         state.coachMessages.push({ role: 'chad', text: fallback });
         saveState();
         renderCoachTab();
         return;
       }
 
-      const modelId = state.geminiModel || 'gemini-3.8-flash';
-
       try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(modelId)}:generateContent?key=${encodeURIComponent(state.geminiApiKey)}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${encodeURIComponent(state.geminiApiKey)}`;
         const resp = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -2314,20 +2283,12 @@ with check (true);`;
 
       const html = `
         <div class="card">
-          <div class="field-group">
-            <label class="field-label" for="geminiKeyInput">Gemini API Key (Saved on Device &amp; Cloud)</label>
+          <div class="field-group" style="margin-bottom:8px;">
+            <label class="field-label" for="geminiKeyInput">Gemini API Key (Optional — Saved on Device)</label>
             <div style="display:flex;gap:8px;">
-              <input id="geminiKeyInput" class="text-input" type="password" value="${escapeHtml(state.geminiApiKey)}" placeholder="Paste Google AI Studio API key..." />
+              <input id="geminiKeyInput" class="text-input" type="password" value="${escapeHtml(state.geminiApiKey)}" placeholder="Paste AI Studio API key..." />
               <button class="btn-secondary" onclick="saveCoachKey()">Save</button>
             </div>
-          </div>
-          <div class="field-group" style="margin-bottom:8px;">
-            <label class="field-label" for="geminiModelSelect">Gemini Model</label>
-            <select id="geminiModelSelect" class="select-input" onchange="saveCoachKey()">
-              <option value="gemini-3.8-flash" ${state.geminiModel === 'gemini-3.8-flash' ? 'selected' : ''}>Gemini 3.8 Flash</option>
-              <option value="gemini-3.5-flash-lite" ${state.geminiModel === 'gemini-3.5-flash-lite' ? 'selected' : ''}>Gemini 3.5 Flash-Lite</option>
-              <option value="gemini-2.5-flash" ${state.geminiModel === 'gemini-2.5-flash' ? 'selected' : ''}>Gemini 2.5 Flash</option>
-            </select>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
             <button class="btn-secondary" onclick="sendCoachMessage('Review my current workout sets, effort ratings, and recent session notes and give me my next progression step.')">Analyze Today's Session</button>
@@ -2383,11 +2344,7 @@ with check (true);`;
     window.addEventListener('DOMContentLoaded', () => {
       loadState();
       updateTimerUI();
-      updateSyncBadgeUI();
       switchTab(state.activeTab || 'workout');
-      if (state.supabaseUrl && state.supabaseAnonKey) {
-        pullFromSupabase(true);
-      }
     });
   </script>
 </body>
