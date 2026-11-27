@@ -44,7 +44,28 @@
 
     .app-shell {
       min-height: 100vh;
-      padding-bottom: 96px;
+      padding-top: calc(52px + env(safe-area-inset-top));
+      padding-bottom: calc(96px + env(safe-area-inset-bottom));
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 14px;
+    }
+
+    /* Top Header */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      background: rgba(6, 9, 17, 0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: calc(10px + env(safe-area-inset-top)) 0 10px 0;
     }
 
     .container {
