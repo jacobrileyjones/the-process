@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>THE PROCESS</title>
   <style>
     :root {
@@ -31,33 +31,33 @@
     html, body {
       margin: 0;
       padding: 0;
+      width: 100%;
       background-color: var(--bg-page);
       color: var(--text-primary);
       font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       font-size: 14px;
       line-height: 1.45;
-      overflow-x: hidden;
+      touch-action: manipulation;
     }
 
     .app-shell {
       min-height: 100vh;
       padding-top: env(safe-area-inset-top);
-      padding-bottom: 92px;
+      padding-bottom: calc(96px + env(safe-area-inset-bottom));
     }
 
     .container {
       width: 100%;
       max-width: 680px;
       margin: 0 auto;
-      padding: 0 14px;
+      padding: 0 12px;
     }
 
     /* Top Header */
     .topbar {
       position: relative;
       z-index: 30;
-      background: rgba(6, 9, 17, 0.94);
-      backdrop-filter: blur(10px);
+      background: #060911;
       border-bottom: 1px solid var(--border-subtle);
       padding: 10px 0;
     }
@@ -94,23 +94,34 @@
       font-size: 12px;
     }
 
-    .timer-pill {
-      display: flex;
+    .session-status-pill {
+      display: inline-flex;
       align-items: center;
       gap: 6px;
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 5px 8px;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
     }
 
-    .timer-readout {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--text-primary);
-      min-width: 42px;
-      text-align: center;
+    .session-status-pill.active {
+      border-color: rgba(16, 185, 129, 0.45);
+      background: var(--emerald-soft);
+      color: #6ee7b7;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--text-muted);
+    }
+
+    .session-status-pill.active .status-dot {
+      background: var(--emerald);
     }
 
     .icon-btn {
@@ -307,6 +318,25 @@
       transform: scale(0.98);
     }
 
+    .btn-danger {
+      background: var(--rose);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-danger:active {
+      transform: scale(0.98);
+    }
+
     .btn-compact {
       padding: 7px 10px;
       font-size: 11px;
@@ -333,6 +363,19 @@
 
     .delete-row-btn:active {
       transform: scale(0.96);
+    }
+
+    .pace-preview-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: var(--bg-card-inner);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 9px 12px;
+      margin-bottom: 10px;
+      font-size: 12px;
     }
 
     .day-option-card {
@@ -365,6 +408,7 @@
     /* Set Table */
     .sets-table {
       width: 100%;
+      table-layout: fixed;
       border-collapse: collapse;
       margin-top: 10px;
     }
@@ -373,14 +417,14 @@
       font-size: 10px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
       color: var(--text-muted);
       text-align: center;
-      padding: 0 4px 6px 4px;
+      padding: 0 2px 6px 2px;
     }
 
     .sets-table td {
-      padding: 4px;
+      padding: 3px 2px;
       text-align: center;
     }
 
@@ -388,8 +432,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       border-radius: 8px;
       background: var(--bg-card-inner);
       font-size: 12px;
@@ -399,13 +443,13 @@
 
     .num-input {
       width: 100%;
-      max-width: 84px;
+      max-width: 78px;
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: 10px;
-      padding: 8px 6px;
+      padding: 7px 4px;
       color: var(--text-primary);
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 700;
       text-align: center;
     }
@@ -416,13 +460,13 @@
     }
 
     .done-check-btn {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
       border: 1px solid var(--border-strong);
       background: var(--bg-input);
       color: var(--text-muted);
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 900;
       cursor: pointer;
       display: inline-flex;
@@ -467,6 +511,146 @@
     .effort-btn.selected {
       background: var(--emerald);
       border-color: var(--emerald);
+      color: #04130d;
+    }
+
+    /* Calendar Grid */
+    .cal-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .cal-weekday {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 2px 0;
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .cal-cell {
+      min-height: 48px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card-inner);
+      padding: 4px 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      color: var(--text-primary);
+    }
+
+    .cal-cell.empty {
+      background: transparent;
+      border-color: transparent;
+      cursor: default;
+    }
+
+    .cal-cell.today {
+      border-color: rgba(16, 185, 129, 0.55);
+    }
+
+    .cal-cell.selected {
+      background: var(--emerald-soft);
+      border-color: var(--emerald);
+    }
+
+    .cal-day-num {
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .cal-symbols {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-height: 14px;
+    }
+
+    .cal-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .cal-dot.lift {
+      background-color: #10b981;
+    }
+
+    .cal-dot.cardio {
+      background-color: #38bdf8;
+    }
+
+    .cal-dot.sauna {
+      background-color: #f59e0b;
+    }
+
+    .cal-legend {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .cal-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .seg-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 12px;
+    }
+
+    .seg-btn {
+      border: none;
+      border-radius: 9px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-secondary);
+    }
+
+    .seg-btn.active {
+      background: var(--emerald);
       color: #04130d;
     }
 
@@ -542,7 +726,7 @@
       border-radius: 12px;
       padding: 10px 12px;
       color: var(--text-primary);
-      font-size: 13px;
+      font-size: 16px;
       font-family: inherit;
     }
 
@@ -595,10 +779,11 @@
       left: 0;
       right: 0;
       z-index: 35;
-      background: rgba(6, 9, 17, 0.96);
-      backdrop-filter: blur(12px);
+      background: #060911;
       border-top: 1px solid var(--border-subtle);
-      padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+      padding: 6px 8px calc(8px + env(safe-area-inset-bottom));
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
     }
 
     .bottom-nav-inner {
@@ -634,7 +819,7 @@
       position: fixed;
       inset: 0;
       z-index: 50;
-      background: rgba(2, 6, 23, 0.8);
+      background: rgba(2, 6, 23, 0.82);
       display: none;
       align-items: center;
       justify-content: center;
@@ -689,10 +874,9 @@
           <span>THE PROCESS</span>
         </h1>
 
-        <div class="timer-pill" title="Workout Stopwatch">
-          <span id="headerStopwatch" class="timer-readout">0:00</span>
-          <button id="headerTimerToggle" class="icon-btn" onclick="toggleWorkoutTimer()" aria-label="Start or pause workout timer">&#9654;</button>
-          <button class="icon-btn" onclick="resetWorkoutTimer()" aria-label="Reset workout timer">&#8634;</button>
+        <div id="headerSessionPill" class="session-status-pill">
+          <span class="status-dot"></span>
+          <span id="headerSessionText">Ready</span>
         </div>
       </div>
     </header>
@@ -704,6 +888,10 @@
 
   <div id="modalBackdrop" class="modal-backdrop" onclick="handleBackdropClick(event)">
     <div id="modalCard" class="modal-card"></div>
+  </div>
+
+  <div id="confirmBackdrop" class="modal-backdrop" style="z-index:55;" onclick="handleConfirmBackdropClick(event)">
+    <div id="confirmCard" class="modal-card" style="max-width:380px;"></div>
   </div>
 
   <nav class="bottom-nav" aria-label="Primary Navigation">
@@ -741,7 +929,7 @@
         exercises: [
           {
             id: 'd1_inc_press',
-            name: '30° Incline Dumbbell or Hammer Press',
+            name: '30° Incline Dumbbell Press',
             muscle: 'Upper Chest & Front Delts',
             defaultSets: 3,
             defaultWeight: 60,
@@ -752,18 +940,18 @@
           },
           {
             id: 'd1_chest_press',
-            name: 'Hammer Strength Chest Press (Neutral/Semi)',
+            name: 'Hammer Strength Chest Press',
             muscle: 'Mid/Lower Chest',
             defaultSets: 3,
             defaultWeight: 135,
             defaultReps: 10,
             restSec: 90,
             cue: 'Drive handles smoothly through mid-range; pause briefly at full stretch without shrugging.',
-            swapBank: ['Seated Cable Chest Press', 'Dumbbell Flat/Low-Incline Press', 'Pec Deck Machine']
+            swapBank: ['Seated Cable Chest Press', 'Dumbbell Flat Chest Press', 'Pec Deck Machine']
           },
           {
             id: 'd1_lat_raise',
-            name: 'Cable or Machine Lateral Raise',
+            name: 'Cable Lateral Raise',
             muscle: 'Side Delts',
             defaultSets: 4,
             defaultWeight: 20,
@@ -785,7 +973,7 @@
           },
           {
             id: 'd1_pec_fly_finisher',
-            name: 'Pec Deck or Cable Chest Fly',
+            name: 'Pec Deck Fly',
             muscle: 'Chest Stretch & Finisher',
             defaultSets: 3,
             defaultWeight: 75,
@@ -806,7 +994,7 @@
         exercises: [
           {
             id: 'd2_lat_pulldown',
-            name: 'Wide/Neutral Lat Pulldown',
+            name: 'Wide-Grip Lat Pulldown',
             muscle: 'Lats',
             defaultSets: 3,
             defaultWeight: 120,
@@ -828,29 +1016,29 @@
           },
           {
             id: 'd2_rear_delt',
-            name: 'Reverse Pec Deck or Rope Face Pull',
+            name: 'Reverse Pec Deck Fly',
             muscle: 'Rear Delts & Upper Back',
             defaultSets: 3,
             defaultWeight: 45,
             defaultReps: 15,
             restSec: 60,
             cue: 'Sweep hands outward and back rather than yanking with traps.',
-            swapBank: ['Cable Rear Delt Fly', 'Bent-Over Dumbbell Rear Delt Raise', 'Face Pulls']
+            swapBank: ['Cable Rear Delt Fly', 'Bent-Over Dumbbell Rear Delt Raise', 'Rope Face Pull']
           },
           {
             id: 'd2_curl',
-            name: 'EZ-Bar or Cable Bicep Curl',
+            name: 'EZ-Bar Bicep Curl',
             muscle: 'Biceps',
             defaultSets: 3,
             defaultWeight: 55,
             defaultReps: 12,
             restSec: 60,
             cue: 'Keep elbows stationary and lower slowly for 2-3 seconds.',
-            swapBank: ['Incline Dumbbell Curl', 'Hammer Curl (Rope or DB)', 'Preacher Curl Machine']
+            swapBank: ['Incline Dumbbell Curl', 'Seated Cable Curl', 'Preacher Curl Machine']
           },
           {
             id: 'd2_hammer_curl',
-            name: 'Hammer Curl (Dumbbell or Rope)',
+            name: 'Dumbbell Hammer Curl',
             muscle: 'Brachialis & Forearms',
             defaultSets: 3,
             defaultWeight: 30,
@@ -871,18 +1059,18 @@
         exercises: [
           {
             id: 'd3_hack_squat',
-            name: 'Hack Squat or Leg Press',
+            name: 'Hack Squat',
             muscle: 'Quads & Glutes',
             defaultSets: 3,
             defaultWeight: 180,
             defaultReps: 10,
             restSec: 120,
             cue: 'Full controlled depth without lower back rounding; push evenly through mid-foot.',
-            swapBank: ['45° Leg Press', 'Pendulum / V-Squat Machine', 'Goblet or Smith Squat']
+            swapBank: ['45° Leg Press', 'Pendulum / V-Squat Machine', 'Smith Machine Squat']
           },
           {
             id: 'd3_leg_curl',
-            name: 'Seated or Lying Leg Curl',
+            name: 'Seated Leg Curl',
             muscle: 'Hamstrings',
             defaultSets: 3,
             defaultWeight: 95,
@@ -900,11 +1088,11 @@
             defaultReps: 15,
             restSec: 60,
             cue: 'Align knee joint with machine pivot and squeeze quads cleanly at top.',
-            swapBank: ['Reverse Sled Drag / Treadmill Incline', 'Split Squat', 'Leg Press High/Narrow']
+            swapBank: ['Reverse Sled Drag', 'Bulgarian Split Squat', 'Leg Press High/Narrow']
           },
           {
             id: 'd3_calf',
-            name: 'Standing or Seated Calf Raise',
+            name: 'Standing Calf Raise',
             muscle: 'Calves',
             defaultSets: 3,
             defaultWeight: 110,
@@ -915,14 +1103,14 @@
           },
           {
             id: 'd3_rdl_or_glute',
-            name: 'Dumbbell RDL or Hip Thrust Machine',
+            name: 'Dumbbell Romanian Deadlift',
             muscle: 'Posterior Chain & Glutes',
             defaultSets: 3,
             defaultWeight: 70,
             defaultReps: 12,
             restSec: 90,
             cue: 'Push hips back with a soft knee bend until hamstrings stretch, then drive hips forward.',
-            swapBank: ['Smith Machine Romanian Deadlift', 'Glute Bridge / Hip Thrust Machine', 'Back Extension Machine']
+            swapBank: ['Smith Machine Romanian Deadlift', 'Hip Thrust Machine', 'Back Extension Machine']
           }
         ]
       },
@@ -958,7 +1146,7 @@
           },
           {
             id: 'd4_pec_fly',
-            name: 'Pec Deck or Cable Fly',
+            name: 'Pec Deck Fly',
             muscle: 'Chest Isolation',
             defaultSets: 3,
             defaultWeight: 85,
@@ -980,14 +1168,14 @@
           },
           {
             id: 'd4_rear_delt_row',
-            name: 'Rear Delt Cable Fly or Face Pull',
+            name: 'Rear Delt Cable Fly',
             muscle: 'Rear Delts & Posture',
             defaultSets: 3,
             defaultWeight: 35,
             defaultReps: 15,
             restSec: 60,
             cue: 'Balance out pressing and rowing volume with smooth rear-delt control.',
-            swapBank: ['Reverse Pec Deck', 'Bent-Over Rear Delt Raise', 'Band Pull-Aparts']
+            swapBank: ['Reverse Pec Deck', 'Rope Face Pull', 'Bent-Over Rear Delt Raise']
           }
         ]
       },
@@ -1001,25 +1189,36 @@
         exercises: [
           {
             id: 'd5_shoulder_press',
-            name: 'Machine or Dumbbell Shoulder Press',
+            name: 'Seated Dumbbell Shoulder Press',
             muscle: 'Shoulders',
             defaultSets: 3,
             defaultWeight: 50,
             defaultReps: 10,
             restSec: 90,
             cue: 'Use neutral or semi-angled grip and stop pressing just before full elbow lock if shoulders feel tight.',
-            swapBank: ['Hammer Strength Shoulder Press', 'Dumbbell Lateral Raise', 'Cable Lateral Raise']
+            swapBank: ['Hammer Strength Shoulder Press', 'Machine Shoulder Press', 'Cable Lateral Raise']
+          },
+          {
+            id: 'd5_lat_raise_d5',
+            name: 'Dumbbell Lateral Raise',
+            muscle: 'Side Delts',
+            defaultSets: 3,
+            defaultWeight: 25,
+            defaultReps: 15,
+            restSec: 60,
+            cue: 'Raise in a slight forward arc (scapular plane) with soft elbows and controlled tempo.',
+            swapBank: ['Cable Lateral Raise', 'Lateral Raise Machine', 'Upright Cable Row']
           },
           {
             id: 'd5_hammer_curl',
-            name: 'Hammer or Cable Curl',
+            name: 'Dumbbell Hammer Curl',
             muscle: 'Biceps & Brachialis',
             defaultSets: 3,
             defaultWeight: 30,
             defaultReps: 12,
             restSec: 60,
             cue: 'Neutral thumbs-up grip with zero swinging.',
-            swapBank: ['EZ-Bar Curl', 'Bayesian Cable Curl', 'Preacher Curl']
+            swapBank: ['EZ-Bar Curl', 'Bayesian Cable Curl', 'Preacher Curl Machine']
           },
           {
             id: 'd5_oh_tri',
@@ -1030,22 +1229,35 @@
             defaultReps: 12,
             restSec: 60,
             cue: 'Step forward slightly and feel a clean stretch behind head before extending.',
-            swapBank: ['Rope Pressdown', 'Single-Arm Cable Extension', 'Close-Grip Push-Up']
+            swapBank: ['Rope Pressdown', 'Single-Arm Cable Extension', 'Dip Machine Press']
           },
           {
             id: 'd5_core',
-            name: 'Cable Crunch or Ab Machine',
+            name: 'Kneeling Cable Crunch',
             muscle: 'Core',
             defaultSets: 3,
             defaultWeight: 60,
             defaultReps: 15,
             restSec: 60,
             cue: 'Curl ribcage toward pelvis with abs rather than hinging at the hips.',
-            swapBank: ['Hanging Knee Raise', 'Ab Wheel / Rollout', 'Plank Hold']
+            swapBank: ['Ab Crunch Machine', 'Hanging Knee Raise', 'Ab Wheel Rollout']
           }
         ]
       }
     ];
+
+    function getLocalIsoDate(dateObj = new Date()) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const d = String(dateObj.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function formatTimestampLabel(dateObj = new Date()) {
+      const datePart = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const timePart = dateObj.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      return `${datePart} • ${timePart}`;
+    }
 
     const state = {
       activeTab: 'workout',
@@ -1061,11 +1273,14 @@
       openCues: {},
       expandedHistory: {},
       notesByDay: {},
+      calendarMonth: getLocalIsoDate().slice(0, 7),
+      selectedCalendarDate: null,
       history: [],
       cardioLogs: [
         {
           id: 'c1',
-          date: 'Nov 24',
+          isoDate: getLocalIsoDate(new Date(Date.now() - 86400000 * 3)),
+          date: formatTimestampLabel(new Date(Date.now() - 86400000 * 3)),
           type: 'Treadmill Walk',
           environment: 'Inside',
           durationSeconds: 1800,
@@ -1087,6 +1302,43 @@
         }
       ]
     };
+
+    let pendingConfirmAction = null;
+
+    function openConfirmModal(title, message, confirmLabel, onConfirmFn) {
+      pendingConfirmAction = onConfirmFn;
+      const backdrop = document.getElementById('confirmBackdrop');
+      const card = document.getElementById('confirmCard');
+      if (!backdrop || !card) return;
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <h3 style="margin:0;font-size:15px;font-weight:900;color:#fff;">${escapeHtml(title)}</h3>
+          <button type="button" class="icon-btn" onclick="closeConfirmModal()">&#10005;</button>
+        </div>
+        <p style="font-size:13px;color:var(--text-secondary);margin:0 0 14px 0;">${escapeHtml(message)}</p>
+        <div class="grid-2">
+          <button type="button" class="btn-secondary btn-block" onclick="closeConfirmModal()">Cancel</button>
+          <button type="button" class="btn-danger btn-block" onclick="executeConfirmedAction()">${escapeHtml(confirmLabel || 'Delete')}</button>
+        </div>
+      `;
+      backdrop.classList.add('open');
+    }
+
+    function closeConfirmModal() {
+      pendingConfirmAction = null;
+      const backdrop = document.getElementById('confirmBackdrop');
+      if (backdrop) backdrop.classList.remove('open');
+    }
+
+    function executeConfirmedAction() {
+      const fn = pendingConfirmAction;
+      closeConfirmModal();
+      if (typeof fn === 'function') fn();
+    }
+
+    function handleConfirmBackdropClick(e) {
+      if (e.target && e.target.id === 'confirmBackdrop') closeConfirmModal();
+    }
 
     function escapeHtml(str) {
       return String(str || '')
@@ -1145,6 +1397,8 @@
           openCues: state.openCues,
           expandedHistory: state.expandedHistory,
           notesByDay: state.notesByDay,
+          calendarMonth: state.calendarMonth,
+          selectedCalendarDate: state.selectedCalendarDate,
           history: state.history,
           cardioLogs: state.cardioLogs,
           stopwatchSeconds: state.stopwatchSeconds,
@@ -1175,6 +1429,8 @@
         if (parsed.openCues) state.openCues = parsed.openCues;
         if (parsed.expandedHistory) state.expandedHistory = parsed.expandedHistory;
         if (parsed.notesByDay) state.notesByDay = parsed.notesByDay;
+        if (parsed.calendarMonth) state.calendarMonth = parsed.calendarMonth;
+        if (parsed.selectedCalendarDate !== undefined) state.selectedCalendarDate = parsed.selectedCalendarDate;
         if (Array.isArray(parsed.history)) state.history = parsed.history;
         if (Array.isArray(parsed.cardioLogs)) state.cardioLogs = parsed.cardioLogs;
         if (typeof parsed.stopwatchSeconds === 'number') state.stopwatchSeconds = parsed.stopwatchSeconds;
@@ -1236,15 +1492,29 @@
     }
 
     function updateTimerUI() {
-      const headerEl = document.getElementById('headerStopwatch');
-      const toggleBtn = document.getElementById('headerTimerToggle');
-      if (headerEl) headerEl.textContent = formatStopwatch(state.stopwatchSeconds);
-      if (toggleBtn) toggleBtn.innerHTML = state.stopwatchRunning ? '&#9208;' : '&#9654;';
+      const headerPill = document.getElementById('headerSessionPill');
+      const headerText = document.getElementById('headerSessionText');
+      if (headerPill && headerText) {
+        headerPill.classList.toggle('active', state.stopwatchRunning);
+        headerText.textContent = state.stopwatchRunning
+          ? 'Workout Active'
+          : (state.stopwatchSeconds > 0 ? 'Paused' : 'Ready');
+      }
 
       if (state.activeTab === 'workout') {
-        const bigClock = document.getElementById('liveBigStopwatch');
+        const statusTitle = document.getElementById('silentTimerStatusTitle');
+        const statusSub = document.getElementById('silentTimerStatusSub');
         const mainBtn = document.getElementById('mainStopwatchBtn');
-        if (bigClock) bigClock.textContent = formatStopwatch(state.stopwatchSeconds);
+        if (statusTitle) {
+          statusTitle.textContent = state.stopwatchRunning
+            ? 'Workout in Progress'
+            : (state.stopwatchSeconds > 0 ? 'Workout Paused' : 'Ready to Train');
+        }
+        if (statusSub) {
+          statusSub.textContent = state.stopwatchRunning
+            ? 'Timing silently in the background'
+            : (state.stopwatchSeconds > 0 ? 'Tap Resume when ready' : 'Tap Start Workout to begin timing');
+        }
         if (mainBtn) {
           mainBtn.innerHTML = state.stopwatchRunning
             ? '&#9208; Pause Workout'
@@ -1257,6 +1527,9 @@
       state.stopwatchRunning = !state.stopwatchRunning;
       saveState();
       updateTimerUI();
+      if (state.stopwatchRunning) {
+        triggerToast('Workout started — timing silently');
+      }
     }
 
     function resetWorkoutTimer() {
@@ -1270,7 +1543,6 @@
     setInterval(() => {
       if (state.stopwatchRunning) {
         state.stopwatchSeconds += 1;
-        updateTimerUI();
         if (state.stopwatchSeconds % 5 === 0) saveState();
       }
     }, 1000);
@@ -1278,6 +1550,22 @@
     function getExerciseName(ex) {
       if (state.swaps && state.swaps[ex.id]) return state.swaps[ex.id];
       return ex.name;
+    }
+
+    function getExerciseSwapDetail(ex) {
+      const currentName = getExerciseName(ex);
+      if (currentName !== ex.name) {
+        return {
+          name: currentName,
+          swappedFrom: ex.name,
+          isSwapped: true
+        };
+      }
+      return {
+        name: currentName,
+        swappedFrom: null,
+        isSwapped: false
+      };
     }
 
     function getDayExercises(dayId) {
@@ -1327,7 +1615,6 @@
       ensureDayInitialized(dayId);
       const rows = state.setsByDay[dayId][exId];
       if (!rows || !rows[setIndex]) return;
-      // Cascade the updated rep count to this set and every subsequent set below it
       const parsedReps = Math.max(0, parseInt(newRepsRaw, 10) || 0);
       for (let i = setIndex; i < rows.length; i++) {
         rows[i].reps = parsedReps;
@@ -1337,6 +1624,25 @@
         }
       }
       saveState();
+    }
+
+    function confirmDeleteSetFromExercise(dayId, exId, setIndex) {
+      ensureDayInitialized(dayId);
+      const rows = state.setsByDay[dayId][exId] || [];
+      if (rows.length <= 1) {
+        triggerToast('Keep at least 1 set on the exercise.');
+        return;
+      }
+      const ex = getDayExercises(dayId).find((item) => item.id === exId);
+      const exLabel = ex ? getExerciseName(ex) : 'this exercise';
+      const setRow = rows[setIndex];
+      const detail = setRow ? ` (${setRow.weight} lbs × ${setRow.reps} reps)` : '';
+      openConfirmModal(
+        'Delete Set?',
+        `Remove Set ${setIndex + 1}${detail} from ${exLabel}?`,
+        'Yes, Delete Set',
+        () => deleteSetFromExercise(dayId, exId, setIndex)
+      );
     }
 
     function deleteSetFromExercise(dayId, exId, setIndex) {
@@ -1360,12 +1666,7 @@
       ensureDayInitialized(dayId);
       const rows = state.setsByDay[dayId][exId];
       if (!rows || !rows[setIndex]) return;
-      const nextDone = !rows[setIndex].done;
-      rows[setIndex].done = nextDone;
-
-      if (nextDone && !state.stopwatchRunning) {
-        state.stopwatchRunning = true;
-      }
+      rows[setIndex].done = !rows[setIndex].done;
       saveState();
       renderWorkoutTab();
     }
@@ -1661,11 +1962,13 @@
         if (doneRows.length > 0) {
           const exVol = doneRows.reduce((sum, r) => sum + (Number(r.weight) || 0) * (Number(r.reps) || 0), 0);
           const effort = state.efforts[ex.id] || 3;
+          const swapInfo = getExerciseSwapDetail(ex);
           totalSets += doneRows.length;
           totalVolume += exVol;
           completedEx.push({
             id: ex.id,
-            name: getExerciseName(ex),
+            name: swapInfo.name,
+            swappedFrom: swapInfo.swappedFrom,
             effort,
             volume: exVol,
             sets: doneRows.map((r) => ({ setNum: r.setNum, weight: r.weight, reps: r.reps }))
@@ -1676,7 +1979,7 @@
           if (effort <= 2 && minReps >= ex.defaultReps && topWeight > 0) {
             const bump = topWeight >= 100 ? 5 : 2.5;
             state.targets[ex.id] = { weight: topWeight + bump, reps: ex.defaultReps };
-          } else if (effort >= 5 && topWeight > 0) {
+          } else if (topWeight > 0) {
             state.targets[ex.id] = { weight: topWeight, reps: ex.defaultReps };
           }
         }
@@ -1689,12 +1992,17 @@
 
       const elapsedSec = state.stopwatchSeconds;
       const sessionNote = (state.notesByDay[day.id] || '').trim();
+      const now = new Date();
+      const baseDay = PROGRAM_DAYS.find((d) => d.id === day.slotId);
 
       state.history.unshift({
         id: `h_${Date.now()}`,
-        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        isoDate: getLocalIsoDate(now),
+        timestampMs: now.getTime(),
+        date: formatTimestampLabel(now),
         dayId: day.id,
         dayTitle: `${day.shortName}: ${day.title}`,
+        swappedFromDay: day.isDaySwapped && baseDay ? `${baseDay.shortName}: ${baseDay.title}` : null,
         durationFormatted: formatStopwatch(elapsedSec),
         durationSeconds: elapsedSec,
         totalSets,
@@ -1705,6 +2013,9 @@
 
       state.stopwatchRunning = false;
       state.stopwatchSeconds = 0;
+      exercises.forEach((ex) => {
+        delete state.efforts[ex.id];
+      });
       delete state.setsByDay[day.id];
       delete state.notesByDay[day.id];
       ensureDayInitialized(day.id);
@@ -1749,8 +2060,9 @@
         : '';
 
       const exerciseCardsHtml = exercises.map((ex) => {
-        const displayName = getExerciseName(ex);
-        const isSwapped = displayName !== ex.name;
+        const swapInfo = getExerciseSwapDetail(ex);
+        const displayName = swapInfo.name;
+        const isSwapped = swapInfo.isSwapped;
         const rows = state.setsByDay[day.id][ex.id] || [];
         const selectedEffort = state.efforts[ex.id] || 0;
         const isCueOpen = Boolean(state.openCues && state.openCues[ex.id]);
@@ -1792,7 +2104,7 @@
               <button
                 type="button"
                 class="delete-row-btn"
-                onclick="deleteSetFromExercise('${day.id}', '${ex.id}', ${idx})"
+                onclick="confirmDeleteSetFromExercise('${day.id}', '${ex.id}', ${idx})"
                 aria-label="Delete set ${idx + 1}"
                 title="Delete set ${idx + 1}"
               >&#10005;</button>
@@ -1823,7 +2135,7 @@
                     title="Show form cue"
                   >i</button>
                 </div>
-                <p class="card-subtitle">${escapeHtml(ex.muscle)}${isSwapped ? ' • Swapped' : ''}</p>
+                <p class="card-subtitle">${escapeHtml(ex.muscle)}${isSwapped ? ` • Swapped from ${escapeHtml(swapInfo.swappedFrom)}` : ''}</p>
               </div>
               <button class="btn-secondary" onclick="openSwapModal('${ex.id}')">&#8644; Swap</button>
             </div>
@@ -1859,6 +2171,14 @@
         ? '&#9208; Pause Workout'
         : (state.stopwatchSeconds > 0 ? '&#9654; Resume Workout' : '&#9654; Start Workout');
 
+      const silentStatusTitle = state.stopwatchRunning
+        ? 'Workout in Progress'
+        : (state.stopwatchSeconds > 0 ? 'Workout Paused' : 'Ready to Train');
+
+      const silentStatusSub = state.stopwatchRunning
+        ? 'Timing silently in the background'
+        : (state.stopwatchSeconds > 0 ? 'Tap Resume when ready' : 'Tap Start Workout to begin timing');
+
       const noteText = state.notesByDay[day.id] || '';
       const resetDayBtnHtml = day.isDaySwapped
         ? `<button class="btn-secondary btn-compact" onclick="resetSwappedDay('${day.slotId}')">&#8634; Default</button>`
@@ -1869,8 +2189,8 @@
 
         <div class="stopwatch-bar">
           <div>
-            <div style="font-size:10px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--emerald);">Workout Timer</div>
-            <div id="liveBigStopwatch" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:20px;font-weight:900;color:#fff;">${formatStopwatch(state.stopwatchSeconds)}</div>
+            <div id="silentTimerStatusTitle" style="font-size:13px;font-weight:900;color:#fff;">${silentStatusTitle}</div>
+            <div id="silentTimerStatusSub" style="font-size:11px;color:var(--text-secondary);margin-top:2px;">${silentStatusSub}</div>
           </div>
           <button id="mainStopwatchBtn" class="btn-primary" onclick="toggleWorkoutTimer()">${startBtnLabel}</button>
         </div>
@@ -1946,12 +2266,38 @@
       const isSauna = typeEl.value === 'Sauna';
       saunaRow.style.display = isSauna ? 'block' : 'none';
       distRow.style.display = isSauna ? 'none' : 'block';
+      updateCardioPacePreview();
+    }
+
+    function updateCardioPacePreview() {
+      const previewEl = document.getElementById('liveCardioPaceValue');
+      const typeEl = document.getElementById('cardioType');
+      const durEl = document.getElementById('cardioDuration');
+      const distEl = document.getElementById('cardioDistance');
+      const tempEl = document.getElementById('saunaTemp');
+      if (!previewEl || !typeEl) return;
+
+      const type = typeEl.value;
+      const durationSec = parseDurationToSeconds(durEl ? durEl.value : '');
+      const distance = distEl ? parseFloat(distEl.value) || 0 : 0;
+      const saunaTemp = tempEl ? tempEl.value.trim() : '';
+
+      if (type === 'Sauna') {
+        previewEl.textContent = saunaTemp ? `${saunaTemp}°F Sauna` : 'Heat Recovery';
+        return;
+      }
+      if (durationSec <= 0 || distance <= 0) {
+        previewEl.textContent = 'Enter time & distance';
+        return;
+      }
+      previewEl.textContent = computePaceDisplay(type, durationSec, distance, saunaTemp);
     }
 
     function addCardioLog(event) {
       event.preventDefault();
       const type = document.getElementById('cardioType').value;
       const env = document.getElementById('cardioEnv').value;
+      const dateInputEl = document.getElementById('cardioDate');
       const rawDuration = document.getElementById('cardioDuration').value;
       const durationSeconds = parseDurationToSeconds(rawDuration);
       const distance = parseFloat(document.getElementById('cardioDistance').value) || 0;
@@ -1966,10 +2312,18 @@
       const unit = type === 'Row Indoor' ? 'm' : (type === 'Stair Stepper' ? 'floors' : 'mi');
       const durationFormatted = formatDurationMMSS(durationSeconds);
       const paceDisplay = computePaceDisplay(type, durationSeconds, distance, saunaTemp);
+      const now = new Date();
+      const chosenIso = (dateInputEl && dateInputEl.value) ? dateInputEl.value : getLocalIsoDate(now);
+      const isToday = chosenIso === getLocalIsoDate(now);
+      const displayStamp = isToday
+        ? formatTimestampLabel(now)
+        : `${formatDateInputToShortLabel(chosenIso)} • ${now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
 
       state.cardioLogs.unshift({
         id: `c_${Date.now()}`,
-        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        isoDate: chosenIso,
+        timestampMs: now.getTime(),
+        date: displayStamp,
         type,
         environment: type === 'Sauna' ? 'Inside' : env,
         durationSeconds,
@@ -1986,10 +2340,22 @@
       triggerToast(`Logged ${type} (${durationFormatted})`);
     }
 
-    function deleteCardioLog(logId) {
-      state.cardioLogs = state.cardioLogs.filter((item) => item.id !== logId);
+    function confirmDeleteCardioLog(cardioId) {
+      const entry = state.cardioLogs.find((c) => c.id === cardioId);
+      const label = entry ? `${entry.type} (${entry.date})` : 'this session';
+      openConfirmModal(
+        'Delete Session?',
+        `Are you sure you want to delete ${label}? This cannot be undone.`,
+        'Yes, Delete',
+        () => deleteCardioLog(cardioId)
+      );
+    }
+
+    function deleteCardioLog(cardioId) {
+      state.cardioLogs = state.cardioLogs.filter((c) => c.id !== cardioId);
       saveState();
-      renderCardioTab();
+      if (state.activeTab === 'progress') renderProgressTab();
+      else renderCardioTab();
       triggerToast('Removed cardio/sauna entry');
     }
 
@@ -2003,13 +2369,14 @@
             </div>
             <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
               <span class="badge badge-emerald">${escapeHtml(item.paceDisplay)}</span>
-              <button type="button" class="delete-row-btn" onclick="deleteCardioLog('${item.id}')" aria-label="Delete cardio entry">Delete</button>
+              <button type="button" class="delete-row-btn" onclick="confirmDeleteCardioLog('${item.id}')" aria-label="Delete cardio entry">Delete</button>
             </div>
           </div>
           ${item.notes ? `<p class="card-subtitle" style="margin-top:8px;">${escapeHtml(item.notes)}</p>` : ''}
         </div>
       `).join('');
 
+      const todayIso = getLocalIsoDate();
       const html = `
         <div class="card">
           <h2 class="card-title" style="margin-bottom:10px;">Log Cardio or Sauna</h2>
@@ -2035,19 +2402,29 @@
               </div>
             </div>
 
+            <div class="field-group">
+              <label class="field-label" for="cardioDate">Date</label>
+              <input id="cardioDate" class="text-input" type="date" value="${todayIso}" />
+            </div>
+
             <div class="grid-2">
               <div class="field-group">
                 <label class="field-label" for="cardioDuration">Duration (MM:SS)</label>
-                <input id="cardioDuration" class="text-input" type="text" placeholder="e.g. 9:33 or 25:00" required />
+                <input id="cardioDuration" class="text-input" type="text" placeholder="e.g. 9:33 or 25:00" oninput="updateCardioPacePreview()" required />
               </div>
               <div id="cardioDistanceGroup" class="field-group">
                 <label class="field-label" for="cardioDistance">Distance (mi / m / floors)</label>
-                <input id="cardioDistance" class="text-input" type="number" step="any" inputmode="decimal" placeholder="e.g. 1.5" />
+                <input id="cardioDistance" class="text-input" type="number" step="any" inputmode="decimal" placeholder="e.g. 1.5" oninput="updateCardioPacePreview()" />
               </div>
               <div id="saunaTempGroup" class="field-group" style="display:none;">
                 <label class="field-label" for="saunaTemp">Sauna Temp (°F, optional)</label>
-                <input id="saunaTemp" class="text-input" type="number" inputmode="numeric" placeholder="e.g. 185" />
+                <input id="saunaTemp" class="text-input" type="number" inputmode="numeric" placeholder="e.g. 185" oninput="updateCardioPacePreview()" />
               </div>
+            </div>
+
+            <div class="pace-preview-bar">
+              <span style="font-weight:700;color:var(--text-secondary);">Calculated Pace</span>
+              <span id="liveCardioPaceValue" class="badge badge-emerald">Enter time &amp; distance</span>
             </div>
 
             <div class="field-group">
@@ -2079,83 +2456,346 @@
       return dateStr;
     }
 
-    function openPastWorkoutModal() {
-      const todayIso = new Date().toISOString().slice(0, 10);
-      const dayOptions = PROGRAM_DAYS.map((d) => {
-        const eff = getEffectiveDay(d.id);
-        return `<option value="${d.id}">${escapeHtml(d.shortName)}: ${escapeHtml(eff.title)}</option>`;
-      }).join('');
+    function resolveItemIsoDate(item) {
+      if (item && item.isoDate && /^\d{4}-\d{2}-\d{2}$/.test(item.isoDate)) {
+        return item.isoDate;
+      }
+      const raw = String((item && item.date) || '').split('•')[0].trim();
+      if (!raw) return '';
+      const currentYear = new Date().getFullYear();
+      const parsed = new Date(`${raw}, ${currentYear}`);
+      if (!Number.isNaN(parsed.getTime())) {
+        return getLocalIsoDate(parsed);
+      }
+      return '';
+    }
+
+    let pastDraftMode = 'lifting';
+    let pastDraftExercises = [];
+
+    function loadPastDraftFromRoutine(slotDayId) {
+      if (slotDayId === 'blank') {
+        pastDraftExercises = [
+          { name: '', sets: 3, weight: 50, reps: 10, swappedFrom: null }
+        ];
+        return;
+      }
+      const effDay = getEffectiveDay(slotDayId);
+      const dayExercises = getDayExercises(effDay.id);
+      pastDraftExercises = dayExercises.map((ex) => {
+        const target = state.targets[ex.id];
+        const swapInfo = getExerciseSwapDetail(ex);
+        return {
+          id: ex.id,
+          name: swapInfo.name,
+          swappedFrom: swapInfo.swappedFrom,
+          sets: ex.defaultSets,
+          weight: target ? target.weight : ex.defaultWeight,
+          reps: target ? target.reps : ex.defaultReps
+        };
+      });
+    }
+
+    function syncPastDraftInputsFromDom() {
+      pastDraftExercises.forEach((item, idx) => {
+        const nameEl = document.getElementById(`past_ex_name_${idx}`);
+        const setsEl = document.getElementById(`past_ex_sets_${idx}`);
+        const weightEl = document.getElementById(`past_ex_weight_${idx}`);
+        const repsEl = document.getElementById(`past_ex_reps_${idx}`);
+        if (nameEl) item.name = nameEl.value;
+        if (setsEl) item.sets = Math.max(1, parseInt(setsEl.value, 10) || 1);
+        if (weightEl) item.weight = Math.max(0, parseFloat(weightEl.value) || 0);
+        if (repsEl) item.reps = Math.max(1, parseInt(repsEl.value, 10) || 1);
+      });
+    }
+
+    function renderPastDraftExercisesList() {
+      const container = document.getElementById('pastWorkoutExerciseList');
+      if (!container) return;
+      if (pastDraftExercises.length === 0) {
+        container.innerHTML = `<p class="card-subtitle" style="margin-bottom:8px;">No exercises added yet. Tap <strong>+ Add Exercise</strong> below.</p>`;
+        return;
+      }
+      container.innerHTML = pastDraftExercises.map((item, idx) => `
+        <div style="background:var(--bg-card-inner);border:1px solid var(--border-subtle);border-radius:12px;padding:10px;margin-bottom:8px;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+            <input
+              id="past_ex_name_${idx}"
+              class="text-input"
+              style="padding:8px 10px;"
+              type="text"
+              placeholder="Exercise name (e.g. Incline Dumbbell Press)"
+              value="${escapeHtml(item.name)}"
+              onchange="syncPastDraftInputsFromDom()"
+            />
+            <button type="button" class="delete-row-btn" onclick="confirmRemovePastDraftExercise(${idx})" title="Remove exercise">&#10005;</button>
+          </div>
+          ${item.swappedFrom ? `<div style="font-size:11px;color:var(--text-secondary);margin:-4px 0 6px 2px;">Swapped from ${escapeHtml(item.swappedFrom)}</div>` : ''}
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+            <div>
+              <div class="field-label" style="font-size:9px;">Sets</div>
+              <input id="past_ex_sets_${idx}" class="num-input" type="number" min="1" max="12" value="${item.sets}" onchange="syncPastDraftInputsFromDom()" />
+            </div>
+            <div>
+              <div class="field-label" style="font-size:9px;">Weight</div>
+              <input id="past_ex_weight_${idx}" class="num-input" type="number" step="any" value="${item.weight}" onchange="syncPastDraftInputsFromDom()" />
+            </div>
+            <div>
+              <div class="field-label" style="font-size:9px;">Reps</div>
+              <input id="past_ex_reps_${idx}" class="num-input" type="number" min="1" value="${item.reps}" onchange="syncPastDraftInputsFromDom()" />
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addPastDraftExercise() {
+      syncPastDraftInputsFromDom();
+      pastDraftExercises.push({ name: '', sets: 3, weight: 50, reps: 10, swappedFrom: null });
+      renderPastDraftExercisesList();
+    }
+
+    function confirmRemovePastDraftExercise(idx) {
+      syncPastDraftInputsFromDom();
+      const item = pastDraftExercises[idx];
+      const label = (item && item.name && item.name.trim()) ? item.name.trim() : `Exercise #${idx + 1}`;
+      openConfirmModal(
+        'Remove Exercise?',
+        `Remove "${label}" from this past session?`,
+        'Yes, Remove',
+        () => removePastDraftExercise(idx)
+      );
+    }
+
+    function removePastDraftExercise(idx) {
+      syncPastDraftInputsFromDom();
+      pastDraftExercises.splice(idx, 1);
+      renderPastDraftExercisesList();
+    }
+
+    function handlePastWorkoutDayChange() {
+      const dayEl = document.getElementById('pastWorkoutDay');
+      if (!dayEl) return;
+      loadPastDraftFromRoutine(dayEl.value);
+      renderPastDraftExercisesList();
+    }
+
+    function switchPastSessionMode(mode) {
+      pastDraftMode = mode;
+      const liftBtn = document.getElementById('pastModeLiftBtn');
+      const cardioBtn = document.getElementById('pastModeCardioBtn');
+      const liftSection = document.getElementById('pastLiftingSection');
+      const cardioSection = document.getElementById('pastCardioSection');
+      if (liftBtn) liftBtn.classList.toggle('active', mode === 'lifting');
+      if (cardioBtn) cardioBtn.classList.toggle('active', mode === 'cardio');
+      if (liftSection) liftSection.style.display = mode === 'lifting' ? 'block' : 'none';
+      if (cardioSection) cardioSection.style.display = mode === 'cardio' ? 'block' : 'none';
+    }
+
+    function handlePastCardioTypeChange() {
+      const typeEl = document.getElementById('pastCardioType');
+      const saunaRow = document.getElementById('pastSaunaTempGroup');
+      const distRow = document.getElementById('pastCardioDistanceGroup');
+      if (!typeEl || !saunaRow || !distRow) return;
+      const isSauna = typeEl.value === 'Sauna';
+      saunaRow.style.display = isSauna ? 'block' : 'none';
+      distRow.style.display = isSauna ? 'none' : 'block';
+      updatePastCardioPacePreview();
+    }
+
+    function updatePastCardioPacePreview() {
+      const previewEl = document.getElementById('pastLivePaceValue');
+      const typeEl = document.getElementById('pastCardioType');
+      const durEl = document.getElementById('pastCardioDuration');
+      const distEl = document.getElementById('pastCardioDistance');
+      const tempEl = document.getElementById('pastSaunaTemp');
+      if (!previewEl || !typeEl) return;
+
+      const type = typeEl.value;
+      const durationSec = parseDurationToSeconds(durEl ? durEl.value : '');
+      const distance = distEl ? parseFloat(distEl.value) || 0 : 0;
+      const saunaTemp = tempEl ? tempEl.value.trim() : '';
+
+      if (type === 'Sauna') {
+        previewEl.textContent = saunaTemp ? `${saunaTemp}°F Sauna` : 'Heat Recovery';
+        return;
+      }
+      if (durationSec <= 0 || distance <= 0) {
+        previewEl.textContent = 'Enter time & distance';
+        return;
+      }
+      previewEl.textContent = computePaceDisplay(type, durationSec, distance, saunaTemp);
+    }
+
+    function openPastWorkoutModal(prefillIsoDate) {
+      const yesterdayIso = getLocalIsoDate(new Date(Date.now() - 86400000));
+      const defaultIso = prefillIsoDate || state.selectedCalendarDate || yesterdayIso;
+      pastDraftMode = 'lifting';
+      loadPastDraftFromRoutine('day1');
+
+      const dayOptions = [
+        ...PROGRAM_DAYS.map((d) => {
+          const eff = getEffectiveDay(d.id);
+          return `<option value="${d.id}">${escapeHtml(d.shortName)}: ${escapeHtml(eff.title)}</option>`;
+        }),
+        `<option value="blank">Custom / Blank Lift List</option>`
+      ].join('');
 
       openModal(`
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <h3 style="margin:0;font-size:15px;font-weight:900;">Log Past Workout</h3>
+          <h3 style="margin:0;font-size:15px;font-weight:900;">Log Missed / Past Session</h3>
           <button class="icon-btn" onclick="closeModal()">&#10005;</button>
         </div>
-        <p style="font-size:12px;color:var(--text-secondary);margin:0 0 12px 0;">
-          Record a workout from an earlier day or a session done without your phone.
-        </p>
-        <div class="grid-2">
-          <div class="field-group">
-            <label class="field-label" for="pastWorkoutDate">Date</label>
-            <input id="pastWorkoutDate" class="text-input" type="date" value="${todayIso}" />
-          </div>
-          <div class="field-group">
-            <label class="field-label" for="pastWorkoutDuration">Time Logged (MM:SS)</label>
-            <input id="pastWorkoutDuration" class="text-input" type="text" value="42:00" placeholder="e.g. 42:00" />
-          </div>
+
+        <div class="seg-toggle">
+          <button type="button" id="pastModeLiftBtn" class="seg-btn active" onclick="switchPastSessionMode('lifting')">Lifting</button>
+          <button type="button" id="pastModeCardioBtn" class="seg-btn" onclick="switchPastSessionMode('cardio')">Cardio / Sauna</button>
         </div>
+
         <div class="field-group">
-          <label class="field-label" for="pastWorkoutDay">Workout Day</label>
-          <select id="pastWorkoutDay" class="select-input">${dayOptions}</select>
+          <label class="field-label" for="pastSessionDate">Session Date</label>
+          <input id="pastSessionDate" class="text-input" type="date" value="${defaultIso}" />
         </div>
-        <div class="grid-2">
-          <div class="field-group">
-            <label class="field-label" for="pastWorkoutSets">Completed Sets</label>
-            <input id="pastWorkoutSets" class="text-input" type="number" min="1" max="60" value="12" />
+
+        <div id="pastLiftingSection">
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label" for="pastWorkoutDay">Routine Template</label>
+              <select id="pastWorkoutDay" class="select-input" onchange="handlePastWorkoutDayChange()">${dayOptions}</select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="pastWorkoutDuration">Duration (MM:SS)</label>
+              <input id="pastWorkoutDuration" class="text-input" type="text" value="42:00" placeholder="e.g. 42:00" />
+            </div>
           </div>
+
           <div class="field-group">
-            <label class="field-label" for="pastWorkoutVolume">Total Volume (lbs)</label>
-            <input id="pastWorkoutVolume" class="text-input" type="number" min="0" step="any" value="8500" />
+            <div class="field-label">Exercises Completed</div>
+            <div id="pastWorkoutExerciseList"></div>
+            <button type="button" class="btn-secondary btn-block btn-compact" onclick="addPastDraftExercise()">+ Add Exercise</button>
           </div>
+
+          <div class="field-group">
+            <label class="field-label" for="pastWorkoutNote">Session Notes (Optional)</label>
+            <textarea id="pastWorkoutNote" class="textarea-input" rows="2" placeholder="How did the session feel?"></textarea>
+          </div>
+
+          <button type="button" class="btn-primary btn-block" onclick="savePastWorkout()">+ Save Lifting Session</button>
         </div>
-        <div class="field-group">
-          <label class="field-label" for="pastWorkoutNote">Session Notes (Optional)</label>
-          <textarea id="pastWorkoutNote" class="textarea-input" rows="2" placeholder="Exercises, top weights, effort, or notes..."></textarea>
+
+        <div id="pastCardioSection" style="display:none;">
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label" for="pastCardioType">Activity</label>
+              <select id="pastCardioType" class="select-input" onchange="handlePastCardioTypeChange()">
+                <option value="Running">Running</option>
+                <option value="Treadmill Walk">Treadmill Walk</option>
+                <option value="Biking">Biking</option>
+                <option value="Row Indoor">Row Indoor</option>
+                <option value="Stair Stepper">Stair Stepper</option>
+                <option value="Sauna">Sauna</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="pastCardioEnv">Setting</label>
+              <select id="pastCardioEnv" class="select-input">
+                <option value="Outside">Outside</option>
+                <option value="Inside">Inside</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label" for="pastCardioDuration">Duration (MM:SS)</label>
+              <input id="pastCardioDuration" class="text-input" type="text" placeholder="e.g. 25:00" oninput="updatePastCardioPacePreview()" />
+            </div>
+            <div id="pastCardioDistanceGroup" class="field-group">
+              <label class="field-label" for="pastCardioDistance">Distance (mi / m / floors)</label>
+              <input id="pastCardioDistance" class="text-input" type="number" step="any" inputmode="decimal" placeholder="e.g. 2.5" oninput="updatePastCardioPacePreview()" />
+            </div>
+            <div id="pastSaunaTempGroup" class="field-group" style="display:none;">
+              <label class="field-label" for="pastSaunaTemp">Sauna Temp (°F)</label>
+              <input id="pastSaunaTemp" class="text-input" type="number" inputmode="numeric" placeholder="e.g. 185" oninput="updatePastCardioPacePreview()" />
+            </div>
+          </div>
+
+          <div class="pace-preview-bar">
+            <span style="font-weight:700;color:var(--text-secondary);">Calculated Pace</span>
+            <span id="pastLivePaceValue" class="badge badge-emerald">Enter time &amp; distance</span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="pastCardioNotes">Session Notes (Optional)</label>
+            <input id="pastCardioNotes" class="text-input" type="text" placeholder="How did breathing, legs, or heat feel?" />
+          </div>
+
+          <button type="button" class="btn-primary btn-block" onclick="savePastCardioSession()">+ Save Cardio / Sauna Session</button>
         </div>
-        <button class="btn-primary btn-block" onclick="savePastWorkout()">+ Save Past Workout</button>
       `);
+
+      renderPastDraftExercisesList();
     }
 
     function savePastWorkout() {
-      const dateEl = document.getElementById('pastWorkoutDate');
+      syncPastDraftInputsFromDom();
+      const dateEl = document.getElementById('pastSessionDate');
       const durEl = document.getElementById('pastWorkoutDuration');
       const dayEl = document.getElementById('pastWorkoutDay');
-      const setsEl = document.getElementById('pastWorkoutSets');
-      const volEl = document.getElementById('pastWorkoutVolume');
       const noteEl = document.getElementById('pastWorkoutNote');
 
       const slotDayId = dayEl ? dayEl.value : 'day1';
-      const effDay = getEffectiveDay(slotDayId);
+      const isBlank = slotDayId === 'blank';
+      const effDay = isBlank ? { id: 'custom_past', shortName: 'Custom', title: 'Custom Lifting Session' } : getEffectiveDay(slotDayId);
       const durationSec = parseDurationToSeconds(durEl ? durEl.value : '40:00');
       const durationFormatted = formatStopwatch(durationSec);
-      const totalSets = Math.max(1, parseInt(setsEl ? setsEl.value : '12', 10) || 12);
-      const totalVolume = Math.max(0, parseFloat(volEl ? volEl.value : '0') || 0);
       const noteText = (noteEl ? noteEl.value : '').trim();
-      const shortDate = formatDateInputToShortLabel(dateEl ? dateEl.value : '');
 
-      const exercises = noteText
-        ? [{
-            id: `past_${Date.now()}`,
-            name: noteText,
-            effort: 3,
-            volume: totalVolume,
-            sets: []
-          }]
-        : [];
+      const now = new Date();
+      const chosenIso = (dateEl && dateEl.value) ? dateEl.value : getLocalIsoDate(now);
+      const timePart = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      const displayStamp = `${formatDateInputToShortLabel(chosenIso)} • ${timePart}`;
+
+      let totalSets = 0;
+      let totalVolume = 0;
+      const completedEx = [];
+
+      pastDraftExercises.forEach((item, idx) => {
+        const cleanName = String(item.name || '').trim();
+        if (!cleanName) return;
+        const setsCount = Math.max(1, parseInt(item.sets, 10) || 1);
+        const weightVal = Math.max(0, parseFloat(item.weight) || 0);
+        const repsVal = Math.max(1, parseInt(item.reps, 10) || 1);
+
+        const exVol = setsCount * weightVal * repsVal;
+        totalSets += setsCount;
+        totalVolume += exVol;
+
+        const setsArr = [];
+        for (let s = 1; s <= setsCount; s++) {
+          setsArr.push({ setNum: s, weight: weightVal, reps: repsVal });
+        }
+
+        completedEx.push({
+          id: item.id || `past_ex_${Date.now()}_${idx}`,
+          name: cleanName,
+          swappedFrom: item.swappedFrom || null,
+          effort: 3,
+          volume: exVol,
+          sets: setsArr
+        });
+      });
+
+      if (completedEx.length === 0) {
+        triggerToast('Enter at least one exercise to save.');
+        return;
+      }
 
       state.history.unshift({
         id: `h_${Date.now()}`,
-        date: shortDate,
+        isoDate: chosenIso,
+        timestampMs: now.getTime(),
+        date: displayStamp,
         dayId: effDay.id,
         dayTitle: `${effDay.shortName}: ${effDay.title}`,
         durationFormatted,
@@ -2163,19 +2803,173 @@
         totalSets,
         totalVolume,
         sessionNote: noteText,
-        exercises
+        exercises: completedEx
       });
+
+      state.history.sort((a, b) => resolveItemIsoDate(b).localeCompare(resolveItemIsoDate(a)));
+      state.calendarMonth = chosenIso.slice(0, 7);
+      state.selectedCalendarDate = chosenIso;
 
       saveState();
       closeModal();
       renderProgressTab();
-      triggerToast(`Logged past ${effDay.shortName} workout (${shortDate})`);
+      triggerToast(`Logged ${effDay.shortName} on ${formatDateInputToShortLabel(chosenIso)}`);
+    }
+
+    function savePastCardioSession() {
+      const dateEl = document.getElementById('pastSessionDate');
+      const type = document.getElementById('pastCardioType').value;
+      const env = document.getElementById('pastCardioEnv').value;
+      const rawDuration = document.getElementById('pastCardioDuration').value;
+      const durationSeconds = parseDurationToSeconds(rawDuration);
+      const distance = parseFloat(document.getElementById('pastCardioDistance').value) || 0;
+      const saunaTemp = document.getElementById('pastSaunaTemp') ? document.getElementById('pastSaunaTemp').value.trim() : '';
+      const notes = document.getElementById('pastCardioNotes').value.trim();
+
+      if (durationSeconds <= 0) {
+        triggerToast('Enter duration like 25:00');
+        return;
+      }
+
+      const unit = type === 'Row Indoor' ? 'm' : (type === 'Stair Stepper' ? 'floors' : 'mi');
+      const durationFormatted = formatDurationMMSS(durationSeconds);
+      const paceDisplay = computePaceDisplay(type, durationSeconds, distance, saunaTemp);
+      const now = new Date();
+      const chosenIso = (dateEl && dateEl.value) ? dateEl.value : getLocalIsoDate(now);
+      const timePart = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      const displayStamp = `${formatDateInputToShortLabel(chosenIso)} • ${timePart}`;
+
+      state.cardioLogs.unshift({
+        id: `c_${Date.now()}`,
+        isoDate: chosenIso,
+        timestampMs: now.getTime(),
+        date: displayStamp,
+        type,
+        environment: type === 'Sauna' ? 'Inside' : env,
+        durationSeconds,
+        durationFormatted,
+        distance: type === 'Sauna' ? 0 : distance,
+        unit,
+        saunaTemp,
+        paceDisplay,
+        notes
+      });
+
+      state.cardioLogs.sort((a, b) => resolveItemIsoDate(b).localeCompare(resolveItemIsoDate(a)));
+      state.calendarMonth = chosenIso.slice(0, 7);
+      state.selectedCalendarDate = chosenIso;
+
+      saveState();
+      closeModal();
+      renderProgressTab();
+      triggerToast(`Logged ${type} on ${formatDateInputToShortLabel(chosenIso)}`);
+    }
+
+    function changeCalendarMonth(delta) {
+      const [yStr, mStr] = (state.calendarMonth || getLocalIsoDate().slice(0, 7)).split('-');
+      const dt = new Date(Number(yStr), Number(mStr) - 1 + delta, 1);
+      state.calendarMonth = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}`;
+      saveState();
+      renderProgressTab();
+    }
+
+    function selectCalendarDate(isoDate) {
+      state.selectedCalendarDate = state.selectedCalendarDate === isoDate ? null : isoDate;
+      saveState();
+      renderProgressTab();
+    }
+
+    function renderActivityCalendar() {
+      const monthKey = state.calendarMonth || getLocalIsoDate().slice(0, 7);
+      const [yStr, mStr] = monthKey.split('-');
+      const year = Number(yStr);
+      const monthIdx = Number(mStr) - 1;
+      const firstOfMonth = new Date(year, monthIdx, 1);
+      const monthTitle = firstOfMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      const startWeekday = firstOfMonth.getDay();
+      const daysInMonth = new Date(year, monthIdx + 1, 0).getDate();
+      const todayIso = getLocalIsoDate();
+
+      const activityByIso = {};
+      state.history.forEach((w) => {
+        const iso = resolveItemIsoDate(w);
+        if (!iso) return;
+        if (!activityByIso[iso]) activityByIso[iso] = { lifted: false, cardio: false, sauna: false };
+        activityByIso[iso].lifted = true;
+      });
+      state.cardioLogs.forEach((c) => {
+        const iso = resolveItemIsoDate(c);
+        if (!iso) return;
+        if (!activityByIso[iso]) activityByIso[iso] = { lifted: false, cardio: false, sauna: false };
+        if (c.type === 'Sauna') activityByIso[iso].sauna = true;
+        else activityByIso[iso].cardio = true;
+      });
+
+      const cells = [];
+      for (let i = 0; i < startWeekday; i++) {
+        cells.push('<div class="cal-cell empty"></div>');
+      }
+
+      for (let dayNum = 1; dayNum <= daysInMonth; dayNum++) {
+        const iso = `${year}-${String(monthIdx + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+        const act = activityByIso[iso] || {};
+        const dots = [
+          act.lifted ? '<span class="cal-dot lift" title="Lifted"></span>' : '',
+          act.cardio ? '<span class="cal-dot cardio" title="Cardio"></span>' : '',
+          act.sauna ? '<span class="cal-dot sauna" title="Sauna"></span>' : ''
+        ].filter(Boolean).join('');
+
+        const classes = [
+          'cal-cell',
+          iso === todayIso ? 'today' : '',
+          state.selectedCalendarDate === iso ? 'selected' : ''
+        ].filter(Boolean).join(' ');
+
+        cells.push(`
+          <button type="button" class="${classes}" onclick="selectCalendarDate('${iso}')">
+            <span class="cal-day-num">${dayNum}</span>
+            <span class="cal-symbols">${dots}</span>
+          </button>
+        `);
+      }
+
+      const weekdayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        .map((d) => `<div class="cal-weekday">${d}</div>`)
+        .join('');
+
+      return `
+        <div class="card">
+          <div class="cal-header-row">
+            <button type="button" class="icon-btn" onclick="changeCalendarMonth(-1)" aria-label="Previous month">&#9664;</button>
+            <h3 class="card-title" style="margin:0;">${escapeHtml(monthTitle)}</h3>
+            <button type="button" class="icon-btn" onclick="changeCalendarMonth(1)" aria-label="Next month">&#9654;</button>
+          </div>
+          <div class="cal-weekdays">${weekdayLabels}</div>
+          <div class="cal-grid">${cells.join('')}</div>
+          <div class="cal-legend">
+            <span class="cal-legend-item"><span class="cal-dot lift"></span>Lifted</span>
+            <span class="cal-legend-item"><span class="cal-dot cardio"></span>Cardio</span>
+            <span class="cal-legend-item"><span class="cal-dot sauna"></span>Sauna</span>
+          </div>
+        </div>
+      `;
     }
 
     function toggleHistoryExpand(historyId) {
       state.expandedHistory[historyId] = !state.expandedHistory[historyId];
       saveState();
       renderProgressTab();
+    }
+
+    function confirmDeleteWorkoutLog(historyId) {
+      const entry = state.history.find((w) => w.id === historyId);
+      const label = entry ? `${entry.dayTitle} (${entry.date})` : 'this workout entry';
+      openConfirmModal(
+        'Delete Workout?',
+        `Are you sure you want to delete ${label}? This cannot be undone.`,
+        'Yes, Delete',
+        () => deleteWorkoutLog(historyId)
+      );
     }
 
     function deleteWorkoutLog(historyId) {
@@ -2189,35 +2983,104 @@
     function renderProgressTab() {
       const totalSessions = state.history.length;
       const totalVolumeAll = state.history.reduce((sum, w) => sum + (Number(w.totalVolume) || 0), 0);
+      const selectedIso = state.selectedCalendarDate;
 
-      const historyHtml = totalSessions === 0
-        ? `<div class="card"><p class="card-subtitle">No completed workouts logged yet. Finish a workout on the Workout tab or log a past session above.</p></div>`
-        : state.history.map((w) => {
+      const unifiedEntries = [
+        ...state.history.map((w) => ({
+          kind: 'workout',
+          iso: resolveItemIsoDate(w),
+          sortKey: `${resolveItemIsoDate(w)}_${String(w.timestampMs || 0).padStart(15, '0')}`,
+          data: w
+        })),
+        ...state.cardioLogs.map((c) => ({
+          kind: 'cardio',
+          iso: resolveItemIsoDate(c),
+          sortKey: `${resolveItemIsoDate(c)}_${String(c.timestampMs || 0).padStart(15, '0')}`,
+          data: c
+        }))
+      ]
+        .filter((entry) => !selectedIso || entry.iso === selectedIso)
+        .sort((a, b) => b.sortKey.localeCompare(a.sortKey));
+
+      const workoutCount = unifiedEntries.filter((e) => e.kind === 'workout').length;
+      const cardioCount = unifiedEntries.filter((e) => e.kind === 'cardio').length;
+
+      const filterBannerHtml = selectedIso
+        ? `
+          <div class="card" style="border-color:rgba(16,185,129,0.45);background:rgba(16,185,129,0.08);">
+            <div class="card-header-row" style="align-items:center;">
+              <div>
+                <div style="font-size:12px;font-weight:800;color:#6ee7b7;">Viewing ${escapeHtml(formatDateInputToShortLabel(selectedIso))}</div>
+                <div class="card-subtitle">${workoutCount} workout(s) • ${cardioCount} cardio/sauna session(s)</div>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <button type="button" class="btn-primary btn-compact" onclick="openPastWorkoutModal('${selectedIso}')">+ Log Session</button>
+                <button type="button" class="btn-secondary btn-compact" onclick="selectCalendarDate('${selectedIso}')">Show All</button>
+              </div>
+            </div>
+          </div>
+        `
+        : '';
+
+      const feedHtml = unifiedEntries.length === 0
+        ? `<div class="card"><p class="card-subtitle">${selectedIso ? 'No sessions logged on this date yet.' : 'No completed activity logged yet. Finish a workout, log cardio/sauna, or add a missed session above.'}</p></div>`
+        : unifiedEntries.map((entry) => {
+            if (entry.kind === 'cardio') {
+              const c = entry.data;
+              const isSauna = c.type === 'Sauna';
+              const dotClass = isSauna ? 'sauna' : 'cardio';
+              return `
+                <div class="card">
+                  <div class="card-header-row" style="align-items:center;">
+                    <div>
+                      <h3 class="card-title" style="display:flex;align-items:center;gap:7px;">
+                        <span class="cal-dot ${dotClass}"></span>
+                        <span>${escapeHtml(c.type)}</span>
+                      </h3>
+                      <p class="card-subtitle">${escapeHtml(c.date)} • ${escapeHtml(c.environment)} • ${escapeHtml(c.durationFormatted)}${c.distance > 0 ? ` • ${c.distance} ${escapeHtml(c.unit)}` : ''}</p>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+                      <span class="badge badge-emerald">${escapeHtml(c.paceDisplay)}</span>
+                      <button type="button" class="delete-row-btn" onclick="confirmDeleteCardioLog('${c.id}')" aria-label="Delete session">Delete</button>
+                    </div>
+                  </div>
+                  ${c.notes ? `<p class="card-subtitle" style="margin-top:8px;">${escapeHtml(c.notes)}</p>` : ''}
+                </div>
+              `;
+            }
+
+            const w = entry.data;
             const isExpanded = Boolean(state.expandedHistory && state.expandedHistory[w.id]);
-            const exSummary = (w.exercises || [])
-              .map((e) => e.sets && e.sets.length > 0
-                ? `${escapeHtml(e.name)} (${e.sets.length} sets, Effort ${e.effort}/5)`
-                : escapeHtml(e.name))
-              .join(' • ');
+            const exDetailRows = (w.exercises || []).map((e) => {
+              const swapNote = e.swappedFrom ? ` <span style="color:var(--indigo);font-weight:700;">(Swapped from ${escapeHtml(e.swappedFrom)})</span>` : '';
+              const setLine = (e.sets && e.sets.length > 0)
+                ? ` — ${e.sets.map((s) => `${s.weight}x${s.reps}`).join(', ')} (Effort ${e.effort}/5)`
+                : '';
+              return `<div style="margin-top:4px;font-size:12px;color:var(--text-secondary);">&bull; <strong style="color:var(--text-primary);">${escapeHtml(e.name)}</strong>${swapNote}${setLine}</div>`;
+            }).join('');
 
             return `
               <div class="card">
                 <div class="card-header-row" style="align-items:center;">
                   <div style="cursor:pointer;flex:1;" onclick="toggleHistoryExpand('${w.id}')">
-                    <h3 class="card-title">${escapeHtml(w.dayTitle)}</h3>
+                    <h3 class="card-title" style="display:flex;align-items:center;gap:7px;">
+                      <span class="cal-dot lift"></span>
+                      <span>${escapeHtml(w.dayTitle)}</span>
+                    </h3>
                     <p class="card-subtitle">${escapeHtml(w.date)} • Time Logged: <strong>${escapeHtml(w.durationFormatted || '0:00')}</strong></p>
                   </div>
                   <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
                     <button type="button" class="btn-secondary btn-compact" onclick="toggleHistoryExpand('${w.id}')">${isExpanded ? 'Hide' : 'Details'}</button>
-                    <button type="button" class="delete-row-btn" onclick="deleteWorkoutLog('${w.id}')" aria-label="Delete workout entry">Delete</button>
+                    <button type="button" class="delete-row-btn" onclick="confirmDeleteWorkoutLog('${w.id}')" aria-label="Delete workout entry">Delete</button>
                   </div>
                 </div>
                 ${isExpanded ? `
                   <div class="history-detail-panel">
                     <p class="card-subtitle" style="margin:0;">
                       <strong>${Number(w.totalSets || 0)}</strong> sets • <strong>${Number(w.totalVolume || 0).toLocaleString()}</strong> lbs total volume
+                      ${w.swappedFromDay ? ` • <span style="color:var(--indigo);">Swapped from ${escapeHtml(w.swappedFromDay)}</span>` : ''}
                     </p>
-                    ${exSummary ? `<p class="card-subtitle" style="margin-top:6px;">${exSummary}</p>` : ''}
+                    ${exDetailRows}
                     ${w.sessionNote ? `<div class="cue-box"><strong>Session Note:</strong> ${escapeHtml(w.sessionNote)}</div>` : ''}
                   </div>
                 ` : ''}
@@ -2237,11 +3100,14 @@
           </div>
         </div>
 
+        ${renderActivityCalendar()}
+
         <button type="button" class="btn-secondary btn-block" style="margin-bottom:12px;" onclick="openPastWorkoutModal()">
-          + Log Past Workout
+          + Log Missed / Past Session
         </button>
 
-        ${historyHtml}
+        ${filterBannerHtml}
+        ${feedHtml}
       `;
 
       document.getElementById('appMain').innerHTML = html;
@@ -2253,16 +3119,22 @@
       const exLines = exercises.map((ex) => {
         const rows = (state.setsByDay[day.id] && state.setsByDay[day.id][ex.id]) || [];
         const effort = state.efforts[ex.id] || 3;
+        const swapInfo = getExerciseSwapDetail(ex);
+        const swapTag = swapInfo.isSwapped ? ` (Swapped from ${swapInfo.swappedFrom})` : '';
         const setStr = rows.map((r) => `${r.weight}x${r.reps}${r.done ? '(done)' : ''}`).join(', ');
-        return `- ${getExerciseName(ex)} [Effort ${effort}/5]: ${setStr}`;
+        return `- ${swapInfo.name}${swapTag} [Effort ${effort}/5]: ${setStr}`;
       }).join('\n');
 
-      const recentHistory = state.history.slice(0, 3).map((w) => {
+      const recentHistory = state.history.slice(0, 4).map((w) => {
         const notePart = w.sessionNote ? ` | Note: "${w.sessionNote}"` : '';
-        return `- ${w.date} ${w.dayTitle} (${w.durationFormatted}, ${w.totalVolume} lbs vol)${notePart}`;
+        const swappedExercises = (w.exercises || [])
+          .filter((e) => e.swappedFrom)
+          .map((e) => `${e.name} (swapped from ${e.swappedFrom})`);
+        const swapSummary = swappedExercises.length > 0 ? ` | Swaps: ${swappedExercises.join(', ')}` : '';
+        return `- ${w.date} ${w.dayTitle} (${w.durationFormatted}, ${w.totalVolume} lbs vol)${swapSummary}${notePart}`;
       }).join('\n');
 
-      const recentCardio = state.cardioLogs.slice(0, 4).map((c) => {
+      const recentCardio = state.cardioLogs.slice(0, 5).map((c) => {
         const notePart = c.notes ? ` (${c.notes})` : '';
         return `- ${c.date}: ${c.type} ${c.durationFormatted} @ ${c.paceDisplay}${notePart}`;
       }).join('\n');
