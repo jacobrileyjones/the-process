@@ -3466,18 +3466,36 @@ with check (true);`;
       }
 
       try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(state.geminiApiKey)}`;
-        const resp = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            systemInstruction: { parts: [{ text: systemInstruction }] },
-            contents: [{ role: 'user', parts: [{ text }] }]
-          })
-        });
-        const data = await resp.json();
-        const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No response received from Gemini.';
-        state.coachMessages.push({ role: 'chad', text: reply });
+        const modelsToTry = ['gemini-3-flash-preview', 'gemini-2.5-flash'];
+        let reply = '';
+        let lastApiError = '';
+
+        for (const modelName of modelsToTry) {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${encodeURIComponent(state.geminiApiKey)}`;
+          const resp = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: systemInstruction }] },
+              contents: [{ role: 'user', parts: [{ text }] }]
+            })
+          });
+          const data = await resp.json();
+          if (resp.ok && data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+            reply = data.candidates[0].content.parts[0].text;
+            break;
+          }
+          lastApiError = data?.error?.message || `HTTP ${resp.status}`;
+        }
+
+        if (reply) {
+          state.coachMessages.push({ role: 'chad', text: reply });
+        } else {
+          state.coachMessages.push({
+            role: 'chad',
+            text: `Gemini API returned an error: ${lastApiError || 'No response received'}. Double-check that your AI Studio key is pasted cleanly without extra spaces.`
+          });
+        }
       } catch (err) {
         state.coachMessages.push({ role: 'chad', text: 'Could not reach Gemini API right now. Check your API key or connection and try again.' });
       }
