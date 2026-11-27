@@ -19,6 +19,7 @@
       --emerald-hover: #059669;
       --emerald-soft: rgba(16, 185, 129, 0.14);
       --amber: #f59e0b;
+      --sky: #38bdf8;
       --rose: #f43f5e;
       --indigo: #818cf8;
     }
@@ -28,22 +29,32 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html, body {
+    html {
       margin: 0;
       padding: 0;
-      width: 100%;
       background-color: var(--bg-page);
       color: var(--text-primary);
       font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       font-size: 14px;
       line-height: 1.45;
-      touch-action: manipulation;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      min-height: 100%;
+      width: 100%;
     }
 
     .app-shell {
       min-height: 100vh;
-      padding-top: env(safe-area-inset-top);
+      padding-top: calc(52px + env(safe-area-inset-top));
       padding-bottom: calc(96px + env(safe-area-inset-bottom));
+      width: 100%;
+      overflow-x: clip;
     }
 
     .container {
@@ -55,18 +66,22 @@
 
     /* Top Header */
     .topbar {
-      position: relative;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 30;
       background: #060911;
       border-bottom: 1px solid var(--border-subtle);
-      padding: 10px 0;
+      padding-top: calc(8px + env(safe-area-inset-top));
+      padding-bottom: 8px;
     }
 
     .topbar-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
     }
 
     .brand-title {
@@ -74,7 +89,7 @@
       align-items: center;
       gap: 8px;
       margin: 0;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 900;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -94,6 +109,39 @@
       font-size: 12px;
     }
 
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .sync-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .sync-pill.synced {
+      border-color: rgba(16, 185, 129, 0.45);
+      background: var(--emerald-soft);
+      color: #6ee7b7;
+    }
+
+    .sync-pill.error {
+      border-color: rgba(244, 63, 94, 0.45);
+      background: rgba(244, 63, 94, 0.14);
+      color: #fda4af;
+    }
+
     .session-status-pill {
       display: inline-flex;
       align-items: center;
@@ -103,7 +151,7 @@
       border-radius: 999px;
       padding: 5px 10px;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-secondary);
     }
 
@@ -128,13 +176,13 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
       border-radius: 8px;
       border: 1px solid var(--border-subtle);
       background: var(--bg-card-inner);
       color: var(--text-primary);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
     }
@@ -145,13 +193,13 @@
 
     /* Main Content */
     .main-content {
-      padding-top: 14px;
+      padding-top: 12px;
     }
 
     /* Day Selector */
     .day-scroller {
       display: flex;
-      gap: 8px;
+      gap: 7px;
       overflow-x: auto;
       padding-bottom: 6px;
       margin-bottom: 12px;
@@ -164,11 +212,11 @@
 
     .day-pill {
       flex: 1 0 auto;
-      min-width: 78px;
+      min-width: 74px;
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 14px;
-      padding: 8px 10px;
+      padding: 8px 8px;
       text-align: center;
       cursor: pointer;
       color: var(--text-secondary);
@@ -197,16 +245,16 @@
       white-space: nowrap;
     }
 
-    /* Session Stopwatch Banner */
-    .stopwatch-bar {
+    /* Silent Session Control Banner */
+    .session-control-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(15, 23, 42, 0.95));
       border: 1px solid rgba(16, 185, 129, 0.35);
       border-radius: 16px;
-      padding: 12px 14px;
+      padding: 11px 14px;
       margin-bottom: 12px;
     }
 
@@ -215,15 +263,16 @@
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 16px;
-      padding: 14px;
+      padding: 13px;
       margin-bottom: 12px;
+      width: 100%;
     }
 
     .card-header-row {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
     }
 
     .card-title {
@@ -231,6 +280,7 @@
       font-size: 15px;
       font-weight: 800;
       color: var(--text-primary);
+      word-break: break-word;
     }
 
     .card-subtitle {
@@ -243,7 +293,7 @@
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
     }
 
     .swap-day-actions {
@@ -261,12 +311,25 @@
       font-size: 11px;
       font-weight: 700;
       border: 1px solid transparent;
+      white-space: nowrap;
     }
 
     .badge-emerald {
       background: var(--emerald-soft);
       color: #6ee7b7;
       border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    .badge-sky {
+      background: rgba(56, 189, 248, 0.14);
+      color: #7dd3fc;
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    .badge-amber {
+      background: rgba(245, 158, 11, 0.14);
+      color: #fcd34d;
+      border-color: rgba(245, 158, 11, 0.35);
     }
 
     .badge-indigo {
@@ -289,6 +352,7 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
+      touch-action: manipulation;
     }
 
     .btn-primary:hover {
@@ -304,24 +368,32 @@
       color: var(--text-primary);
       border: 1px solid var(--border-strong);
       border-radius: 12px;
-      padding: 9px 12px;
+      padding: 8px 11px;
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 5px;
+      flex-shrink: 0;
+      touch-action: manipulation;
     }
 
     .btn-secondary:active {
       transform: scale(0.98);
     }
 
+    .btn-compact {
+      padding: 6px 10px;
+      font-size: 11px;
+      border-radius: 10px;
+    }
+
     .btn-danger {
-      background: var(--rose);
-      color: #fff;
-      border: none;
+      background: rgba(244, 63, 94, 0.16);
+      color: #fda4af;
+      border: 1px solid rgba(244, 63, 94, 0.45);
       border-radius: 12px;
       padding: 10px 14px;
       font-size: 13px;
@@ -331,51 +403,11 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-    }
-
-    .btn-danger:active {
-      transform: scale(0.98);
-    }
-
-    .btn-compact {
-      padding: 7px 10px;
-      font-size: 11px;
-      border-radius: 10px;
+      touch-action: manipulation;
     }
 
     .btn-block {
       width: 100%;
-    }
-
-    .delete-row-btn {
-      background: rgba(244, 63, 94, 0.12);
-      color: #fda4af;
-      border: 1px solid rgba(244, 63, 94, 0.35);
-      border-radius: 8px;
-      padding: 4px 8px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .delete-row-btn:active {
-      transform: scale(0.96);
-    }
-
-    .pace-preview-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      background: var(--bg-card-inner);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 9px 12px;
-      margin-bottom: 10px;
-      font-size: 12px;
     }
 
     .day-option-card {
@@ -398,14 +430,14 @@
 
     .day-option-badge {
       flex-shrink: 0;
-      min-width: 78px;
+      min-width: 74px;
       height: 28px;
       padding: 0 10px;
       justify-content: center;
       white-space: nowrap;
     }
 
-    /* Set Table */
+    /* Set Table — sized cleanly for narrow iPhones */
     .sets-table {
       width: 100%;
       table-layout: fixed;
@@ -417,15 +449,22 @@
       font-size: 10px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       color: var(--text-muted);
       text-align: center;
       padding: 0 2px 6px 2px;
     }
 
+    .sets-table th:nth-child(1) { width: 34px; }
+    .sets-table th:nth-child(2) { width: auto; }
+    .sets-table th:nth-child(3) { width: auto; }
+    .sets-table th:nth-child(4) { width: 42px; }
+    .sets-table th:nth-child(5) { width: 34px; }
+
     .sets-table td {
       padding: 3px 2px;
       text-align: center;
+      vertical-align: middle;
     }
 
     .set-num-pill {
@@ -443,7 +482,7 @@
 
     .num-input {
       width: 100%;
-      max-width: 78px;
+      max-width: 76px;
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: 10px;
@@ -452,6 +491,7 @@
       font-size: 16px;
       font-weight: 700;
       text-align: center;
+      touch-action: manipulation;
     }
 
     .num-input:focus {
@@ -460,18 +500,19 @@
     }
 
     .done-check-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 9px;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
       border: 1px solid var(--border-strong);
       background: var(--bg-input);
       color: var(--text-muted);
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 900;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      touch-action: manipulation;
     }
 
     .done-check-btn.completed {
@@ -480,12 +521,33 @@
       color: #04130d;
     }
 
+    .remove-set-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      background: rgba(244, 63, 94, 0.1);
+      color: #fda4af;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      touch-action: manipulation;
+    }
+
+    .remove-set-btn:active {
+      transform: scale(0.95);
+    }
+
     /* Effort Scale 1-5 */
     .effort-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 6px;
       margin-top: 10px;
       padding-top: 10px;
       border-top: 1px solid var(--border-subtle);
@@ -493,19 +555,20 @@
 
     .effort-buttons {
       display: flex;
-      gap: 5px;
+      gap: 4px;
     }
 
     .effort-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 9px;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
       border: 1px solid var(--border-subtle);
       background: var(--bg-card-inner);
       color: var(--text-secondary);
       font-size: 12px;
       font-weight: 800;
       cursor: pointer;
+      touch-action: manipulation;
     }
 
     .effort-btn.selected {
@@ -514,147 +577,7 @@
       color: #04130d;
     }
 
-    /* Calendar Grid */
-    .cal-header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .cal-weekdays {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-      margin-bottom: 4px;
-    }
-
-    .cal-weekday {
-      text-align: center;
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      padding: 2px 0;
-    }
-
-    .cal-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-    }
-
-    .cal-cell {
-      min-height: 48px;
-      border-radius: 10px;
-      border: 1px solid var(--border-subtle);
-      background: var(--bg-card-inner);
-      padding: 4px 2px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      color: var(--text-primary);
-    }
-
-    .cal-cell.empty {
-      background: transparent;
-      border-color: transparent;
-      cursor: default;
-    }
-
-    .cal-cell.today {
-      border-color: rgba(16, 185, 129, 0.55);
-    }
-
-    .cal-cell.selected {
-      background: var(--emerald-soft);
-      border-color: var(--emerald);
-    }
-
-    .cal-day-num {
-      font-size: 11px;
-      font-weight: 800;
-      line-height: 1.1;
-    }
-
-    .cal-symbols {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      min-height: 14px;
-    }
-
-    .cal-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      display: inline-block;
-      flex-shrink: 0;
-    }
-
-    .cal-dot.lift {
-      background-color: #10b981;
-    }
-
-    .cal-dot.cardio {
-      background-color: #38bdf8;
-    }
-
-    .cal-dot.sauna {
-      background-color: #f59e0b;
-    }
-
-    .cal-legend {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-      padding-top: 8px;
-      border-top: 1px solid var(--border-subtle);
-      font-size: 11px;
-      color: var(--text-secondary);
-    }
-
-    .cal-legend-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .seg-toggle {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      background: var(--bg-input);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 4px;
-      margin-bottom: 12px;
-    }
-
-    .seg-btn {
-      border: none;
-      border-radius: 9px;
-      padding: 8px 10px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      background: transparent;
-      color: var(--text-secondary);
-    }
-
-    .seg-btn.active {
-      background: var(--emerald);
-      color: #04130d;
-    }
-
-    /* Cue Box & History Details */
+    /* Cue & Expandable History Boxes */
     .cue-box {
       margin-top: 10px;
       background: var(--bg-card-inner);
@@ -669,6 +592,22 @@
       margin-top: 10px;
       padding-top: 10px;
       border-top: 1px solid var(--border-subtle);
+    }
+
+    .delete-row-btn {
+      background: rgba(244, 63, 94, 0.12);
+      color: #fda4af;
+      border: 1px solid rgba(244, 63, 94, 0.35);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .delete-row-btn:active {
+      transform: scale(0.96);
     }
 
     .ex-title-wrap {
@@ -704,9 +643,153 @@
       color: var(--emerald);
     }
 
-    /* Forms */
+    /* Monthly Activity Calendar */
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .calendar-month-label {
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--text-primary);
+    }
+
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .calendar-weekday {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .cal-day-cell {
+      aspect-ratio: 1 / 1;
+      min-height: 40px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 4px 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      color: var(--text-secondary);
+    }
+
+    .cal-day-cell.empty {
+      background: transparent;
+      border-color: transparent;
+      cursor: default;
+    }
+
+    .cal-day-cell.has-activity {
+      border-color: rgba(148, 163, 184, 0.34);
+      color: var(--text-primary);
+    }
+
+    .cal-day-cell.today {
+      border-color: rgba(16, 185, 129, 0.55);
+    }
+
+    .cal-day-cell.selected {
+      background: var(--emerald-soft);
+      border-color: var(--emerald);
+      color: #ffffff;
+    }
+
+    .cal-day-num {
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .cal-dots-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      min-height: 7px;
+    }
+
+    .cal-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .cal-dot.lift { background: var(--emerald); }
+    .cal-dot.cardio { background: var(--sky); }
+    .cal-dot.sauna { background: var(--amber); }
+
+    .calendar-legend {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Segmented Toggle */
+    .segment-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 12px;
+    }
+
+    .segment-btn {
+      border: none;
+      border-radius: 9px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-secondary);
+    }
+
+    .segment-btn.active {
+      background: var(--emerald);
+      color: #04130d;
+    }
+
+    /* Forms — 16px font prevents iOS Safari auto-zoom on focus */
     .field-group {
       margin-bottom: 10px;
+      min-width: 0;
     }
 
     .field-label {
@@ -720,7 +803,10 @@
     }
 
     .text-input, .select-input, .textarea-input {
+      display: block;
       width: 100%;
+      max-width: 100%;
+      min-width: 0;
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
@@ -728,6 +814,22 @@
       color: var(--text-primary);
       font-size: 16px;
       font-family: inherit;
+      touch-action: manipulation;
+    }
+
+    input[type="date"].text-input {
+      -webkit-appearance: none;
+      appearance: none;
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      line-height: 1.2;
+      text-align: left;
+    }
+
+    input[type="date"].text-input::-webkit-date-and-time-value {
+      text-align: left;
+      margin: 0;
     }
 
     .text-input:focus, .select-input:focus, .textarea-input:focus {
@@ -737,8 +839,19 @@
 
     .grid-2 {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 10px;
+    }
+
+    .pace-preview-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-card-inner);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 9px 12px;
+      margin-bottom: 10px;
     }
 
     /* Coach Chat */
@@ -772,13 +885,14 @@
       margin-left: 24px;
     }
 
-    /* Bottom Navigation */
+    /* Bottom Navigation — anchored solidly to viewport bottom */
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      z-index: 35;
+      width: 100%;
+      z-index: 40;
       background: #060911;
       border-top: 1px solid var(--border-subtle);
       padding: 6px 8px calc(8px + env(safe-area-inset-bottom));
@@ -798,7 +912,7 @@
       background: transparent;
       border: none;
       border-radius: 12px;
-      padding: 7px 4px;
+      padding: 6px 2px;
       color: var(--text-muted);
       font-size: 11px;
       font-weight: 700;
@@ -807,6 +921,7 @@
       flex-direction: column;
       align-items: center;
       gap: 2px;
+      touch-action: manipulation;
     }
 
     .nav-btn.active {
@@ -819,11 +934,11 @@
       position: fixed;
       inset: 0;
       z-index: 50;
-      background: rgba(2, 6, 23, 0.82);
+      background: rgba(2, 6, 23, 0.84);
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 14px;
     }
 
     .modal-backdrop.open {
@@ -844,7 +959,7 @@
     /* Toast */
     .toast {
       position: fixed;
-      top: 58px;
+      top: calc(56px + env(safe-area-inset-top));
       left: 50%;
       transform: translateX(-50%);
       z-index: 60;
@@ -874,9 +989,16 @@
           <span>THE PROCESS</span>
         </h1>
 
-        <div id="headerSessionPill" class="session-status-pill">
-          <span class="status-dot"></span>
-          <span id="headerSessionText">Ready</span>
+        <div class="topbar-right">
+          <button id="syncStatusPill" type="button" class="sync-pill" onclick="openCloudSyncModal()" title="Cloud Database Sync">
+            <span id="syncStatusDot">&#9679;</span>
+            <span id="syncStatusLabel">Local</span>
+          </button>
+
+          <div id="headerSessionPill" class="session-status-pill">
+            <span class="status-dot"></span>
+            <span id="headerSessionText">Ready</span>
+          </div>
         </div>
       </div>
     </header>
@@ -888,10 +1010,6 @@
 
   <div id="modalBackdrop" class="modal-backdrop" onclick="handleBackdropClick(event)">
     <div id="modalCard" class="modal-card"></div>
-  </div>
-
-  <div id="confirmBackdrop" class="modal-backdrop" style="z-index:55;" onclick="handleConfirmBackdropClick(event)">
-    <div id="confirmCard" class="modal-card" style="max-width:380px;"></div>
   </div>
 
   <nav class="bottom-nav" aria-label="Primary Navigation">
@@ -934,7 +1052,6 @@
             defaultSets: 3,
             defaultWeight: 60,
             defaultReps: 10,
-            restSec: 120,
             cue: 'Keep shoulder blades retracted, set bench at 30 degrees, and lower under control without bottoming out.',
             swapBank: ['Hammer Strength Incline Press', 'Smith Machine 30° Incline Press', 'Cable Low-to-High Fly']
           },
@@ -945,9 +1062,18 @@
             defaultSets: 3,
             defaultWeight: 135,
             defaultReps: 10,
-            restSec: 90,
             cue: 'Drive handles smoothly through mid-range; pause briefly at full stretch without shrugging.',
-            swapBank: ['Seated Cable Chest Press', 'Dumbbell Flat Chest Press', 'Pec Deck Machine']
+            swapBank: ['Seated Cable Chest Press', 'Flat Dumbbell Press', 'Pec Deck Machine']
+          },
+          {
+            id: 'd1_pec_fly',
+            name: 'Pec Deck Chest Fly',
+            muscle: 'Chest Isolation',
+            defaultSets: 3,
+            defaultWeight: 85,
+            defaultReps: 15,
+            cue: 'Soft bend in elbows, keep chest proud, and bring upper arms together smoothly.',
+            swapBank: ['Seated Cable Fly', 'High-to-Low Cable Crossover', 'Incline Dumbbell Fly']
           },
           {
             id: 'd1_lat_raise',
@@ -956,7 +1082,6 @@
             defaultSets: 4,
             defaultWeight: 20,
             defaultReps: 15,
-            restSec: 60,
             cue: 'Lead with the elbow in the scapular plane and stop just below shoulder height.',
             swapBank: ['Seated Dumbbell Lateral Raise', 'Lateral Raise Machine', 'Lean-Away Cable Lateral Raise']
           },
@@ -967,20 +1092,8 @@
             defaultSets: 3,
             defaultWeight: 50,
             defaultReps: 12,
-            restSec: 60,
             cue: 'Pin elbows to sides and spread rope ends cleanly at lockout.',
             swapBank: ['Overhead Cable Tricep Extension', 'V-Bar Cable Pressdown', 'Dip Machine Press']
-          },
-          {
-            id: 'd1_pec_fly_finisher',
-            name: 'Pec Deck Fly',
-            muscle: 'Chest Stretch & Finisher',
-            defaultSets: 3,
-            defaultWeight: 75,
-            defaultReps: 15,
-            restSec: 60,
-            cue: 'Keep a soft bend in elbows and squeeze smoothly without overstretching the front shoulder.',
-            swapBank: ['Seated Cable Fly', 'Incline Dumbbell Fly', 'Machine Chest Fly']
           }
         ]
       },
@@ -999,9 +1112,8 @@
             defaultSets: 3,
             defaultWeight: 120,
             defaultReps: 10,
-            restSec: 90,
             cue: 'Pull elbows down toward hip pockets while keeping chest tall.',
-            swapBank: ['Assisted Pull-Up Machine', 'Single-Arm Cable Pulldown', 'Hammer Strength High Row']
+            swapBank: ['Neutral-Grip Lat Pulldown', 'Assisted Pull-Up Machine', 'Single-Arm Cable Pulldown', 'Hammer Strength High Row']
           },
           {
             id: 'd2_chest_row',
@@ -1010,9 +1122,18 @@
             defaultSets: 3,
             defaultWeight: 115,
             defaultReps: 10,
-            restSec: 90,
             cue: 'Brace chest firmly against pad to remove lower-back momentum and squeeze shoulder blades.',
             swapBank: ['Seated Cable Row (V-Bar/Mag Grip)', 'Hammer Strength Iso-Row', 'One-Arm Dumbbell Row']
+          },
+          {
+            id: 'd2_straight_arm_pull',
+            name: 'Straight-Arm Cable Pulldown',
+            muscle: 'Lower Lats',
+            defaultSets: 3,
+            defaultWeight: 45,
+            defaultReps: 15,
+            cue: 'Keep arms nearly straight, hinge slightly at hips, and drive hands toward thighs.',
+            swapBank: ['Dumbbell Pullover', 'Close-Grip Cable Pulldown', 'Single-Arm Iliac Cable Row']
           },
           {
             id: 'd2_rear_delt',
@@ -1021,9 +1142,8 @@
             defaultSets: 3,
             defaultWeight: 45,
             defaultReps: 15,
-            restSec: 60,
             cue: 'Sweep hands outward and back rather than yanking with traps.',
-            swapBank: ['Cable Rear Delt Fly', 'Bent-Over Dumbbell Rear Delt Raise', 'Rope Face Pull']
+            swapBank: ['Cable Rope Face Pull', 'Cable Rear Delt Fly', 'Bent-Over Dumbbell Rear Delt Raise']
           },
           {
             id: 'd2_curl',
@@ -1032,20 +1152,8 @@
             defaultSets: 3,
             defaultWeight: 55,
             defaultReps: 12,
-            restSec: 60,
             cue: 'Keep elbows stationary and lower slowly for 2-3 seconds.',
-            swapBank: ['Incline Dumbbell Curl', 'Seated Cable Curl', 'Preacher Curl Machine']
-          },
-          {
-            id: 'd2_hammer_curl',
-            name: 'Dumbbell Hammer Curl',
-            muscle: 'Brachialis & Forearms',
-            defaultSets: 3,
-            defaultWeight: 30,
-            defaultReps: 12,
-            restSec: 60,
-            cue: 'Neutral grip with controlled lowers; adds arm thickness and elbow resilience.',
-            swapBank: ['Cable Rope Hammer Curl', 'Cross-Body Hammer Curl', 'Reverse EZ-Bar Curl']
+            swapBank: ['Seated Cable Curl', 'Incline Dumbbell Curl', 'Hammer Curl', 'Preacher Curl Machine']
           }
         ]
       },
@@ -1064,9 +1172,18 @@
             defaultSets: 3,
             defaultWeight: 180,
             defaultReps: 10,
-            restSec: 120,
             cue: 'Full controlled depth without lower back rounding; push evenly through mid-foot.',
             swapBank: ['45° Leg Press', 'Pendulum / V-Squat Machine', 'Smith Machine Squat']
+          },
+          {
+            id: 'd3_rdl',
+            name: 'Dumbbell Romanian Deadlift',
+            muscle: 'Hamstrings & Glutes',
+            defaultSets: 3,
+            defaultWeight: 65,
+            defaultReps: 10,
+            cue: 'Push hips straight back with soft knees and flat back until deep hamstring stretch.',
+            swapBank: ['Barbell Romanian Deadlift', '45° Back Extension (Hamstring Focus)', 'Cable Pull-Through']
           },
           {
             id: 'd3_leg_curl',
@@ -1075,9 +1192,8 @@
             defaultSets: 3,
             defaultWeight: 95,
             defaultReps: 12,
-            restSec: 75,
             cue: 'Lock hips down and pause briefly at peak contraction.',
-            swapBank: ['Lying Leg Curl Machine', 'Single-Leg Curl Machine', 'Dumbbell Romanian Deadlift']
+            swapBank: ['Lying Leg Curl Machine', 'Single-Leg Curl Machine', 'Stability Ball Hamstring Curl']
           },
           {
             id: 'd3_leg_ext',
@@ -1086,9 +1202,8 @@
             defaultSets: 3,
             defaultWeight: 90,
             defaultReps: 15,
-            restSec: 60,
             cue: 'Align knee joint with machine pivot and squeeze quads cleanly at top.',
-            swapBank: ['Reverse Sled Drag', 'Bulgarian Split Squat', 'Leg Press High/Narrow']
+            swapBank: ['Dumbbell Split Squat', 'Reverse Sled Drag', 'Narrow-Stance Leg Press']
           },
           {
             id: 'd3_calf',
@@ -1097,20 +1212,8 @@
             defaultSets: 3,
             defaultWeight: 110,
             defaultReps: 15,
-            restSec: 60,
             cue: 'Full stretch at bottom and a 1-second pause at the top.',
             swapBank: ['Seated Calf Raise Machine', 'Leg Press Calf Press', 'Single-Leg Calf Raise']
-          },
-          {
-            id: 'd3_rdl_or_glute',
-            name: 'Dumbbell Romanian Deadlift',
-            muscle: 'Posterior Chain & Glutes',
-            defaultSets: 3,
-            defaultWeight: 70,
-            defaultReps: 12,
-            restSec: 90,
-            cue: 'Push hips back with a soft knee bend until hamstrings stretch, then drive hips forward.',
-            swapBank: ['Smith Machine Romanian Deadlift', 'Hip Thrust Machine', 'Back Extension Machine']
           }
         ]
       },
@@ -1129,9 +1232,8 @@
             defaultSets: 3,
             defaultWeight: 55,
             defaultReps: 10,
-            restSec: 90,
             cue: 'Tuck elbows slightly (~45°) to protect shoulders and stretch chest smoothly.',
-            swapBank: ['Hammer Strength Chest Press', 'Cable Chest Fly', 'Machine Chest Press']
+            swapBank: ['Hammer Strength Chest Press', 'Incline Smith Press', 'Machine Chest Press']
           },
           {
             id: 'd4_cable_row',
@@ -1140,9 +1242,8 @@
             defaultSets: 3,
             defaultWeight: 110,
             defaultReps: 12,
-            restSec: 90,
             cue: 'Sit tall, pull to lower ribs/upper abs, and control the return.',
-            swapBank: ['Chest-Supported Row', 'T-Bar / Landmine Row', 'Lat Pulldown']
+            swapBank: ['Chest-Supported Row', 'T-Bar / Landmine Row', 'Hammer Strength Low Row']
           },
           {
             id: 'd4_pec_fly',
@@ -1151,9 +1252,8 @@
             defaultSets: 3,
             defaultWeight: 85,
             defaultReps: 15,
-            restSec: 60,
             cue: 'Soft bend in elbows; focus on bringing upper arms together.',
-            swapBank: ['High-to-Low Cable Fly', 'Dumbbell Pullover', 'Incline Cable Fly']
+            swapBank: ['Seated Cable Fly', 'High-to-Low Cable Fly', 'Dumbbell Pullover']
           },
           {
             id: 'd4_straight_arm',
@@ -1162,20 +1262,18 @@
             defaultSets: 3,
             defaultWeight: 45,
             defaultReps: 15,
-            restSec: 60,
             cue: 'Keep arms nearly straight and hinge slightly at hips to isolate lats.',
-            swapBank: ['Close-Grip Pulldown', 'Dumbbell Pullover', 'Seated Row']
+            swapBank: ['Close-Grip Pulldown', 'Dumbbell Pullover', 'Neutral-Grip Lat Pulldown']
           },
           {
-            id: 'd4_rear_delt_row',
-            name: 'Rear Delt Cable Fly',
-            muscle: 'Rear Delts & Posture',
+            id: 'd4_rear_delt_hypertrophy',
+            name: 'Cable Rope Face Pull',
+            muscle: 'Rear Delts & Traps',
             defaultSets: 3,
-            defaultWeight: 35,
+            defaultWeight: 40,
             defaultReps: 15,
-            restSec: 60,
-            cue: 'Balance out pressing and rowing volume with smooth rear-delt control.',
-            swapBank: ['Reverse Pec Deck', 'Rope Face Pull', 'Bent-Over Rear Delt Raise']
+            cue: 'Pull rope toward forehead/ears with thumbs rotating back for shoulder health.',
+            swapBank: ['Reverse Pec Deck Fly', 'Incline Bench Rear Delt Fly', 'Band Pull-Aparts']
           }
         ]
       },
@@ -1189,25 +1287,23 @@
         exercises: [
           {
             id: 'd5_shoulder_press',
-            name: 'Seated Dumbbell Shoulder Press',
+            name: 'Machine Shoulder Press',
             muscle: 'Shoulders',
             defaultSets: 3,
             defaultWeight: 50,
             defaultReps: 10,
-            restSec: 90,
             cue: 'Use neutral or semi-angled grip and stop pressing just before full elbow lock if shoulders feel tight.',
-            swapBank: ['Hammer Strength Shoulder Press', 'Machine Shoulder Press', 'Cable Lateral Raise']
+            swapBank: ['Seated Dumbbell Shoulder Press', 'Hammer Strength Shoulder Press', 'Landmine Press']
           },
           {
             id: 'd5_lat_raise_d5',
-            name: 'Dumbbell Lateral Raise',
+            name: 'Seated Dumbbell Lateral Raise',
             muscle: 'Side Delts',
             defaultSets: 3,
-            defaultWeight: 25,
+            defaultWeight: 20,
             defaultReps: 15,
-            restSec: 60,
-            cue: 'Raise in a slight forward arc (scapular plane) with soft elbows and controlled tempo.',
-            swapBank: ['Cable Lateral Raise', 'Lateral Raise Machine', 'Upright Cable Row']
+            cue: 'Raise dumbbells slightly in front of torso plane with soft elbows; control the descent.',
+            swapBank: ['Cable Lateral Raise', 'Lateral Raise Machine', 'Lean-Away Cable Lateral Raise']
           },
           {
             id: 'd5_hammer_curl',
@@ -1216,9 +1312,8 @@
             defaultSets: 3,
             defaultWeight: 30,
             defaultReps: 12,
-            restSec: 60,
             cue: 'Neutral thumbs-up grip with zero swinging.',
-            swapBank: ['EZ-Bar Curl', 'Bayesian Cable Curl', 'Preacher Curl Machine']
+            swapBank: ['Rope Cable Hammer Curl', 'EZ-Bar Curl', 'Bayesian Cable Curl', 'Preacher Curl']
           },
           {
             id: 'd5_oh_tri',
@@ -1227,37 +1322,22 @@
             defaultSets: 3,
             defaultWeight: 45,
             defaultReps: 12,
-            restSec: 60,
             cue: 'Step forward slightly and feel a clean stretch behind head before extending.',
-            swapBank: ['Rope Pressdown', 'Single-Arm Cable Extension', 'Dip Machine Press']
+            swapBank: ['Rope Pressdown', 'Single-Arm Cable Extension', 'Dumbbell Skullcrusher']
           },
           {
             id: 'd5_core',
-            name: 'Kneeling Cable Crunch',
+            name: 'Cable Rope Crunch',
             muscle: 'Core',
             defaultSets: 3,
             defaultWeight: 60,
             defaultReps: 15,
-            restSec: 60,
             cue: 'Curl ribcage toward pelvis with abs rather than hinging at the hips.',
-            swapBank: ['Ab Crunch Machine', 'Hanging Knee Raise', 'Ab Wheel Rollout']
+            swapBank: ['Ab Crunch Machine', 'Hanging Knee Raise', 'Ab Wheel / Rollout', 'Plank Hold']
           }
         ]
       }
     ];
-
-    function getLocalIsoDate(dateObj = new Date()) {
-      const y = dateObj.getFullYear();
-      const m = String(dateObj.getMonth() + 1).padStart(2, '0');
-      const d = String(dateObj.getDate()).padStart(2, '0');
-      return `${y}-${m}-${d}`;
-    }
-
-    function formatTimestampLabel(dateObj = new Date()) {
-      const datePart = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      const timePart = dateObj.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-      return `${datePart} • ${timePart}`;
-    }
 
     const state = {
       activeTab: 'workout',
@@ -1273,14 +1353,16 @@
       openCues: {},
       expandedHistory: {},
       notesByDay: {},
-      calendarMonth: getLocalIsoDate().slice(0, 7),
+      calendarMonth: '',
       selectedCalendarDate: null,
+      missedSessionDraft: null,
       history: [],
       cardioLogs: [
         {
           id: 'c1',
-          isoDate: getLocalIsoDate(new Date(Date.now() - 86400000 * 3)),
-          date: formatTimestampLabel(new Date(Date.now() - 86400000 * 3)),
+          isoDate: '2026-11-24',
+          date: 'Nov 24',
+          completedAt: 'Nov 24 • 5:15 PM',
           type: 'Treadmill Walk',
           environment: 'Inside',
           durationSeconds: 1800,
@@ -1294,6 +1376,11 @@
       stopwatchSeconds: 0,
       stopwatchRunning: false,
       lastTickTimestamp: null,
+      supabaseUrl: '',
+      supabaseAnonKey: '',
+      supabaseUserKey: 'default_athlete',
+      cloudSyncStatus: 'local',
+      lastCloudUpdatedAt: null,
       geminiApiKey: '',
       coachMessages: [
         {
@@ -1303,49 +1390,53 @@
       ]
     };
 
-    let pendingConfirmAction = null;
-
-    function openConfirmModal(title, message, confirmLabel, onConfirmFn) {
-      pendingConfirmAction = onConfirmFn;
-      const backdrop = document.getElementById('confirmBackdrop');
-      const card = document.getElementById('confirmCard');
-      if (!backdrop || !card) return;
-      card.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <h3 style="margin:0;font-size:15px;font-weight:900;color:#fff;">${escapeHtml(title)}</h3>
-          <button type="button" class="icon-btn" onclick="closeConfirmModal()">&#10005;</button>
-        </div>
-        <p style="font-size:13px;color:var(--text-secondary);margin:0 0 14px 0;">${escapeHtml(message)}</p>
-        <div class="grid-2">
-          <button type="button" class="btn-secondary btn-block" onclick="closeConfirmModal()">Cancel</button>
-          <button type="button" class="btn-danger btn-block" onclick="executeConfirmedAction()">${escapeHtml(confirmLabel || 'Delete')}</button>
-        </div>
-      `;
-      backdrop.classList.add('open');
-    }
-
-    function closeConfirmModal() {
-      pendingConfirmAction = null;
-      const backdrop = document.getElementById('confirmBackdrop');
-      if (backdrop) backdrop.classList.remove('open');
-    }
-
-    function executeConfirmedAction() {
-      const fn = pendingConfirmAction;
-      closeConfirmModal();
-      if (typeof fn === 'function') fn();
-    }
-
-    function handleConfirmBackdropClick(e) {
-      if (e.target && e.target.id === 'confirmBackdrop') closeConfirmModal();
-    }
-
     function escapeHtml(str) {
       return String(str || '')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
+    }
+
+    function getLocalIsoDate(dateObj = new Date()) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const d = String(dateObj.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function getYesterdayIsoDate() {
+      const d = new Date();
+      d.setDate(d.getDate() - 1);
+      return getLocalIsoDate(d);
+    }
+
+    function formatIsoDateLabel(isoDateStr) {
+      if (!isoDateStr || !/^\d{4}-\d{2}-\d{2}$/.test(isoDateStr)) {
+        return new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      }
+      const [y, m, d] = isoDateStr.split('-').map(Number);
+      const dt = new Date(y, m - 1, d);
+      return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+
+    function formatDateTimeStamp(isoDateStr) {
+      const dateLabel = formatIsoDateLabel(isoDateStr || getLocalIsoDate());
+      const timeLabel = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      return `${dateLabel} • ${timeLabel}`;
+    }
+
+    function resolveItemIsoDate(item) {
+      if (item && item.isoDate && /^\d{4}-\d{2}-\d{2}$/.test(item.isoDate)) {
+        return item.isoDate;
+      }
+      if (item && typeof item.date === 'string') {
+        const parsed = new Date(`${item.date}, ${new Date().getFullYear()}`);
+        if (!Number.isNaN(parsed.getTime())) {
+          return getLocalIsoDate(parsed);
+        }
+      }
+      return '';
     }
 
     function getBaseDayById(dayId) {
@@ -1382,34 +1473,294 @@
       return [...PROGRAM_DAYS, ...customs];
     }
 
+    function buildPersistPayload() {
+      return {
+        selectedDayId: state.selectedDayId,
+        daySwaps: state.daySwaps,
+        customDayTemplates: state.customDayTemplates,
+        swaps: state.swaps,
+        customSwaps: state.customSwaps,
+        targets: state.targets,
+        setsByDay: state.setsByDay,
+        extraExercises: state.extraExercises,
+        efforts: state.efforts,
+        openCues: state.openCues,
+        expandedHistory: state.expandedHistory,
+        notesByDay: state.notesByDay,
+        calendarMonth: state.calendarMonth,
+        selectedCalendarDate: state.selectedCalendarDate,
+        history: state.history,
+        cardioLogs: state.cardioLogs,
+        stopwatchSeconds: state.stopwatchSeconds,
+        stopwatchRunning: state.stopwatchRunning,
+        lastTickTimestamp: Date.now(),
+        supabaseUrl: state.supabaseUrl,
+        supabaseAnonKey: state.supabaseAnonKey,
+        supabaseUserKey: state.supabaseUserKey,
+        geminiApiKey: state.geminiApiKey,
+        coachMessages: state.coachMessages
+      };
+    }
+
+    function applyParsedPayload(parsed) {
+      if (!parsed || typeof parsed !== 'object') return;
+      if (parsed.selectedDayId) state.selectedDayId = parsed.selectedDayId;
+      if (parsed.daySwaps) state.daySwaps = parsed.daySwaps;
+      if (parsed.customDayTemplates) state.customDayTemplates = parsed.customDayTemplates;
+      if (parsed.swaps) state.swaps = parsed.swaps;
+      if (parsed.customSwaps) state.customSwaps = parsed.customSwaps;
+      if (parsed.targets) state.targets = parsed.targets;
+      if (parsed.setsByDay) state.setsByDay = parsed.setsByDay;
+      if (parsed.extraExercises) state.extraExercises = parsed.extraExercises;
+      if (parsed.efforts) state.efforts = parsed.efforts;
+      if (parsed.openCues) state.openCues = parsed.openCues;
+      if (parsed.expandedHistory) state.expandedHistory = parsed.expandedHistory;
+      if (parsed.notesByDay) state.notesByDay = parsed.notesByDay;
+      if (parsed.calendarMonth) state.calendarMonth = parsed.calendarMonth;
+      if (parsed.selectedCalendarDate !== undefined) state.selectedCalendarDate = parsed.selectedCalendarDate;
+      if (Array.isArray(parsed.history)) state.history = parsed.history;
+      if (Array.isArray(parsed.cardioLogs)) state.cardioLogs = parsed.cardioLogs;
+      if (typeof parsed.stopwatchSeconds === 'number') state.stopwatchSeconds = parsed.stopwatchSeconds;
+      if (typeof parsed.stopwatchRunning === 'boolean') state.stopwatchRunning = parsed.stopwatchRunning;
+      if (parsed.stopwatchRunning && typeof parsed.lastTickTimestamp === 'number') {
+        const elapsed = Math.max(0, Math.floor((Date.now() - parsed.lastTickTimestamp) / 1000));
+        state.stopwatchSeconds += elapsed;
+      }
+      if (typeof parsed.supabaseUrl === 'string' && parsed.supabaseUrl) state.supabaseUrl = parsed.supabaseUrl;
+      if (typeof parsed.supabaseAnonKey === 'string' && parsed.supabaseAnonKey) state.supabaseAnonKey = parsed.supabaseAnonKey;
+      if (typeof parsed.supabaseUserKey === 'string' && parsed.supabaseUserKey) state.supabaseUserKey = parsed.supabaseUserKey;
+      if (typeof parsed.geminiApiKey === 'string' && parsed.geminiApiKey) state.geminiApiKey = parsed.geminiApiKey;
+      if (Array.isArray(parsed.coachMessages) && parsed.coachMessages.length > 0) {
+        state.coachMessages = parsed.coachMessages;
+      }
+    }
+
+    function updateSyncPillUI() {
+      const pill = document.getElementById('syncStatusPill');
+      const label = document.getElementById('syncStatusLabel');
+      if (!pill || !label) return;
+      pill.classList.remove('synced', 'error');
+      if (!state.supabaseUrl || !state.supabaseAnonKey) {
+        label.textContent = 'Local';
+        return;
+      }
+      if (state.cloudSyncStatus === 'syncing') {
+        pill.classList.add('synced');
+        label.textContent = 'Syncing...';
+      } else if (state.cloudSyncStatus === 'error') {
+        pill.classList.add('error');
+        label.textContent = 'Sync Err';
+      } else {
+        pill.classList.add('synced');
+        label.textContent = 'Cloud';
+      }
+    }
+
+    let cloudPushTimer = null;
+
+    function scheduleCloudPush(immediate = false) {
+      if (!state.supabaseUrl || !state.supabaseAnonKey) {
+        updateSyncPillUI();
+        return;
+      }
+      clearTimeout(cloudPushTimer);
+      cloudPushTimer = setTimeout(() => {
+        pushStateToSupabase(false);
+      }, immediate ? 10 : 700);
+    }
+
+    async function pushStateToSupabase(showToast = false) {
+      const baseUrl = String(state.supabaseUrl || '').trim().replace(/\/+$/, '');
+      const anonKey = String(state.supabaseAnonKey || '').trim();
+      const userKey = String(state.supabaseUserKey || 'default_athlete').trim() || 'default_athlete';
+      if (!baseUrl || !anonKey) return false;
+
+      state.cloudSyncStatus = 'syncing';
+      updateSyncPillUI();
+
+      try {
+        const endpoint = `${baseUrl}/rest/v1/the_process_state?on_conflict=user_key`;
+        const resp = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': anonKey,
+            'Authorization': `Bearer ${anonKey}`,
+            'Prefer': 'resolution=merge-duplicates,return=minimal'
+          },
+          body: JSON.stringify({
+            user_key: userKey,
+            payload: buildPersistPayload(),
+            updated_at: new Date().toISOString()
+          })
+        });
+
+        if (!resp.ok) {
+          throw new Error(`HTTP ${resp.status}`);
+        }
+        state.cloudSyncStatus = 'synced';
+        state.lastCloudUpdatedAt = new Date().toISOString();
+        updateSyncPillUI();
+        if (showToast) triggerToast('Synced to Supabase cloud!');
+        return true;
+      } catch (err) {
+        state.cloudSyncStatus = 'error';
+        updateSyncPillUI();
+        if (showToast) triggerToast('Cloud sync failed — check Supabase URL & key');
+        return false;
+      }
+    }
+
+    async function pullStateFromSupabase(showToast = false) {
+      const baseUrl = String(state.supabaseUrl || '').trim().replace(/\/+$/, '');
+      const anonKey = String(state.supabaseAnonKey || '').trim();
+      const userKey = String(state.supabaseUserKey || 'default_athlete').trim() || 'default_athlete';
+      if (!baseUrl || !anonKey) return false;
+
+      state.cloudSyncStatus = 'syncing';
+      updateSyncPillUI();
+
+      try {
+        const endpoint = `${baseUrl}/rest/v1/the_process_state?user_key=eq.${encodeURIComponent(userKey)}&select=payload,updated_at`;
+        const resp = await fetch(endpoint, {
+          method: 'GET',
+          headers: {
+            'apikey': anonKey,
+            'Authorization': `Bearer ${anonKey}`
+          }
+        });
+
+        if (!resp.ok) {
+          throw new Error(`HTTP ${resp.status}`);
+        }
+        const rows = await resp.json();
+        if (Array.isArray(rows) && rows.length > 0 && rows[0].payload) {
+          const remotePayload = rows[0].payload;
+          const preservedUrl = state.supabaseUrl;
+          const preservedKey = state.supabaseAnonKey;
+          const preservedUser = state.supabaseUserKey;
+          const preservedGemini = state.geminiApiKey;
+
+          applyParsedPayload(remotePayload);
+
+          if (!state.supabaseUrl) state.supabaseUrl = preservedUrl;
+          if (!state.supabaseAnonKey) state.supabaseAnonKey = preservedKey;
+          if (!state.supabaseUserKey) state.supabaseUserKey = preservedUser;
+          if (!state.geminiApiKey && preservedGemini) state.geminiApiKey = preservedGemini;
+
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(buildPersistPayload()));
+          } catch (e) {}
+
+          state.cloudSyncStatus = 'synced';
+          state.lastCloudUpdatedAt = rows[0].updated_at || new Date().toISOString();
+          updateSyncPillUI();
+          updateTimerUI();
+          switchTab(state.activeTab || 'workout');
+          if (showToast) triggerToast('Restored workout history from Supabase!');
+          return true;
+        } else {
+          state.cloudSyncStatus = 'synced';
+          updateSyncPillUI();
+          if (showToast) triggerToast('Connected! No remote backup found yet — pushing current data.');
+          await pushStateToSupabase(false);
+          return true;
+        }
+      } catch (err) {
+        state.cloudSyncStatus = 'error';
+        updateSyncPillUI();
+        if (showToast) triggerToast('Could not connect to Supabase — verify URL & key');
+        return false;
+      }
+    }
+
+    function openCloudSyncModal() {
+      const sqlSnippet = `create table if not exists public.the_process_state (
+  user_key text primary key,
+  payload jsonb not null,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.the_process_state enable row level security;
+
+drop policy if exists "Allow user_key read/write" on public.the_process_state;
+create policy "Allow user_key read/write"
+on public.the_process_state
+for all
+using (true)
+with check (true);`;
+
+      openModal(`
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:15px;font-weight:900;">Supabase Cloud Backup</h3>
+          <button type="button" class="icon-btn" onclick="closeModal()">&#10005;</button>
+        </div>
+        <p style="font-size:12px;color:var(--text-secondary);margin:0 0 12px 0;">
+          Connect your free Supabase database so your workout history, cardio logs, swaps, and API key survive GitHub updates and sync across devices.
+        </p>
+
+        <div class="field-group">
+          <label class="field-label" for="sbUrlInput">Supabase Project URL</label>
+          <input id="sbUrlInput" class="text-input" type="url" value="${escapeHtml(state.supabaseUrl)}" placeholder="https://xxxx.supabase.co" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="sbKeyInput">Supabase Publishable / Anon Key</label>
+          <input id="sbKeyInput" class="text-input" type="password" value="${escapeHtml(state.supabaseAnonKey)}" placeholder="eyJ... or sb_publishable_..." />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="sbUserKeyInput">Profile Key</label>
+          <input id="sbUserKeyInput" class="text-input" type="text" value="${escapeHtml(state.supabaseUserKey || 'default_athlete')}" placeholder="default_athlete" />
+        </div>
+
+        <div class="grid-2" style="margin-bottom:10px;">
+          <button type="button" class="btn-secondary btn-block" onclick="saveSupabaseSettings('pull')">&#8595; Pull from Cloud</button>
+          <button type="button" class="btn-primary btn-block" onclick="saveSupabaseSettings('push')">&#8593; Save &amp; Push</button>
+        </div>
+
+        <details style="margin-top:8px;">
+          <summary style="font-size:11px;font-weight:700;color:var(--text-secondary);cursor:pointer;">Show Supabase Table SQL (Already Created)</summary>
+          <pre style="background:var(--bg-input);border:1px solid var(--border-subtle);border-radius:10px;padding:8px;font-size:10px;overflow-x:auto;color:#cbd5e1;margin-top:6px;">${escapeHtml(sqlSnippet)}</pre>
+        </details>
+      `);
+    }
+
+    async function saveSupabaseSettings(direction) {
+      const urlEl = document.getElementById('sbUrlInput');
+      const keyEl = document.getElementById('sbKeyInput');
+      const userEl = document.getElementById('sbUserKeyInput');
+      state.supabaseUrl = (urlEl ? urlEl.value : '').trim();
+      state.supabaseAnonKey = (keyEl ? keyEl.value : '').trim();
+      state.supabaseUserKey = (userEl ? userEl.value : '').trim() || 'default_athlete';
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(buildPersistPayload()));
+      } catch (e) {}
+
+      if (!state.supabaseUrl || !state.supabaseAnonKey) {
+        state.cloudSyncStatus = 'local';
+        updateSyncPillUI();
+        closeModal();
+        triggerToast('Cleared cloud credentials (Local mode)');
+        return;
+      }
+
+      closeModal();
+      if (direction === 'pull') {
+        await pullStateFromSupabase(true);
+      } else {
+        await pushStateToSupabase(true);
+      }
+    }
+
     function saveState() {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          selectedDayId: state.selectedDayId,
-          daySwaps: state.daySwaps,
-          customDayTemplates: state.customDayTemplates,
-          swaps: state.swaps,
-          customSwaps: state.customSwaps,
-          targets: state.targets,
-          setsByDay: state.setsByDay,
-          extraExercises: state.extraExercises,
-          efforts: state.efforts,
-          openCues: state.openCues,
-          expandedHistory: state.expandedHistory,
-          notesByDay: state.notesByDay,
-          calendarMonth: state.calendarMonth,
-          selectedCalendarDate: state.selectedCalendarDate,
-          history: state.history,
-          cardioLogs: state.cardioLogs,
-          stopwatchSeconds: state.stopwatchSeconds,
-          stopwatchRunning: state.stopwatchRunning,
-          lastTickTimestamp: Date.now(),
-          geminiApiKey: state.geminiApiKey,
-          coachMessages: state.coachMessages
-        }));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(buildPersistPayload()));
       } catch (e) {
         // Ignore storage quota issues
       }
+      scheduleCloudPush(false);
     }
 
     function loadState() {
@@ -1417,32 +1768,7 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return;
         const parsed = JSON.parse(raw);
-        if (parsed.selectedDayId) state.selectedDayId = parsed.selectedDayId;
-        if (parsed.daySwaps) state.daySwaps = parsed.daySwaps;
-        if (parsed.customDayTemplates) state.customDayTemplates = parsed.customDayTemplates;
-        if (parsed.swaps) state.swaps = parsed.swaps;
-        if (parsed.customSwaps) state.customSwaps = parsed.customSwaps;
-        if (parsed.targets) state.targets = parsed.targets;
-        if (parsed.setsByDay) state.setsByDay = parsed.setsByDay;
-        if (parsed.extraExercises) state.extraExercises = parsed.extraExercises;
-        if (parsed.efforts) state.efforts = parsed.efforts;
-        if (parsed.openCues) state.openCues = parsed.openCues;
-        if (parsed.expandedHistory) state.expandedHistory = parsed.expandedHistory;
-        if (parsed.notesByDay) state.notesByDay = parsed.notesByDay;
-        if (parsed.calendarMonth) state.calendarMonth = parsed.calendarMonth;
-        if (parsed.selectedCalendarDate !== undefined) state.selectedCalendarDate = parsed.selectedCalendarDate;
-        if (Array.isArray(parsed.history)) state.history = parsed.history;
-        if (Array.isArray(parsed.cardioLogs)) state.cardioLogs = parsed.cardioLogs;
-        if (typeof parsed.stopwatchSeconds === 'number') state.stopwatchSeconds = parsed.stopwatchSeconds;
-        if (typeof parsed.stopwatchRunning === 'boolean') state.stopwatchRunning = parsed.stopwatchRunning;
-        if (parsed.stopwatchRunning && typeof parsed.lastTickTimestamp === 'number') {
-          const elapsed = Math.max(0, Math.floor((Date.now() - parsed.lastTickTimestamp) / 1000));
-          state.stopwatchSeconds += elapsed;
-        }
-        if (typeof parsed.geminiApiKey === 'string') state.geminiApiKey = parsed.geminiApiKey;
-        if (Array.isArray(parsed.coachMessages) && parsed.coachMessages.length > 0) {
-          state.coachMessages = parsed.coachMessages;
-        }
+        applyParsedPayload(parsed);
       } catch (e) {
         // Ignore corrupt storage
       }
@@ -1457,6 +1783,24 @@
       triggerToast._timer = setTimeout(() => {
         el.classList.remove('show');
       }, 2600);
+    }
+
+    function openConfirmModal({ title, message, confirmLabel = 'Delete', onConfirm }) {
+      window._pendingConfirmAction = () => {
+        closeModal();
+        if (typeof onConfirm === 'function') onConfirm();
+      };
+      openModal(`
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <h3 style="margin:0;font-size:15px;font-weight:900;color:#fff;">${escapeHtml(title)}</h3>
+          <button type="button" class="icon-btn" onclick="closeModal()">&#10005;</button>
+        </div>
+        <p style="font-size:13px;color:var(--text-secondary);margin:0 0 14px 0;">${escapeHtml(message)}</p>
+        <div class="grid-2">
+          <button type="button" class="btn-secondary btn-block" onclick="closeModal()">Cancel</button>
+          <button type="button" class="btn-danger btn-block" onclick="window._pendingConfirmAction()">${escapeHtml(confirmLabel)}</button>
+        </div>
+      `);
     }
 
     function formatStopwatch(totalSec) {
@@ -1497,23 +1841,23 @@
       if (headerPill && headerText) {
         headerPill.classList.toggle('active', state.stopwatchRunning);
         headerText.textContent = state.stopwatchRunning
-          ? 'Workout Active'
+          ? 'In Progress'
           : (state.stopwatchSeconds > 0 ? 'Paused' : 'Ready');
       }
 
       if (state.activeTab === 'workout') {
-        const statusTitle = document.getElementById('silentTimerStatusTitle');
-        const statusSub = document.getElementById('silentTimerStatusSub');
+        const statusLabel = document.getElementById('sessionBannerHeadline');
+        const statusSub = document.getElementById('sessionBannerSubtext');
         const mainBtn = document.getElementById('mainStopwatchBtn');
-        if (statusTitle) {
-          statusTitle.textContent = state.stopwatchRunning
+        if (statusLabel) {
+          statusLabel.textContent = state.stopwatchRunning
             ? 'Workout in Progress'
             : (state.stopwatchSeconds > 0 ? 'Workout Paused' : 'Ready to Train');
         }
         if (statusSub) {
           statusSub.textContent = state.stopwatchRunning
-            ? 'Timing silently in the background'
-            : (state.stopwatchSeconds > 0 ? 'Tap Resume when ready' : 'Tap Start Workout to begin timing');
+            ? 'Tracking duration silently in the background'
+            : (state.stopwatchSeconds > 0 ? 'Tap Resume Workout when ready' : 'Tap Start Workout to begin tracking duration');
         }
         if (mainBtn) {
           mainBtn.innerHTML = state.stopwatchRunning
@@ -1527,23 +1871,13 @@
       state.stopwatchRunning = !state.stopwatchRunning;
       saveState();
       updateTimerUI();
-      if (state.stopwatchRunning) {
-        triggerToast('Workout started — timing silently');
-      }
-    }
-
-    function resetWorkoutTimer() {
-      state.stopwatchRunning = false;
-      state.stopwatchSeconds = 0;
-      saveState();
-      updateTimerUI();
-      if (state.activeTab === 'workout') renderWorkoutTab();
+      triggerToast(state.stopwatchRunning ? 'Workout started (tracking silently)' : 'Workout paused');
     }
 
     setInterval(() => {
       if (state.stopwatchRunning) {
         state.stopwatchSeconds += 1;
-        if (state.stopwatchSeconds % 5 === 0) saveState();
+        if (state.stopwatchSeconds % 10 === 0) saveState();
       }
     }, 1000);
 
@@ -1552,19 +1886,15 @@
       return ex.name;
     }
 
-    function getExerciseSwapDetail(ex) {
-      const currentName = getExerciseName(ex);
-      if (currentName !== ex.name) {
-        return {
-          name: currentName,
-          swappedFrom: ex.name,
-          isSwapped: true
-        };
-      }
+    function getExerciseSwapInfo(ex) {
+      const activeName = getExerciseName(ex);
+      const isSwapped = activeName !== ex.name;
+      const isCustomSwap = isSwapped && Array.isArray(state.customSwaps[ex.id]) && state.customSwaps[ex.id].includes(activeName);
       return {
-        name: currentName,
-        swappedFrom: null,
-        isSwapped: false
+        activeName,
+        originalName: ex.name,
+        isSwapped,
+        swapType: isSwapped ? (isCustomSwap ? 'Custom Swap' : 'Preset Swap') : null
       };
     }
 
@@ -1626,25 +1956,6 @@
       saveState();
     }
 
-    function confirmDeleteSetFromExercise(dayId, exId, setIndex) {
-      ensureDayInitialized(dayId);
-      const rows = state.setsByDay[dayId][exId] || [];
-      if (rows.length <= 1) {
-        triggerToast('Keep at least 1 set on the exercise.');
-        return;
-      }
-      const ex = getDayExercises(dayId).find((item) => item.id === exId);
-      const exLabel = ex ? getExerciseName(ex) : 'this exercise';
-      const setRow = rows[setIndex];
-      const detail = setRow ? ` (${setRow.weight} lbs × ${setRow.reps} reps)` : '';
-      openConfirmModal(
-        'Delete Set?',
-        `Remove Set ${setIndex + 1}${detail} from ${exLabel}?`,
-        'Yes, Delete Set',
-        () => deleteSetFromExercise(dayId, exId, setIndex)
-      );
-    }
-
     function deleteSetFromExercise(dayId, exId, setIndex) {
       ensureDayInitialized(dayId);
       const rows = state.setsByDay[dayId][exId] || [];
@@ -1652,14 +1963,21 @@
         triggerToast('Keep at least 1 set on the exercise.');
         return;
       }
-      rows.splice(setIndex, 1);
-      rows.forEach((r, idx) => {
-        r.setNum = idx + 1;
+      openConfirmModal({
+        title: 'Remove Set?',
+        message: `Are you sure you want to delete Set ${setIndex + 1}?`,
+        confirmLabel: 'Remove Set',
+        onConfirm: () => {
+          rows.splice(setIndex, 1);
+          rows.forEach((r, idx) => {
+            r.setNum = idx + 1;
+          });
+          state.setsByDay[dayId][exId] = rows;
+          saveState();
+          renderWorkoutTab();
+          triggerToast('Set removed');
+        }
       });
-      state.setsByDay[dayId][exId] = rows;
-      saveState();
-      renderWorkoutTab();
-      triggerToast('Set removed');
     }
 
     function toggleSetDone(dayId, exId, setIndex) {
@@ -1735,7 +2053,7 @@
       openModal(`
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <h3 style="margin:0;font-size:15px;font-weight:900;">Swap Entire ${escapeHtml(currentEff.shortName)} Routine</h3>
-          <button class="icon-btn" onclick="closeModal()">&#10005;</button>
+          <button type="button" class="icon-btn" onclick="closeModal()">&#10005;</button>
         </div>
         <p style="font-size:12px;color:var(--text-secondary);margin:0 0 12px 0;">
           Switch all exercises for today (great for an extra Pull day, upper/lower pivot, or custom body-part focus).
@@ -1749,7 +2067,7 @@
           <div class="field-group">
             <input id="customDayExercisesInput" class="text-input" placeholder="Exercises separated by commas (optional)" />
           </div>
-          <button class="btn-secondary btn-block" onclick="createAndApplyCustomDay('${slotDayId}')">
+          <button type="button" class="btn-secondary btn-block" onclick="createAndApplyCustomDay('${slotDayId}')">
             + Create &amp; Switch to Custom Day
           </button>
         </div>
@@ -1800,8 +2118,10 @@
         ? rawExList
         : [
             `${rawTitle} Compound Movement`,
-            `${rawTitle} Machine / Cable Press or Row`,
-            `${rawTitle} Isolation Finisher`
+            `${rawTitle} Machine Press or Row`,
+            `${rawTitle} Cable Isolation`,
+            `${rawTitle} Dumbbell Movement`,
+            `${rawTitle} Finisher`
           ];
 
       const customId = `custom_${Date.now()}`;
@@ -1820,12 +2140,11 @@
           defaultSets: 3,
           defaultWeight: 50,
           defaultReps: 12,
-          restSec: idx === 0 ? 120 : 75,
           cue: 'Control the eccentric (2-3 seconds), brace core, and train with clean mechanics.',
           swapBank: [
             'Hammer Strength Machine Alternative',
-            'Dual Cable / Pulley Alternative',
-            'Dumbbell / Bodyweight Alternative'
+            'Dual Cable Alternative',
+            'Dumbbell Alternative'
           ]
         }))
       };
@@ -1843,7 +2162,9 @@
     }
 
     function openSwapModal(exId) {
-      const allEx = PROGRAM_DAYS.flatMap((d) => d.exercises).concat(Object.values(state.extraExercises).flat());
+      const allEx = PROGRAM_DAYS.flatMap((d) => d.exercises)
+        .concat(Object.values(state.customDayTemplates || {}).flatMap((d) => d.exercises || []))
+        .concat(Object.values(state.extraExercises).flat());
       const ex = allEx.find((item) => item.id === exId);
       if (!ex) return;
       const currentName = getExerciseName(ex);
@@ -1851,9 +2172,11 @@
 
       const buttonsHtml = bank.map((alt) => {
         const active = alt === currentName;
+        const isCustom = Array.isArray(state.customSwaps[exId]) && state.customSwaps[exId].includes(alt);
         return `
-          <button class="${active ? 'btn-primary' : 'btn-secondary'} btn-block" style="justify-content:flex-start;margin-bottom:8px;" onclick="applyExerciseSwap('${exId}', '${escapeHtml(alt).replace(/'/g, "\\'")}')">
-            ${active ? '&#10003; ' : '&#8644; '}${escapeHtml(alt)}
+          <button type="button" class="${active ? 'btn-primary' : 'btn-secondary'} btn-block" style="justify-content:space-between;margin-bottom:8px;" onclick="applyExerciseSwap('${exId}', '${escapeHtml(alt).replace(/'/g, "\\'")}')">
+            <span>${active ? '&#10003; ' : '&#8644; '}${escapeHtml(alt)}</span>
+            ${isCustom ? '<span style="font-size:10px;opacity:0.8;">Custom</span>' : ''}
           </button>
         `;
       }).join('');
@@ -1861,15 +2184,15 @@
       openModal(`
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <h3 style="margin:0;font-size:15px;font-weight:900;">Swap Exercise</h3>
-          <button class="icon-btn" onclick="closeModal()">&#10005;</button>
+          <button type="button" class="icon-btn" onclick="closeModal()">&#10005;</button>
         </div>
-        <p style="font-size:12px;color:var(--text-secondary);margin:0 0 12px 0;">Target: ${escapeHtml(ex.muscle)}</p>
+        <p style="font-size:12px;color:var(--text-secondary);margin:0 0 12px 0;">Original: ${escapeHtml(ex.name)} (${escapeHtml(ex.muscle)})</p>
         <div>${buttonsHtml}</div>
         <div class="field-group" style="margin-top:12px;">
           <label class="field-label" for="customSwapInput">Custom Crunch Machine / Exercise</label>
           <input id="customSwapInput" class="text-input" placeholder="e.g. Hammer Strength Row" />
         </div>
-        <button class="btn-secondary btn-block" onclick="applyCustomSwap('${exId}')">Save &amp; Use Custom Swap</button>
+        <button type="button" class="btn-secondary btn-block" onclick="applyCustomSwap('${exId}')">Save &amp; Use Custom Swap</button>
       `);
     }
 
@@ -1898,11 +2221,11 @@
       openModal(`
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <h3 style="margin:0;font-size:15px;font-weight:900;">Add Extra Exercise</h3>
-          <button class="icon-btn" onclick="closeModal()">&#10005;</button>
+          <button type="button" class="icon-btn" onclick="closeModal()">&#10005;</button>
         </div>
         <div class="field-group">
           <label class="field-label" for="extraExName">Exercise Name</label>
-          <input id="extraExName" class="text-input" placeholder="e.g. Cable Lateral Raise or Rear Delt Fly" />
+          <input id="extraExName" class="text-input" placeholder="e.g. Cable Lateral Raise" />
         </div>
         <div class="grid-2">
           <div class="field-group">
@@ -1914,7 +2237,7 @@
             <input id="extraExWeight" class="text-input" type="number" value="40" min="0" />
           </div>
         </div>
-        <button class="btn-primary btn-block" onclick="saveExtraExercise()">Add to Today's Workout</button>
+        <button type="button" class="btn-primary btn-block" onclick="saveExtraExercise()">Add to Today's Workout</button>
       `);
     }
 
@@ -1934,7 +2257,6 @@
         defaultSets: setsCount,
         defaultWeight: weightVal,
         defaultReps: 12,
-        restSec: 60,
         cue: 'Controlled tempo, full range of motion, clean finish.',
         swapBank: []
       };
@@ -1962,13 +2284,15 @@
         if (doneRows.length > 0) {
           const exVol = doneRows.reduce((sum, r) => sum + (Number(r.weight) || 0) * (Number(r.reps) || 0), 0);
           const effort = state.efforts[ex.id] || 3;
-          const swapInfo = getExerciseSwapDetail(ex);
+          const swapInfo = getExerciseSwapInfo(ex);
           totalSets += doneRows.length;
           totalVolume += exVol;
           completedEx.push({
             id: ex.id,
-            name: swapInfo.name,
-            swappedFrom: swapInfo.swappedFrom,
+            name: swapInfo.activeName,
+            originalName: swapInfo.originalName,
+            isSwapped: swapInfo.isSwapped,
+            swapType: swapInfo.swapType,
             effort,
             volume: exVol,
             sets: doneRows.map((r) => ({ setNum: r.setNum, weight: r.weight, reps: r.reps }))
@@ -1976,11 +2300,13 @@
 
           const topWeight = Math.max(...doneRows.map((r) => Number(r.weight) || 0));
           const minReps = Math.min(...doneRows.map((r) => Number(r.reps) || 0));
-          if (effort <= 2 && minReps >= ex.defaultReps && topWeight > 0) {
-            const bump = topWeight >= 100 ? 5 : 2.5;
-            state.targets[ex.id] = { weight: topWeight + bump, reps: ex.defaultReps };
-          } else if (topWeight > 0) {
-            state.targets[ex.id] = { weight: topWeight, reps: ex.defaultReps };
+          if (topWeight > 0) {
+            if (effort <= 2 && minReps >= ex.defaultReps) {
+              const bump = topWeight >= 100 ? 5 : 2.5;
+              state.targets[ex.id] = { weight: topWeight + bump, reps: ex.defaultReps };
+            } else {
+              state.targets[ex.id] = { weight: topWeight, reps: ex.defaultReps };
+            }
           }
         }
       });
@@ -1992,17 +2318,16 @@
 
       const elapsedSec = state.stopwatchSeconds;
       const sessionNote = (state.notesByDay[day.id] || '').trim();
-      const now = new Date();
-      const baseDay = PROGRAM_DAYS.find((d) => d.id === day.slotId);
+      const todayIso = getLocalIsoDate();
 
       state.history.unshift({
         id: `h_${Date.now()}`,
-        isoDate: getLocalIsoDate(now),
-        timestampMs: now.getTime(),
-        date: formatTimestampLabel(now),
+        isoDate: todayIso,
+        date: formatIsoDateLabel(todayIso),
+        completedAt: formatDateTimeStamp(todayIso),
         dayId: day.id,
         dayTitle: `${day.shortName}: ${day.title}`,
-        swappedFromDay: day.isDaySwapped && baseDay ? `${baseDay.shortName}: ${baseDay.title}` : null,
+        isDaySwapped: Boolean(day.isDaySwapped),
         durationFormatted: formatStopwatch(elapsedSec),
         durationSeconds: elapsedSec,
         totalSets,
@@ -2011,6 +2336,7 @@
         exercises: completedEx
       });
 
+      // Reset timer, checkmarks, notes, and effort ratings for a clean next session
       state.stopwatchRunning = false;
       state.stopwatchSeconds = 0;
       exercises.forEach((ex) => {
@@ -2036,7 +2362,7 @@
         const eff = getEffectiveDay(d.id);
         const label = eff.isDaySwapped ? `${eff.pillLabel}*` : eff.pillLabel;
         return `
-          <button class="day-pill ${active}" onclick="selectDay('${d.id}')">
+          <button type="button" class="day-pill ${active}" onclick="selectDay('${d.id}')">
             <span class="day-pill-num">${d.shortName}</span>
             <span class="day-pill-name">${escapeHtml(label)}</span>
           </button>
@@ -2060,9 +2386,7 @@
         : '';
 
       const exerciseCardsHtml = exercises.map((ex) => {
-        const swapInfo = getExerciseSwapDetail(ex);
-        const displayName = swapInfo.name;
-        const isSwapped = swapInfo.isSwapped;
+        const swapInfo = getExerciseSwapInfo(ex);
         const rows = state.setsByDay[day.id][ex.id] || [];
         const selectedEffort = state.efforts[ex.id] || 0;
         const isCueOpen = Boolean(state.openCues && state.openCues[ex.id]);
@@ -2093,6 +2417,7 @@
             </td>
             <td>
               <button
+                type="button"
                 class="done-check-btn ${row.done ? 'completed' : ''}"
                 onclick="toggleSetDone('${day.id}', '${ex.id}', ${idx})"
                 aria-label="Mark set ${idx + 1} complete"
@@ -2103,10 +2428,10 @@
             <td>
               <button
                 type="button"
-                class="delete-row-btn"
-                onclick="confirmDeleteSetFromExercise('${day.id}', '${ex.id}', ${idx})"
-                aria-label="Delete set ${idx + 1}"
-                title="Delete set ${idx + 1}"
+                class="remove-set-btn"
+                onclick="deleteSetFromExercise('${day.id}', '${ex.id}', ${idx})"
+                aria-label="Remove set ${idx + 1}"
+                title="Remove set"
               >&#10005;</button>
             </td>
           </tr>
@@ -2114,30 +2439,35 @@
 
         const effortBtnsHtml = [1, 2, 3, 4, 5].map((n) => `
           <button
+            type="button"
             class="effort-btn ${selectedEffort === n ? 'selected' : ''}"
             onclick="setEffortRating('${ex.id}', ${n})"
             title="Effort ${n} of 5"
           >${n}</button>
         `).join('');
 
+        const swapSubtitle = swapInfo.isSwapped
+          ? ` • ${swapInfo.swapType} (from ${escapeHtml(swapInfo.originalName)})`
+          : '';
+
         return `
           <div class="card">
             <div class="card-header-row">
-              <div>
+              <div style="min-width:0;flex:1;">
                 <div class="ex-title-wrap">
-                  <h3 class="card-title">${escapeHtml(displayName)}</h3>
+                  <h3 class="card-title">${escapeHtml(swapInfo.activeName)}</h3>
                   <button
                     type="button"
                     class="info-i-btn ${isCueOpen ? 'active' : ''}"
                     onclick="toggleExerciseCue('${ex.id}')"
-                    aria-label="Toggle form cue for ${escapeHtml(displayName)}"
+                    aria-label="Toggle form cue for ${escapeHtml(swapInfo.activeName)}"
                     aria-expanded="${isCueOpen}"
                     title="Show form cue"
                   >i</button>
                 </div>
-                <p class="card-subtitle">${escapeHtml(ex.muscle)}${isSwapped ? ` • Swapped from ${escapeHtml(swapInfo.swappedFrom)}` : ''}</p>
+                <p class="card-subtitle">${escapeHtml(ex.muscle)}${swapSubtitle}</p>
               </div>
-              <button class="btn-secondary" onclick="openSwapModal('${ex.id}')">&#8644; Swap</button>
+              <button type="button" class="btn-secondary btn-compact" onclick="openSwapModal('${ex.id}')">&#8644; Swap</button>
             </div>
 
             <table class="sets-table">
@@ -2167,44 +2497,42 @@
         `;
       }).join('');
 
+      const bannerHeadline = state.stopwatchRunning
+        ? 'Workout in Progress'
+        : (state.stopwatchSeconds > 0 ? 'Workout Paused' : 'Ready to Train');
+      const bannerSubtext = state.stopwatchRunning
+        ? 'Tracking duration silently in the background'
+        : (state.stopwatchSeconds > 0 ? 'Tap Resume Workout when ready' : 'Tap Start Workout to begin tracking duration');
       const startBtnLabel = state.stopwatchRunning
         ? '&#9208; Pause Workout'
         : (state.stopwatchSeconds > 0 ? '&#9654; Resume Workout' : '&#9654; Start Workout');
 
-      const silentStatusTitle = state.stopwatchRunning
-        ? 'Workout in Progress'
-        : (state.stopwatchSeconds > 0 ? 'Workout Paused' : 'Ready to Train');
-
-      const silentStatusSub = state.stopwatchRunning
-        ? 'Timing silently in the background'
-        : (state.stopwatchSeconds > 0 ? 'Tap Resume when ready' : 'Tap Start Workout to begin timing');
-
       const noteText = state.notesByDay[day.id] || '';
       const resetDayBtnHtml = day.isDaySwapped
-        ? `<button class="btn-secondary btn-compact" onclick="resetSwappedDay('${day.slotId}')">&#8634; Default</button>`
+        ? `<button type="button" class="btn-secondary btn-compact" onclick="resetSwappedDay('${day.slotId}')">&#8634; Default</button>`
         : '';
 
       const html = `
         <div class="day-scroller">${dayPillsHtml}</div>
 
-        <div class="stopwatch-bar">
-          <div>
-            <div id="silentTimerStatusTitle" style="font-size:13px;font-weight:900;color:#fff;">${silentStatusTitle}</div>
-            <div id="silentTimerStatusSub" style="font-size:11px;color:var(--text-secondary);margin-top:2px;">${silentStatusSub}</div>
+        <div class="session-control-bar">
+          <div style="min-width:0;flex:1;">
+            <div id="sessionBannerHeadline" style="font-size:13px;font-weight:900;color:#fff;">${bannerHeadline}</div>
+            <div id="sessionBannerSubtext" style="font-size:11px;color:var(--text-secondary);margin-top:2px;">${bannerSubtext}</div>
           </div>
-          <button id="mainStopwatchBtn" class="btn-primary" onclick="toggleWorkoutTimer()">${startBtnLabel}</button>
+          <button type="button" id="mainStopwatchBtn" class="btn-primary" onclick="toggleWorkoutTimer()">${startBtnLabel}</button>
         </div>
 
         ${fatigueBannerHtml}
 
         <div class="card">
           <div class="day-banner">
-            <div>
+            <div style="min-width:0;flex:1;">
               <h2 class="card-title">${escapeHtml(day.shortName)}: ${escapeHtml(day.title)}${day.isDaySwapped ? ' <span class="badge badge-indigo">Swapped Day</span>' : ''}</h2>
               <p class="card-subtitle">${escapeHtml(day.warmup)}</p>
             </div>
             <div class="swap-day-actions">
-              <button class="btn-secondary btn-compact" onclick="openSwapDayModal('${day.slotId}')">&#8644; Swap Day</button>
+              <button type="button" class="btn-secondary btn-compact" onclick="openSwapDayModal('${day.slotId}')">&#8644; Swap Day</button>
               ${resetDayBtnHtml}
             </div>
           </div>
@@ -2212,7 +2540,7 @@
 
         ${exerciseCardsHtml}
 
-        <button class="btn-secondary btn-block" style="margin-bottom:12px;" onclick="openAddExerciseModal()">
+        <button type="button" class="btn-secondary btn-block" style="margin-bottom:12px;" onclick="openAddExerciseModal()">
           + Add Extra Exercise for Today
         </button>
 
@@ -2229,7 +2557,7 @@
           </div>
         </div>
 
-        <button class="btn-primary btn-block" style="padding:14px;font-size:14px;" onclick="completeWorkout()">
+        <button type="button" class="btn-primary btn-block" style="padding:14px;font-size:14px;" onclick="completeWorkout()">
           &#10003; Complete &amp; Log Workout
         </button>
       `;
@@ -2242,7 +2570,7 @@
         return tempF ? `${tempF}°F Sauna` : 'Heat Recovery';
       }
       const dist = parseFloat(distance) || 0;
-      if (!durationSeconds || dist <= 0) return 'Logged';
+      if (!durationSeconds || dist <= 0) return '';
       const mins = durationSeconds / 60;
       if (type === 'Row Indoor') {
         const pace500Sec = durationSeconds / (dist / 0.5);
@@ -2258,6 +2586,28 @@
       return `${formatDurationMMSS(paceSecPerMile)} /mi`;
     }
 
+    function updateCardioPacePreview(prefix = 'cardio') {
+      const typeEl = document.getElementById(`${prefix}Type`);
+      const durEl = document.getElementById(`${prefix}Duration`);
+      const distEl = document.getElementById(`${prefix}Distance`);
+      const tempEl = document.getElementById(`${prefix === 'cardio' ? 'saunaTemp' : 'missedSaunaTemp'}`);
+      const badgeEl = document.getElementById(`${prefix}PacePreview`);
+      if (!typeEl || !badgeEl) return;
+
+      const type = typeEl.value;
+      const durSec = parseDurationToSeconds(durEl ? durEl.value : '');
+      const dist = parseFloat(distEl ? distEl.value : '0') || 0;
+      const temp = tempEl ? tempEl.value.trim() : '';
+
+      if (type === 'Sauna') {
+        badgeEl.textContent = temp ? `${temp}°F Sauna` : 'Heat Recovery';
+        return;
+      }
+
+      const pace = computePaceDisplay(type, durSec, dist, temp);
+      badgeEl.textContent = pace || 'Enter time & distance';
+    }
+
     function handleCardioTypeChange() {
       const typeEl = document.getElementById('cardioType');
       const saunaRow = document.getElementById('saunaTempGroup');
@@ -2266,38 +2616,15 @@
       const isSauna = typeEl.value === 'Sauna';
       saunaRow.style.display = isSauna ? 'block' : 'none';
       distRow.style.display = isSauna ? 'none' : 'block';
-      updateCardioPacePreview();
-    }
-
-    function updateCardioPacePreview() {
-      const previewEl = document.getElementById('liveCardioPaceValue');
-      const typeEl = document.getElementById('cardioType');
-      const durEl = document.getElementById('cardioDuration');
-      const distEl = document.getElementById('cardioDistance');
-      const tempEl = document.getElementById('saunaTemp');
-      if (!previewEl || !typeEl) return;
-
-      const type = typeEl.value;
-      const durationSec = parseDurationToSeconds(durEl ? durEl.value : '');
-      const distance = distEl ? parseFloat(distEl.value) || 0 : 0;
-      const saunaTemp = tempEl ? tempEl.value.trim() : '';
-
-      if (type === 'Sauna') {
-        previewEl.textContent = saunaTemp ? `${saunaTemp}°F Sauna` : 'Heat Recovery';
-        return;
-      }
-      if (durationSec <= 0 || distance <= 0) {
-        previewEl.textContent = 'Enter time & distance';
-        return;
-      }
-      previewEl.textContent = computePaceDisplay(type, durationSec, distance, saunaTemp);
+      updateCardioPacePreview('cardio');
     }
 
     function addCardioLog(event) {
       event.preventDefault();
       const type = document.getElementById('cardioType').value;
       const env = document.getElementById('cardioEnv').value;
-      const dateInputEl = document.getElementById('cardioDate');
+      const dateInput = document.getElementById('cardioDate');
+      const isoDate = (dateInput && dateInput.value) ? dateInput.value : getLocalIsoDate();
       const rawDuration = document.getElementById('cardioDuration').value;
       const durationSeconds = parseDurationToSeconds(rawDuration);
       const distance = parseFloat(document.getElementById('cardioDistance').value) || 0;
@@ -2311,19 +2638,13 @@
 
       const unit = type === 'Row Indoor' ? 'm' : (type === 'Stair Stepper' ? 'floors' : 'mi');
       const durationFormatted = formatDurationMMSS(durationSeconds);
-      const paceDisplay = computePaceDisplay(type, durationSeconds, distance, saunaTemp);
-      const now = new Date();
-      const chosenIso = (dateInputEl && dateInputEl.value) ? dateInputEl.value : getLocalIsoDate(now);
-      const isToday = chosenIso === getLocalIsoDate(now);
-      const displayStamp = isToday
-        ? formatTimestampLabel(now)
-        : `${formatDateInputToShortLabel(chosenIso)} • ${now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
+      const paceDisplay = computePaceDisplay(type, durationSeconds, distance, saunaTemp) || 'Logged';
 
       state.cardioLogs.unshift({
         id: `c_${Date.now()}`,
-        isoDate: chosenIso,
-        timestampMs: now.getTime(),
-        date: displayStamp,
+        isoDate,
+        date: formatIsoDateLabel(isoDate),
+        completedAt: formatDateTimeStamp(isoDate),
         type,
         environment: type === 'Sauna' ? 'Inside' : env,
         durationSeconds,
@@ -2340,43 +2661,43 @@
       triggerToast(`Logged ${type} (${durationFormatted})`);
     }
 
-    function confirmDeleteCardioLog(cardioId) {
-      const entry = state.cardioLogs.find((c) => c.id === cardioId);
-      const label = entry ? `${entry.type} (${entry.date})` : 'this session';
-      openConfirmModal(
-        'Delete Session?',
-        `Are you sure you want to delete ${label}? This cannot be undone.`,
-        'Yes, Delete',
-        () => deleteCardioLog(cardioId)
-      );
-    }
-
     function deleteCardioLog(cardioId) {
-      state.cardioLogs = state.cardioLogs.filter((c) => c.id !== cardioId);
-      saveState();
-      if (state.activeTab === 'progress') renderProgressTab();
-      else renderCardioTab();
-      triggerToast('Removed cardio/sauna entry');
+      const target = state.cardioLogs.find((c) => c.id === cardioId);
+      openConfirmModal({
+        title: 'Delete Cardio / Sauna Entry?',
+        message: `Are you sure you want to delete this ${target ? target.type : 'session'} entry?`,
+        confirmLabel: 'Delete Entry',
+        onConfirm: () => {
+          state.cardioLogs = state.cardioLogs.filter((c) => c.id !== cardioId);
+          saveState();
+          if (state.activeTab === 'progress') renderProgressTab();
+          else renderCardioTab();
+          triggerToast('Session removed');
+        }
+      });
     }
 
     function renderCardioTab() {
-      const logsHtml = state.cardioLogs.map((item) => `
-        <div class="card">
-          <div class="card-header-row">
-            <div>
-              <h3 class="card-title">${escapeHtml(item.type)}</h3>
-              <p class="card-subtitle">${escapeHtml(item.date)} • ${escapeHtml(item.environment)} • ${escapeHtml(item.durationFormatted)}${item.distance > 0 ? ` • ${item.distance} ${escapeHtml(item.unit)}` : ''}</p>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-              <span class="badge badge-emerald">${escapeHtml(item.paceDisplay)}</span>
-              <button type="button" class="delete-row-btn" onclick="confirmDeleteCardioLog('${item.id}')" aria-label="Delete cardio entry">Delete</button>
-            </div>
-          </div>
-          ${item.notes ? `<p class="card-subtitle" style="margin-top:8px;">${escapeHtml(item.notes)}</p>` : ''}
-        </div>
-      `).join('');
-
       const todayIso = getLocalIsoDate();
+      const logsHtml = state.cardioLogs.map((item) => {
+        const stampText = item.completedAt || item.date;
+        return `
+          <div class="card">
+            <div class="card-header-row">
+              <div>
+                <h3 class="card-title">${escapeHtml(item.type)}</h3>
+                <p class="card-subtitle">${escapeHtml(stampText)} • ${escapeHtml(item.environment)} • ${escapeHtml(item.durationFormatted)}${item.distance > 0 ? ` • ${item.distance} ${escapeHtml(item.unit)}` : ''}</p>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span class="badge ${item.type === 'Sauna' ? 'badge-amber' : 'badge-sky'}">${escapeHtml(item.paceDisplay)}</span>
+                <button type="button" class="delete-row-btn" onclick="deleteCardioLog('${item.id}')" title="Delete entry">Delete</button>
+              </div>
+            </div>
+            ${item.notes ? `<p class="card-subtitle" style="margin-top:8px;">${escapeHtml(item.notes)}</p>` : ''}
+          </div>
+        `;
+      }).join('');
+
       const html = `
         <div class="card">
           <h2 class="card-title" style="margin-bottom:10px;">Log Cardio or Sauna</h2>
@@ -2410,21 +2731,21 @@
             <div class="grid-2">
               <div class="field-group">
                 <label class="field-label" for="cardioDuration">Duration (MM:SS)</label>
-                <input id="cardioDuration" class="text-input" type="text" placeholder="e.g. 9:33 or 25:00" oninput="updateCardioPacePreview()" required />
+                <input id="cardioDuration" class="text-input" type="text" placeholder="e.g. 9:33 or 25:00" oninput="updateCardioPacePreview('cardio')" required />
               </div>
               <div id="cardioDistanceGroup" class="field-group">
                 <label class="field-label" for="cardioDistance">Distance (mi / m / floors)</label>
-                <input id="cardioDistance" class="text-input" type="number" step="any" inputmode="decimal" placeholder="e.g. 1.5" oninput="updateCardioPacePreview()" />
+                <input id="cardioDistance" class="text-input" type="number" step="any" inputmode="decimal" placeholder="e.g. 1.5" oninput="updateCardioPacePreview('cardio')" />
               </div>
               <div id="saunaTempGroup" class="field-group" style="display:none;">
                 <label class="field-label" for="saunaTemp">Sauna Temp (°F, optional)</label>
-                <input id="saunaTemp" class="text-input" type="number" inputmode="numeric" placeholder="e.g. 185" oninput="updateCardioPacePreview()" />
+                <input id="saunaTemp" class="text-input" type="number" inputmode="numeric" placeholder="e.g. 185" oninput="updateCardioPacePreview('cardio')" />
               </div>
             </div>
 
             <div class="pace-preview-bar">
-              <span style="font-weight:700;color:var(--text-secondary);">Calculated Pace</span>
-              <span id="liveCardioPaceValue" class="badge badge-emerald">Enter time &amp; distance</span>
+              <span style="font-size:11px;font-weight:800;color:var(--text-secondary);">Calculated Pace</span>
+              <span id="cardioPacePreview" class="badge badge-emerald">Enter time &amp; distance</span>
             </div>
 
             <div class="field-group">
@@ -2442,648 +2763,598 @@
       document.getElementById('appMain').innerHTML = html;
     }
 
-    function formatDateInputToShortLabel(dateStr) {
-      if (!dateStr) {
-        return new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      }
-      const parts = dateStr.split('-');
-      if (parts.length === 3) {
-        const dt = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-        if (!Number.isNaN(dt.getTime())) {
-          return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        }
-      }
-      return dateStr;
-    }
-
-    function resolveItemIsoDate(item) {
-      if (item && item.isoDate && /^\d{4}-\d{2}-\d{2}$/.test(item.isoDate)) {
-        return item.isoDate;
-      }
-      const raw = String((item && item.date) || '').split('•')[0].trim();
-      if (!raw) return '';
-      const currentYear = new Date().getFullYear();
-      const parsed = new Date(`${raw}, ${currentYear}`);
-      if (!Number.isNaN(parsed.getTime())) {
-        return getLocalIsoDate(parsed);
-      }
-      return '';
-    }
-
-    let pastDraftMode = 'lifting';
-    let pastDraftExercises = [];
-
-    function loadPastDraftFromRoutine(slotDayId) {
-      if (slotDayId === 'blank') {
-        pastDraftExercises = [
-          { name: '', sets: 3, weight: 50, reps: 10, swappedFrom: null }
-        ];
-        return;
-      }
-      const effDay = getEffectiveDay(slotDayId);
-      const dayExercises = getDayExercises(effDay.id);
-      pastDraftExercises = dayExercises.map((ex) => {
-        const target = state.targets[ex.id];
-        const swapInfo = getExerciseSwapDetail(ex);
-        return {
-          id: ex.id,
-          name: swapInfo.name,
-          swappedFrom: swapInfo.swappedFrom,
-          sets: ex.defaultSets,
-          weight: target ? target.weight : ex.defaultWeight,
-          reps: target ? target.reps : ex.defaultReps
-        };
-      });
-    }
-
-    function syncPastDraftInputsFromDom() {
-      pastDraftExercises.forEach((item, idx) => {
-        const nameEl = document.getElementById(`past_ex_name_${idx}`);
-        const setsEl = document.getElementById(`past_ex_sets_${idx}`);
-        const weightEl = document.getElementById(`past_ex_weight_${idx}`);
-        const repsEl = document.getElementById(`past_ex_reps_${idx}`);
-        if (nameEl) item.name = nameEl.value;
-        if (setsEl) item.sets = Math.max(1, parseInt(setsEl.value, 10) || 1);
-        if (weightEl) item.weight = Math.max(0, parseFloat(weightEl.value) || 0);
-        if (repsEl) item.reps = Math.max(1, parseInt(repsEl.value, 10) || 1);
-      });
-    }
-
-    function renderPastDraftExercisesList() {
-      const container = document.getElementById('pastWorkoutExerciseList');
-      if (!container) return;
-      if (pastDraftExercises.length === 0) {
-        container.innerHTML = `<p class="card-subtitle" style="margin-bottom:8px;">No exercises added yet. Tap <strong>+ Add Exercise</strong> below.</p>`;
-        return;
-      }
-      container.innerHTML = pastDraftExercises.map((item, idx) => `
-        <div style="background:var(--bg-card-inner);border:1px solid var(--border-subtle);border-radius:12px;padding:10px;margin-bottom:8px;">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
-            <input
-              id="past_ex_name_${idx}"
-              class="text-input"
-              style="padding:8px 10px;"
-              type="text"
-              placeholder="Exercise name (e.g. Incline Dumbbell Press)"
-              value="${escapeHtml(item.name)}"
-              onchange="syncPastDraftInputsFromDom()"
-            />
-            <button type="button" class="delete-row-btn" onclick="confirmRemovePastDraftExercise(${idx})" title="Remove exercise">&#10005;</button>
-          </div>
-          ${item.swappedFrom ? `<div style="font-size:11px;color:var(--text-secondary);margin:-4px 0 6px 2px;">Swapped from ${escapeHtml(item.swappedFrom)}</div>` : ''}
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-            <div>
-              <div class="field-label" style="font-size:9px;">Sets</div>
-              <input id="past_ex_sets_${idx}" class="num-input" type="number" min="1" max="12" value="${item.sets}" onchange="syncPastDraftInputsFromDom()" />
-            </div>
-            <div>
-              <div class="field-label" style="font-size:9px;">Weight</div>
-              <input id="past_ex_weight_${idx}" class="num-input" type="number" step="any" value="${item.weight}" onchange="syncPastDraftInputsFromDom()" />
-            </div>
-            <div>
-              <div class="field-label" style="font-size:9px;">Reps</div>
-              <input id="past_ex_reps_${idx}" class="num-input" type="number" min="1" value="${item.reps}" onchange="syncPastDraftInputsFromDom()" />
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function addPastDraftExercise() {
-      syncPastDraftInputsFromDom();
-      pastDraftExercises.push({ name: '', sets: 3, weight: 50, reps: 10, swappedFrom: null });
-      renderPastDraftExercisesList();
-    }
-
-    function confirmRemovePastDraftExercise(idx) {
-      syncPastDraftInputsFromDom();
-      const item = pastDraftExercises[idx];
-      const label = (item && item.name && item.name.trim()) ? item.name.trim() : `Exercise #${idx + 1}`;
-      openConfirmModal(
-        'Remove Exercise?',
-        `Remove "${label}" from this past session?`,
-        'Yes, Remove',
-        () => removePastDraftExercise(idx)
-      );
-    }
-
-    function removePastDraftExercise(idx) {
-      syncPastDraftInputsFromDom();
-      pastDraftExercises.splice(idx, 1);
-      renderPastDraftExercisesList();
-    }
-
-    function handlePastWorkoutDayChange() {
-      const dayEl = document.getElementById('pastWorkoutDay');
-      if (!dayEl) return;
-      loadPastDraftFromRoutine(dayEl.value);
-      renderPastDraftExercisesList();
-    }
-
-    function switchPastSessionMode(mode) {
-      pastDraftMode = mode;
-      const liftBtn = document.getElementById('pastModeLiftBtn');
-      const cardioBtn = document.getElementById('pastModeCardioBtn');
-      const liftSection = document.getElementById('pastLiftingSection');
-      const cardioSection = document.getElementById('pastCardioSection');
-      if (liftBtn) liftBtn.classList.toggle('active', mode === 'lifting');
-      if (cardioBtn) cardioBtn.classList.toggle('active', mode === 'cardio');
-      if (liftSection) liftSection.style.display = mode === 'lifting' ? 'block' : 'none';
-      if (cardioSection) cardioSection.style.display = mode === 'cardio' ? 'block' : 'none';
-    }
-
-    function handlePastCardioTypeChange() {
-      const typeEl = document.getElementById('pastCardioType');
-      const saunaRow = document.getElementById('pastSaunaTempGroup');
-      const distRow = document.getElementById('pastCardioDistanceGroup');
-      if (!typeEl || !saunaRow || !distRow) return;
-      const isSauna = typeEl.value === 'Sauna';
-      saunaRow.style.display = isSauna ? 'block' : 'none';
-      distRow.style.display = isSauna ? 'none' : 'block';
-      updatePastCardioPacePreview();
-    }
-
-    function updatePastCardioPacePreview() {
-      const previewEl = document.getElementById('pastLivePaceValue');
-      const typeEl = document.getElementById('pastCardioType');
-      const durEl = document.getElementById('pastCardioDuration');
-      const distEl = document.getElementById('pastCardioDistance');
-      const tempEl = document.getElementById('pastSaunaTemp');
-      if (!previewEl || !typeEl) return;
-
-      const type = typeEl.value;
-      const durationSec = parseDurationToSeconds(durEl ? durEl.value : '');
-      const distance = distEl ? parseFloat(distEl.value) || 0 : 0;
-      const saunaTemp = tempEl ? tempEl.value.trim() : '';
-
-      if (type === 'Sauna') {
-        previewEl.textContent = saunaTemp ? `${saunaTemp}°F Sauna` : 'Heat Recovery';
-        return;
-      }
-      if (durationSec <= 0 || distance <= 0) {
-        previewEl.textContent = 'Enter time & distance';
-        return;
-      }
-      previewEl.textContent = computePaceDisplay(type, durationSec, distance, saunaTemp);
-    }
-
-    function openPastWorkoutModal(prefillIsoDate) {
-      const yesterdayIso = getLocalIsoDate(new Date(Date.now() - 86400000));
-      const defaultIso = prefillIsoDate || state.selectedCalendarDate || yesterdayIso;
-      pastDraftMode = 'lifting';
-      loadPastDraftFromRoutine('day1');
-
-      const dayOptions = [
-        ...PROGRAM_DAYS.map((d) => {
-          const eff = getEffectiveDay(d.id);
-          return `<option value="${d.id}">${escapeHtml(d.shortName)}: ${escapeHtml(eff.title)}</option>`;
-        }),
-        `<option value="blank">Custom / Blank Lift List</option>`
-      ].join('');
-
-      openModal(`
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <h3 style="margin:0;font-size:15px;font-weight:900;">Log Missed / Past Session</h3>
-          <button class="icon-btn" onclick="closeModal()">&#10005;</button>
-        </div>
-
-        <div class="seg-toggle">
-          <button type="button" id="pastModeLiftBtn" class="seg-btn active" onclick="switchPastSessionMode('lifting')">Lifting</button>
-          <button type="button" id="pastModeCardioBtn" class="seg-btn" onclick="switchPastSessionMode('cardio')">Cardio / Sauna</button>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label" for="pastSessionDate">Session Date</label>
-          <input id="pastSessionDate" class="text-input" type="date" value="${defaultIso}" />
-        </div>
-
-        <div id="pastLiftingSection">
-          <div class="grid-2">
-            <div class="field-group">
-              <label class="field-label" for="pastWorkoutDay">Routine Template</label>
-              <select id="pastWorkoutDay" class="select-input" onchange="handlePastWorkoutDayChange()">${dayOptions}</select>
-            </div>
-            <div class="field-group">
-              <label class="field-label" for="pastWorkoutDuration">Duration (MM:SS)</label>
-              <input id="pastWorkoutDuration" class="text-input" type="text" value="42:00" placeholder="e.g. 42:00" />
-            </div>
-          </div>
-
-          <div class="field-group">
-            <div class="field-label">Exercises Completed</div>
-            <div id="pastWorkoutExerciseList"></div>
-            <button type="button" class="btn-secondary btn-block btn-compact" onclick="addPastDraftExercise()">+ Add Exercise</button>
-          </div>
-
-          <div class="field-group">
-            <label class="field-label" for="pastWorkoutNote">Session Notes (Optional)</label>
-            <textarea id="pastWorkoutNote" class="textarea-input" rows="2" placeholder="How did the session feel?"></textarea>
-          </div>
-
-          <button type="button" class="btn-primary btn-block" onclick="savePastWorkout()">+ Save Lifting Session</button>
-        </div>
-
-        <div id="pastCardioSection" style="display:none;">
-          <div class="grid-2">
-            <div class="field-group">
-              <label class="field-label" for="pastCardioType">Activity</label>
-              <select id="pastCardioType" class="select-input" onchange="handlePastCardioTypeChange()">
-                <option value="Running">Running</option>
-                <option value="Treadmill Walk">Treadmill Walk</option>
-                <option value="Biking">Biking</option>
-                <option value="Row Indoor">Row Indoor</option>
-                <option value="Stair Stepper">Stair Stepper</option>
-                <option value="Sauna">Sauna</option>
-              </select>
-            </div>
-            <div class="field-group">
-              <label class="field-label" for="pastCardioEnv">Setting</label>
-              <select id="pastCardioEnv" class="select-input">
-                <option value="Outside">Outside</option>
-                <option value="Inside">Inside</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="grid-2">
-            <div class="field-group">
-              <label class="field-label" for="pastCardioDuration">Duration (MM:SS)</label>
-              <input id="pastCardioDuration" class="text-input" type="text" placeholder="e.g. 25:00" oninput="updatePastCardioPacePreview()" />
-            </div>
-            <div id="pastCardioDistanceGroup" class="field-group">
-              <label class="field-label" for="pastCardioDistance">Distance (mi / m / floors)</label>
-              <input id="pastCardioDistance" class="text-input" type="number" step="any" inputmode="decimal" placeholder="e.g. 2.5" oninput="updatePastCardioPacePreview()" />
-            </div>
-            <div id="pastSaunaTempGroup" class="field-group" style="display:none;">
-              <label class="field-label" for="pastSaunaTemp">Sauna Temp (°F)</label>
-              <input id="pastSaunaTemp" class="text-input" type="number" inputmode="numeric" placeholder="e.g. 185" oninput="updatePastCardioPacePreview()" />
-            </div>
-          </div>
-
-          <div class="pace-preview-bar">
-            <span style="font-weight:700;color:var(--text-secondary);">Calculated Pace</span>
-            <span id="pastLivePaceValue" class="badge badge-emerald">Enter time &amp; distance</span>
-          </div>
-
-          <div class="field-group">
-            <label class="field-label" for="pastCardioNotes">Session Notes (Optional)</label>
-            <input id="pastCardioNotes" class="text-input" type="text" placeholder="How did breathing, legs, or heat feel?" />
-          </div>
-
-          <button type="button" class="btn-primary btn-block" onclick="savePastCardioSession()">+ Save Cardio / Sauna Session</button>
-        </div>
-      `);
-
-      renderPastDraftExercisesList();
-    }
-
-    function savePastWorkout() {
-      syncPastDraftInputsFromDom();
-      const dateEl = document.getElementById('pastSessionDate');
-      const durEl = document.getElementById('pastWorkoutDuration');
-      const dayEl = document.getElementById('pastWorkoutDay');
-      const noteEl = document.getElementById('pastWorkoutNote');
-
-      const slotDayId = dayEl ? dayEl.value : 'day1';
-      const isBlank = slotDayId === 'blank';
-      const effDay = isBlank ? { id: 'custom_past', shortName: 'Custom', title: 'Custom Lifting Session' } : getEffectiveDay(slotDayId);
-      const durationSec = parseDurationToSeconds(durEl ? durEl.value : '40:00');
-      const durationFormatted = formatStopwatch(durationSec);
-      const noteText = (noteEl ? noteEl.value : '').trim();
-
-      const now = new Date();
-      const chosenIso = (dateEl && dateEl.value) ? dateEl.value : getLocalIsoDate(now);
-      const timePart = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-      const displayStamp = `${formatDateInputToShortLabel(chosenIso)} • ${timePart}`;
-
-      let totalSets = 0;
-      let totalVolume = 0;
-      const completedEx = [];
-
-      pastDraftExercises.forEach((item, idx) => {
-        const cleanName = String(item.name || '').trim();
-        if (!cleanName) return;
-        const setsCount = Math.max(1, parseInt(item.sets, 10) || 1);
-        const weightVal = Math.max(0, parseFloat(item.weight) || 0);
-        const repsVal = Math.max(1, parseInt(item.reps, 10) || 1);
-
-        const exVol = setsCount * weightVal * repsVal;
-        totalSets += setsCount;
-        totalVolume += exVol;
-
-        const setsArr = [];
-        for (let s = 1; s <= setsCount; s++) {
-          setsArr.push({ setNum: s, weight: weightVal, reps: repsVal });
-        }
-
-        completedEx.push({
-          id: item.id || `past_ex_${Date.now()}_${idx}`,
-          name: cleanName,
-          swappedFrom: item.swappedFrom || null,
-          effort: 3,
-          volume: exVol,
-          sets: setsArr
-        });
-      });
-
-      if (completedEx.length === 0) {
-        triggerToast('Enter at least one exercise to save.');
-        return;
-      }
-
-      state.history.unshift({
-        id: `h_${Date.now()}`,
-        isoDate: chosenIso,
-        timestampMs: now.getTime(),
-        date: displayStamp,
-        dayId: effDay.id,
-        dayTitle: `${effDay.shortName}: ${effDay.title}`,
-        durationFormatted,
-        durationSeconds: durationSec,
-        totalSets,
-        totalVolume,
-        sessionNote: noteText,
-        exercises: completedEx
-      });
-
-      state.history.sort((a, b) => resolveItemIsoDate(b).localeCompare(resolveItemIsoDate(a)));
-      state.calendarMonth = chosenIso.slice(0, 7);
-      state.selectedCalendarDate = chosenIso;
-
-      saveState();
-      closeModal();
-      renderProgressTab();
-      triggerToast(`Logged ${effDay.shortName} on ${formatDateInputToShortLabel(chosenIso)}`);
-    }
-
-    function savePastCardioSession() {
-      const dateEl = document.getElementById('pastSessionDate');
-      const type = document.getElementById('pastCardioType').value;
-      const env = document.getElementById('pastCardioEnv').value;
-      const rawDuration = document.getElementById('pastCardioDuration').value;
-      const durationSeconds = parseDurationToSeconds(rawDuration);
-      const distance = parseFloat(document.getElementById('pastCardioDistance').value) || 0;
-      const saunaTemp = document.getElementById('pastSaunaTemp') ? document.getElementById('pastSaunaTemp').value.trim() : '';
-      const notes = document.getElementById('pastCardioNotes').value.trim();
-
-      if (durationSeconds <= 0) {
-        triggerToast('Enter duration like 25:00');
-        return;
-      }
-
-      const unit = type === 'Row Indoor' ? 'm' : (type === 'Stair Stepper' ? 'floors' : 'mi');
-      const durationFormatted = formatDurationMMSS(durationSeconds);
-      const paceDisplay = computePaceDisplay(type, durationSeconds, distance, saunaTemp);
-      const now = new Date();
-      const chosenIso = (dateEl && dateEl.value) ? dateEl.value : getLocalIsoDate(now);
-      const timePart = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-      const displayStamp = `${formatDateInputToShortLabel(chosenIso)} • ${timePart}`;
-
-      state.cardioLogs.unshift({
-        id: `c_${Date.now()}`,
-        isoDate: chosenIso,
-        timestampMs: now.getTime(),
-        date: displayStamp,
-        type,
-        environment: type === 'Sauna' ? 'Inside' : env,
-        durationSeconds,
-        durationFormatted,
-        distance: type === 'Sauna' ? 0 : distance,
-        unit,
-        saunaTemp,
-        paceDisplay,
-        notes
-      });
-
-      state.cardioLogs.sort((a, b) => resolveItemIsoDate(b).localeCompare(resolveItemIsoDate(a)));
-      state.calendarMonth = chosenIso.slice(0, 7);
-      state.selectedCalendarDate = chosenIso;
-
-      saveState();
-      closeModal();
-      renderProgressTab();
-      triggerToast(`Logged ${type} on ${formatDateInputToShortLabel(chosenIso)}`);
-    }
-
-    function changeCalendarMonth(delta) {
-      const [yStr, mStr] = (state.calendarMonth || getLocalIsoDate().slice(0, 7)).split('-');
-      const dt = new Date(Number(yStr), Number(mStr) - 1 + delta, 1);
-      state.calendarMonth = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}`;
-      saveState();
-      renderProgressTab();
-    }
-
-    function selectCalendarDate(isoDate) {
-      state.selectedCalendarDate = state.selectedCalendarDate === isoDate ? null : isoDate;
-      saveState();
-      renderProgressTab();
-    }
-
-    function renderActivityCalendar() {
-      const monthKey = state.calendarMonth || getLocalIsoDate().slice(0, 7);
-      const [yStr, mStr] = monthKey.split('-');
-      const year = Number(yStr);
-      const monthIdx = Number(mStr) - 1;
-      const firstOfMonth = new Date(year, monthIdx, 1);
-      const monthTitle = firstOfMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-      const startWeekday = firstOfMonth.getDay();
-      const daysInMonth = new Date(year, monthIdx + 1, 0).getDate();
-      const todayIso = getLocalIsoDate();
-
-      const activityByIso = {};
-      state.history.forEach((w) => {
-        const iso = resolveItemIsoDate(w);
-        if (!iso) return;
-        if (!activityByIso[iso]) activityByIso[iso] = { lifted: false, cardio: false, sauna: false };
-        activityByIso[iso].lifted = true;
-      });
-      state.cardioLogs.forEach((c) => {
-        const iso = resolveItemIsoDate(c);
-        if (!iso) return;
-        if (!activityByIso[iso]) activityByIso[iso] = { lifted: false, cardio: false, sauna: false };
-        if (c.type === 'Sauna') activityByIso[iso].sauna = true;
-        else activityByIso[iso].cardio = true;
-      });
-
-      const cells = [];
-      for (let i = 0; i < startWeekday; i++) {
-        cells.push('<div class="cal-cell empty"></div>');
-      }
-
-      for (let dayNum = 1; dayNum <= daysInMonth; dayNum++) {
-        const iso = `${year}-${String(monthIdx + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
-        const act = activityByIso[iso] || {};
-        const dots = [
-          act.lifted ? '<span class="cal-dot lift" title="Lifted"></span>' : '',
-          act.cardio ? '<span class="cal-dot cardio" title="Cardio"></span>' : '',
-          act.sauna ? '<span class="cal-dot sauna" title="Sauna"></span>' : ''
-        ].filter(Boolean).join('');
-
-        const classes = [
-          'cal-cell',
-          iso === todayIso ? 'today' : '',
-          state.selectedCalendarDate === iso ? 'selected' : ''
-        ].filter(Boolean).join(' ');
-
-        cells.push(`
-          <button type="button" class="${classes}" onclick="selectCalendarDate('${iso}')">
-            <span class="cal-day-num">${dayNum}</span>
-            <span class="cal-symbols">${dots}</span>
-          </button>
-        `);
-      }
-
-      const weekdayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-        .map((d) => `<div class="cal-weekday">${d}</div>`)
-        .join('');
-
-      return `
-        <div class="card">
-          <div class="cal-header-row">
-            <button type="button" class="icon-btn" onclick="changeCalendarMonth(-1)" aria-label="Previous month">&#9664;</button>
-            <h3 class="card-title" style="margin:0;">${escapeHtml(monthTitle)}</h3>
-            <button type="button" class="icon-btn" onclick="changeCalendarMonth(1)" aria-label="Next month">&#9654;</button>
-          </div>
-          <div class="cal-weekdays">${weekdayLabels}</div>
-          <div class="cal-grid">${cells.join('')}</div>
-          <div class="cal-legend">
-            <span class="cal-legend-item"><span class="cal-dot lift"></span>Lifted</span>
-            <span class="cal-legend-item"><span class="cal-dot cardio"></span>Cardio</span>
-            <span class="cal-legend-item"><span class="cal-dot sauna"></span>Sauna</span>
-          </div>
-        </div>
-      `;
-    }
-
     function toggleHistoryExpand(historyId) {
       state.expandedHistory[historyId] = !state.expandedHistory[historyId];
       saveState();
       renderProgressTab();
     }
 
-    function confirmDeleteWorkoutLog(historyId) {
-      const entry = state.history.find((w) => w.id === historyId);
-      const label = entry ? `${entry.dayTitle} (${entry.date})` : 'this workout entry';
-      openConfirmModal(
-        'Delete Workout?',
-        `Are you sure you want to delete ${label}? This cannot be undone.`,
-        'Yes, Delete',
-        () => deleteWorkoutLog(historyId)
-      );
+    function deleteWorkoutHistory(historyId) {
+      const target = state.history.find((h) => h.id === historyId);
+      openConfirmModal({
+        title: 'Delete Workout Entry?',
+        message: `Are you sure you want to delete ${target ? target.dayTitle : 'this workout'}?`,
+        confirmLabel: 'Delete Workout',
+        onConfirm: () => {
+          state.history = state.history.filter((h) => h.id !== historyId);
+          delete state.expandedHistory[historyId];
+          saveState();
+          renderProgressTab();
+          triggerToast('Workout entry removed');
+        }
+      });
     }
 
-    function deleteWorkoutLog(historyId) {
-      state.history = state.history.filter((w) => w.id !== historyId);
-      delete state.expandedHistory[historyId];
+    function changeCalendarMonth(delta) {
+      const base = state.calendarMonth && /^\d{4}-\d{2}$/.test(state.calendarMonth)
+        ? state.calendarMonth
+        : getLocalIsoDate().slice(0, 7);
+      const [y, m] = base.split('-').map(Number);
+      const next = new Date(y, m - 1 + delta, 1);
+      state.calendarMonth = `${next.getFullYear()}-${String(next.getMonth() + 1).padStart(2, '0')}`;
       saveState();
       renderProgressTab();
-      triggerToast('Removed workout entry');
+    }
+
+    function selectCalendarDate(isoDate) {
+      if (state.selectedCalendarDate === isoDate) {
+        state.selectedCalendarDate = null;
+      } else {
+        state.selectedCalendarDate = isoDate;
+      }
+      saveState();
+      renderProgressTab();
+    }
+
+    function clearCalendarSelection() {
+      state.selectedCalendarDate = null;
+      saveState();
+      renderProgressTab();
+    }
+
+    function openLogPastSessionModal(prefillDate) {
+      const defaultDate = prefillDate || state.selectedCalendarDate || getYesterdayIsoDate();
+      state.missedSessionDraft = {
+        mode: 'lifting',
+        date: defaultDate,
+        templateId: 'custom',
+        duration: '45:00',
+        notes: '',
+        exercises: [
+          { name: '', sets: 3, weight: 50, reps: 10 }
+        ],
+        cardioType: 'Running',
+        cardioEnv: 'Outside',
+        cardioDuration: '25:00',
+        cardioDistance: '',
+        saunaTemp: '',
+        cardioNotes: ''
+      };
+      renderMissedSessionModal();
+    }
+
+    function syncMissedDraftFromInputs() {
+      const d = state.missedSessionDraft;
+      if (!d) return;
+      const dateEl = document.getElementById('missedSessionDate');
+      if (dateEl && dateEl.value) d.date = dateEl.value;
+
+      if (d.mode === 'lifting') {
+        const durEl = document.getElementById('missedLiftDuration');
+        const notesEl = document.getElementById('missedLiftNotes');
+        if (durEl) d.duration = durEl.value;
+        if (notesEl) d.notes = notesEl.value;
+        d.exercises.forEach((ex, idx) => {
+          const nEl = document.getElementById(`missed_ex_name_${idx}`);
+          const sEl = document.getElementById(`missed_ex_sets_${idx}`);
+          const wEl = document.getElementById(`missed_ex_weight_${idx}`);
+          const rEl = document.getElementById(`missed_ex_reps_${idx}`);
+          if (nEl) ex.name = nEl.value;
+          if (sEl) ex.sets = Math.max(1, parseInt(sEl.value, 10) || 1);
+          if (wEl) ex.weight = Math.max(0, parseFloat(wEl.value) || 0);
+          if (rEl) ex.reps = Math.max(1, parseInt(rEl.value, 10) || 1);
+        });
+      } else {
+        const typeEl = document.getElementById('missedCardioType');
+        const envEl = document.getElementById('missedCardioEnv');
+        const durEl = document.getElementById('missedCardioDuration');
+        const distEl = document.getElementById('missedCardioDistance');
+        const tempEl = document.getElementById('missedSaunaTemp');
+        const notesEl = document.getElementById('missedCardioNotes');
+        if (typeEl) d.cardioType = typeEl.value;
+        if (envEl) d.cardioEnv = envEl.value;
+        if (durEl) d.cardioDuration = durEl.value;
+        if (distEl) d.cardioDistance = distEl.value;
+        if (tempEl) d.saunaTemp = tempEl.value;
+        if (notesEl) d.cardioNotes = notesEl.value;
+      }
+    }
+
+    function setMissedSessionMode(mode) {
+      syncMissedDraftFromInputs();
+      if (state.missedSessionDraft) {
+        state.missedSessionDraft.mode = mode;
+        renderMissedSessionModal();
+      }
+    }
+
+    function handleMissedTemplateSelect(templateId) {
+      syncMissedDraftFromInputs();
+      const d = state.missedSessionDraft;
+      if (!d) return;
+      d.templateId = templateId;
+      if (templateId === 'custom') {
+        d.exercises = [{ name: '', sets: 3, weight: 50, reps: 10 }];
+      } else {
+        const tpl = getAllAvailableDayTemplates().find((t) => t.id === templateId);
+        if (tpl) {
+          d.exercises = tpl.exercises.map((ex) => {
+            const target = state.targets[ex.id];
+            return {
+              name: getExerciseName(ex),
+              sets: ex.defaultSets,
+              weight: target ? target.weight : ex.defaultWeight,
+              reps: target ? target.reps : ex.defaultReps
+            };
+          });
+        }
+      }
+      renderMissedSessionModal();
+    }
+
+    function addMissedExerciseRow() {
+      syncMissedDraftFromInputs();
+      if (!state.missedSessionDraft) return;
+      state.missedSessionDraft.exercises.push({ name: '', sets: 3, weight: 50, reps: 10 });
+      renderMissedSessionModal();
+    }
+
+    function removeMissedExerciseRow(idx) {
+      syncMissedDraftFromInputs();
+      const d = state.missedSessionDraft;
+      if (!d) return;
+      if (d.exercises.length <= 1) {
+        triggerToast('Keep at least 1 exercise row.');
+        return;
+      }
+      const exName = (d.exercises[idx] && d.exercises[idx].name) || `Exercise ${idx + 1}`;
+      openConfirmModal({
+        title: 'Remove Exercise?',
+        message: `Are you sure you want to remove "${exName}" from this session?`,
+        confirmLabel: 'Remove',
+        onConfirm: () => {
+          d.exercises.splice(idx, 1);
+          renderMissedSessionModal();
+        }
+      });
+    }
+
+    function renderMissedSessionModal() {
+      const d = state.missedSessionDraft;
+      if (!d) return;
+
+      const templateOptions = [
+        `<option value="custom" ${d.templateId === 'custom' ? 'selected' : ''}>Custom / Blank Lift Log</option>`,
+        ...getAllAvailableDayTemplates().map((tpl) => `
+          <option value="${tpl.id}" ${d.templateId === tpl.id ? 'selected' : ''}>${escapeHtml(tpl.shortName)}: ${escapeHtml(tpl.title)}</option>
+        `)
+      ].join('');
+
+      let bodyHtml = '';
+      if (d.mode === 'lifting') {
+        const exRowsHtml = d.exercises.map((ex, idx) => `
+          <div style="background:var(--bg-card-inner);border:1px solid var(--border-subtle);border-radius:12px;padding:10px;margin-bottom:8px;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+              <input
+                id="missed_ex_name_${idx}"
+                class="text-input"
+                style="padding:8px 10px;"
+                placeholder="Exercise name (e.g. Incline Dumbbell Press)"
+                value="${escapeHtml(ex.name)}"
+              />
+              <button type="button" class="remove-set-btn" onclick="removeMissedExerciseRow(${idx})" title="Remove exercise">&#10005;</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+              <div>
+                <div class="field-label" style="font-size:10px;">Sets</div>
+                <input id="missed_ex_sets_${idx}" class="num-input" style="max-width:100%;" type="number" min="1" max="10" value="${ex.sets}" />
+              </div>
+              <div>
+                <div class="field-label" style="font-size:10px;">Weight</div>
+                <input id="missed_ex_weight_${idx}" class="num-input" style="max-width:100%;" type="number" step="any" min="0" value="${ex.weight}" />
+              </div>
+              <div>
+                <div class="field-label" style="font-size:10px;">Reps</div>
+                <input id="missed_ex_reps_${idx}" class="num-input" style="max-width:100%;" type="number" min="1" max="100" value="${ex.reps}" />
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        bodyHtml = `
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label" for="missedTemplateSelect">Routine Template</label>
+              <select id="missedTemplateSelect" class="select-input" onchange="handleMissedTemplateSelect(this.value)">
+                ${templateOptions}
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="missedLiftDuration">Duration (MM:SS)</label>
+              <input id="missedLiftDuration" class="text-input" type="text" value="${escapeHtml(d.duration)}" placeholder="e.g. 42:00" />
+            </div>
+          </div>
+
+          <div class="field-label" style="margin-top:4px;">Exercises Completed</div>
+          ${exRowsHtml}
+
+          <button type="button" class="btn-secondary btn-block" style="margin-bottom:10px;" onclick="addMissedExerciseRow()">
+            + Add Exercise
+          </button>
+
+          <div class="field-group">
+            <label class="field-label" for="missedLiftNotes">Session Notes (Optional)</label>
+            <textarea id="missedLiftNotes" class="textarea-input" rows="2" placeholder="How did the session feel?">${escapeHtml(d.notes)}</textarea>
+          </div>
+
+          <button type="button" class="btn-primary btn-block" onclick="saveMissedSession()">
+            + Save Lifting Session
+          </button>
+        `;
+      } else {
+        const isSauna = d.cardioType === 'Sauna';
+        const paceText = isSauna
+          ? (d.saunaTemp ? `${d.saunaTemp}°F Sauna` : 'Heat Recovery')
+          : (computePaceDisplay(d.cardioType, parseDurationToSeconds(d.cardioDuration), d.cardioDistance, d.saunaTemp) || 'Enter time & distance');
+
+        bodyHtml = `
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label" for="missedCardioType">Activity</label>
+              <select id="missedCardioType" class="select-input" onchange="syncMissedDraftFromInputs(); renderMissedSessionModal();">
+                <option value="Running" ${d.cardioType === 'Running' ? 'selected' : ''}>Running</option>
+                <option value="Treadmill Walk" ${d.cardioType === 'Treadmill Walk' ? 'selected' : ''}>Treadmill Walk</option>
+                <option value="Biking" ${d.cardioType === 'Biking' ? 'selected' : ''}>Biking</option>
+                <option value="Row Indoor" ${d.cardioType === 'Row Indoor' ? 'selected' : ''}>Row Indoor</option>
+                <option value="Stair Stepper" ${d.cardioType === 'Stair Stepper' ? 'selected' : ''}>Stair Stepper</option>
+                <option value="Sauna" ${d.cardioType === 'Sauna' ? 'selected' : ''}>Sauna</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="missedCardioEnv">Setting</label>
+              <select id="missedCardioEnv" class="select-input">
+                <option value="Outside" ${d.cardioEnv === 'Outside' ? 'selected' : ''}>Outside</option>
+                <option value="Inside" ${d.cardioEnv === 'Inside' ? 'selected' : ''}>Inside</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label" for="missedCardioDuration">Duration (MM:SS)</label>
+              <input id="missedCardioDuration" class="text-input" type="text" value="${escapeHtml(d.cardioDuration)}" placeholder="e.g. 25:00" oninput="updateCardioPacePreview('missedCardio')" />
+            </div>
+            ${isSauna
+              ? `<div class="field-group">
+                   <label class="field-label" for="missedSaunaTemp">Sauna Temp (°F)</label>
+                   <input id="missedSaunaTemp" class="text-input" type="number" inputmode="numeric" value="${escapeHtml(d.saunaTemp)}" placeholder="e.g. 185" oninput="updateCardioPacePreview('missedCardio')" />
+                 </div>`
+              : `<div class="field-group">
+                   <label class="field-label" for="missedCardioDistance">Distance (mi / m / flr)</label>
+                   <input id="missedCardioDistance" class="text-input" type="number" step="any" inputmode="decimal" value="${escapeHtml(d.cardioDistance)}" placeholder="e.g. 2.0" oninput="updateCardioPacePreview('missedCardio')" />
+                 </div>`
+            }
+          </div>
+
+          <div class="pace-preview-bar">
+            <span style="font-size:11px;font-weight:800;color:var(--text-secondary);">Calculated Pace</span>
+            <span id="missedCardioPacePreview" class="badge badge-sky">${escapeHtml(paceText)}</span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="missedCardioNotes">Session Notes (Optional)</label>
+            <input id="missedCardioNotes" class="text-input" type="text" value="${escapeHtml(d.cardioNotes)}" placeholder="How did breathing, legs, or heat feel?" />
+          </div>
+
+          <button type="button" class="btn-primary btn-block" onclick="saveMissedSession()">
+            + Save ${isSauna ? 'Sauna' : 'Cardio'} Session
+          </button>
+        `;
+      }
+
+      openModal(`
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:15px;font-weight:900;">Log Missed / Past Session</h3>
+          <button type="button" class="icon-btn" onclick="closeModal()">&#10005;</button>
+        </div>
+
+        <div class="segment-toggle">
+          <button type="button" class="segment-btn ${d.mode === 'lifting' ? 'active' : ''}" onclick="setMissedSessionMode('lifting')">&#127947; Lifting</button>
+          <button type="button" class="segment-btn ${d.mode === 'cardio' ? 'active' : ''}" onclick="setMissedSessionMode('cardio')">&#127939; Cardio / Sauna</button>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="missedSessionDate">Session Date</label>
+          <input id="missedSessionDate" class="text-input" type="date" value="${escapeHtml(d.date)}" />
+        </div>
+
+        ${bodyHtml}
+      `);
+    }
+
+    function saveMissedSession() {
+      syncMissedDraftFromInputs();
+      const d = state.missedSessionDraft;
+      if (!d) return;
+
+      const isoDate = d.date || getYesterdayIsoDate();
+      const formattedDate = formatIsoDateLabel(isoDate);
+      const stampedAt = formatDateTimeStamp(isoDate);
+
+      if (d.mode === 'lifting') {
+        const validExercises = d.exercises.filter((ex) => String(ex.name || '').trim().length > 0);
+        if (validExercises.length === 0) {
+          triggerToast('Enter at least one exercise name.');
+          return;
+        }
+
+        const durationSec = parseDurationToSeconds(d.duration) || 2400;
+        let totalSets = 0;
+        let totalVolume = 0;
+
+        const completedEx = validExercises.map((ex, idx) => {
+          const setsArr = [];
+          for (let s = 1; s <= ex.sets; s++) {
+            setsArr.push({ setNum: s, weight: ex.weight, reps: ex.reps });
+          }
+          const exVol = ex.sets * ex.weight * ex.reps;
+          totalSets += ex.sets;
+          totalVolume += exVol;
+          return {
+            id: `past_ex_${Date.now()}_${idx}`,
+            name: ex.name.trim(),
+            originalName: ex.name.trim(),
+            isSwapped: false,
+            swapType: null,
+            effort: 3,
+            volume: exVol,
+            sets: setsArr
+          };
+        });
+
+        const tpl = getAllAvailableDayTemplates().find((t) => t.id === d.templateId);
+        const dayTitle = tpl ? `${tpl.shortName}: ${tpl.title}` : 'Custom Lift Session';
+
+        state.history.unshift({
+          id: `h_${Date.now()}`,
+          isoDate,
+          date: formattedDate,
+          completedAt: stampedAt,
+          dayId: tpl ? tpl.id : 'custom',
+          dayTitle,
+          isDaySwapped: false,
+          durationFormatted: formatStopwatch(durationSec),
+          durationSeconds: durationSec,
+          totalSets,
+          totalVolume,
+          sessionNote: (d.notes || '').trim(),
+          exercises: completedEx
+        });
+
+        state.calendarMonth = isoDate.slice(0, 7);
+        state.selectedCalendarDate = isoDate;
+        state.missedSessionDraft = null;
+        saveState();
+        closeModal();
+        renderProgressTab();
+        triggerToast(`Logged lifting session for ${formattedDate}`);
+      } else {
+        const durSec = parseDurationToSeconds(d.cardioDuration);
+        if (durSec <= 0) {
+          triggerToast('Enter duration like 25:00');
+          return;
+        }
+        const type = d.cardioType;
+        const isSauna = type === 'Sauna';
+        const dist = isSauna ? 0 : (parseFloat(d.cardioDistance) || 0);
+        const unit = type === 'Row Indoor' ? 'm' : (type === 'Stair Stepper' ? 'floors' : 'mi');
+        const paceDisplay = computePaceDisplay(type, durSec, dist, d.saunaTemp) || 'Logged';
+
+        state.cardioLogs.unshift({
+          id: `c_${Date.now()}`,
+          isoDate,
+          date: formattedDate,
+          completedAt: stampedAt,
+          type,
+          environment: isSauna ? 'Inside' : d.cardioEnv,
+          durationSeconds: durSec,
+          durationFormatted: formatDurationMMSS(durSec),
+          distance: dist,
+          unit,
+          saunaTemp: d.saunaTemp || '',
+          paceDisplay,
+          notes: (d.cardioNotes || '').trim()
+        });
+
+        state.calendarMonth = isoDate.slice(0, 7);
+        state.selectedCalendarDate = isoDate;
+        state.missedSessionDraft = null;
+        saveState();
+        closeModal();
+        renderProgressTab();
+        triggerToast(`Logged ${type} for ${formattedDate}`);
+      }
+    }
+
+    function buildActivityMapByIsoDate() {
+      const map = {};
+      state.history.forEach((w) => {
+        const iso = resolveItemIsoDate(w);
+        if (!iso) return;
+        if (!map[iso]) map[iso] = { lift: 0, cardio: 0, sauna: 0 };
+        map[iso].lift += 1;
+      });
+      state.cardioLogs.forEach((c) => {
+        const iso = resolveItemIsoDate(c);
+        if (!iso) return;
+        if (!map[iso]) map[iso] = { lift: 0, cardio: 0, sauna: 0 };
+        if (c.type === 'Sauna') map[iso].sauna += 1;
+        else map[iso].cardio += 1;
+      });
+      return map;
     }
 
     function renderProgressTab() {
       const totalSessions = state.history.length;
       const totalVolumeAll = state.history.reduce((sum, w) => sum + (Number(w.totalVolume) || 0), 0);
-      const selectedIso = state.selectedCalendarDate;
 
-      const unifiedEntries = [
+      const todayIso = getLocalIsoDate();
+      const activeMonth = state.calendarMonth && /^\d{4}-\d{2}$/.test(state.calendarMonth)
+        ? state.calendarMonth
+        : todayIso.slice(0, 7);
+      const [calYear, calMonthNum] = activeMonth.split('-').map(Number);
+      const monthStart = new Date(calYear, calMonthNum - 1, 1);
+      const monthTitle = monthStart.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      const firstWeekday = monthStart.getDay();
+      const daysInMonth = new Date(calYear, calMonthNum, 0).getDate();
+      const activityByDate = buildActivityMapByIsoDate();
+
+      const cells = [];
+      for (let i = 0; i < firstWeekday; i++) {
+        cells.push('<div class="cal-day-cell empty"></div>');
+      }
+      for (let dayNum = 1; dayNum <= daysInMonth; dayNum++) {
+        const iso = `${calYear}-${String(calMonthNum).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+        const act = activityByDate[iso] || { lift: 0, cardio: 0, sauna: 0 };
+        const hasAny = act.lift > 0 || act.cardio > 0 || act.sauna > 0;
+        const isSelected = state.selectedCalendarDate === iso;
+        const isToday = iso === todayIso;
+
+        const dots = [];
+        if (act.lift > 0) dots.push('<span class="cal-dot lift" title="Lifted"></span>');
+        if (act.cardio > 0) dots.push('<span class="cal-dot cardio" title="Cardio"></span>');
+        if (act.sauna > 0) dots.push('<span class="cal-dot sauna" title="Sauna"></span>');
+
+        cells.push(`
+          <button
+            type="button"
+            class="cal-day-cell ${hasAny ? 'has-activity' : ''} ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}"
+            onclick="selectCalendarDate('${iso}')"
+          >
+            <span class="cal-day-num">${dayNum}</span>
+            <span class="cal-dots-row">${dots.join('')}</span>
+          </button>
+        `);
+      }
+
+      // Unified chronological feed of Lifting + Cardio + Sauna
+      const unifiedFeed = [
         ...state.history.map((w) => ({
-          kind: 'workout',
-          iso: resolveItemIsoDate(w),
-          sortKey: `${resolveItemIsoDate(w)}_${String(w.timestampMs || 0).padStart(15, '0')}`,
+          kind: 'lift',
+          isoDate: resolveItemIsoDate(w),
+          sortKey: Number(String(w.id || '').replace(/\D/g, '')) || 0,
           data: w
         })),
         ...state.cardioLogs.map((c) => ({
-          kind: 'cardio',
-          iso: resolveItemIsoDate(c),
-          sortKey: `${resolveItemIsoDate(c)}_${String(c.timestampMs || 0).padStart(15, '0')}`,
+          kind: c.type === 'Sauna' ? 'sauna' : 'cardio',
+          isoDate: resolveItemIsoDate(c),
+          sortKey: Number(String(c.id || '').replace(/\D/g, '')) || 0,
           data: c
         }))
-      ]
-        .filter((entry) => !selectedIso || entry.iso === selectedIso)
-        .sort((a, b) => b.sortKey.localeCompare(a.sortKey));
+      ].sort((a, b) => {
+        if (a.isoDate && b.isoDate && a.isoDate !== b.isoDate) {
+          return b.isoDate.localeCompare(a.isoDate);
+        }
+        return b.sortKey - a.sortKey;
+      });
 
-      const workoutCount = unifiedEntries.filter((e) => e.kind === 'workout').length;
-      const cardioCount = unifiedEntries.filter((e) => e.kind === 'cardio').length;
+      const filteredFeed = state.selectedCalendarDate
+        ? unifiedFeed.filter((entry) => entry.isoDate === state.selectedCalendarDate)
+        : unifiedFeed;
 
-      const filterBannerHtml = selectedIso
+      const filterBarHtml = state.selectedCalendarDate
         ? `
-          <div class="card" style="border-color:rgba(16,185,129,0.45);background:rgba(16,185,129,0.08);">
-            <div class="card-header-row" style="align-items:center;">
-              <div>
-                <div style="font-size:12px;font-weight:800;color:#6ee7b7;">Viewing ${escapeHtml(formatDateInputToShortLabel(selectedIso))}</div>
-                <div class="card-subtitle">${workoutCount} workout(s) • ${cardioCount} cardio/sauna session(s)</div>
-              </div>
+          <div class="card" style="padding:10px 12px;border-color:rgba(16,185,129,0.4);background:rgba(16,185,129,0.08);">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+              <span style="font-size:12px;font-weight:800;color:#6ee7b7;">Showing ${escapeHtml(formatIsoDateLabel(state.selectedCalendarDate))}</span>
               <div style="display:flex;gap:6px;">
-                <button type="button" class="btn-primary btn-compact" onclick="openPastWorkoutModal('${selectedIso}')">+ Log Session</button>
-                <button type="button" class="btn-secondary btn-compact" onclick="selectCalendarDate('${selectedIso}')">Show All</button>
+                <button type="button" class="btn-primary btn-compact" onclick="openLogPastSessionModal('${state.selectedCalendarDate}')">+ Log on Date</button>
+                <button type="button" class="btn-secondary btn-compact" onclick="clearCalendarSelection()">Show All</button>
               </div>
             </div>
           </div>
         `
         : '';
 
-      const feedHtml = unifiedEntries.length === 0
-        ? `<div class="card"><p class="card-subtitle">${selectedIso ? 'No sessions logged on this date yet.' : 'No completed activity logged yet. Finish a workout, log cardio/sauna, or add a missed session above.'}</p></div>`
-        : unifiedEntries.map((entry) => {
-            if (entry.kind === 'cardio') {
-              const c = entry.data;
-              const isSauna = c.type === 'Sauna';
-              const dotClass = isSauna ? 'sauna' : 'cardio';
+      const feedHtml = filteredFeed.length === 0
+        ? `<div class="card"><p class="card-subtitle">${state.selectedCalendarDate ? 'No activity logged on this date yet.' : 'No activity logged yet. Complete a workout or log a cardio/sauna session to see your history here.'}</p></div>`
+        : filteredFeed.map((entry) => {
+            if (entry.kind === 'lift') {
+              const w = entry.data;
+              const isExpanded = Boolean(state.expandedHistory && state.expandedHistory[w.id]);
+              const stampLabel = w.completedAt || w.date;
+              const exDetailsHtml = (w.exercises || []).map((e) => {
+                const setsDetail = (e.sets || [])
+                  .map((s) => `${s.weight}×${s.reps}`)
+                  .join(', ');
+                const swapLine = e.isSwapped
+                  ? `<div style="font-size:11px;color:#c7d2fe;margin-top:2px;">&#8644; ${escapeHtml(e.swapType || 'Swapped')} from ${escapeHtml(e.originalName || 'default')}</div>`
+                  : '';
+                return `
+                  <div style="padding:7px 0;border-bottom:1px solid var(--border-subtle);">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;">
+                      <span style="font-size:12px;font-weight:800;color:#fff;">${escapeHtml(e.name)}</span>
+                      <span class="badge badge-indigo">Effort ${e.effort}/5</span>
+                    </div>
+                    ${swapLine}
+                    <div style="font-size:11px;color:var(--text-secondary);margin-top:3px;">${escapeHtml(setsDetail)} (${Number(e.volume || 0).toLocaleString()} lbs)</div>
+                  </div>
+                `;
+              }).join('');
+
               return `
                 <div class="card">
-                  <div class="card-header-row" style="align-items:center;">
-                    <div>
-                      <h3 class="card-title" style="display:flex;align-items:center;gap:7px;">
-                        <span class="cal-dot ${dotClass}"></span>
-                        <span>${escapeHtml(c.type)}</span>
-                      </h3>
-                      <p class="card-subtitle">${escapeHtml(c.date)} • ${escapeHtml(c.environment)} • ${escapeHtml(c.durationFormatted)}${c.distance > 0 ? ` • ${c.distance} ${escapeHtml(c.unit)}` : ''}</p>
+                  <div class="card-header-row" style="cursor:pointer;" onclick="toggleHistoryExpand('${w.id}')">
+                    <div style="min-width:0;flex:1;">
+                      <h3 class="card-title">&#127947; ${escapeHtml(w.dayTitle)}</h3>
+                      <p class="card-subtitle">${escapeHtml(stampLabel)} • Time: ${escapeHtml(w.durationFormatted || '0:00')} • ${isExpanded ? 'Hide Details ▲' : 'Tap for Details ▼'}</p>
                     </div>
-                    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-                      <span class="badge badge-emerald">${escapeHtml(c.paceDisplay)}</span>
-                      <button type="button" class="delete-row-btn" onclick="confirmDeleteCardioLog('${c.id}')" aria-label="Delete session">Delete</button>
+                    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;" onclick="event.stopPropagation()">
+                      <button type="button" class="delete-row-btn" onclick="deleteWorkoutHistory('${w.id}')" title="Delete workout entry">Delete</button>
                     </div>
                   </div>
-                  ${c.notes ? `<p class="card-subtitle" style="margin-top:8px;">${escapeHtml(c.notes)}</p>` : ''}
+                  ${isExpanded ? `
+                    <div class="history-detail-panel">
+                      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+                        <span class="badge badge-emerald">${Number(w.totalVolume || 0).toLocaleString()} lbs volume</span>
+                        <span class="badge badge-amber">${w.totalSets} sets</span>
+                      </div>
+                      ${exDetailsHtml}
+                      ${w.sessionNote ? `<div class="cue-box"><strong>Session Note:</strong> ${escapeHtml(w.sessionNote)}</div>` : ''}
+                    </div>
+                  ` : ''}
                 </div>
               `;
             }
 
-            const w = entry.data;
-            const isExpanded = Boolean(state.expandedHistory && state.expandedHistory[w.id]);
-            const exDetailRows = (w.exercises || []).map((e) => {
-              const swapNote = e.swappedFrom ? ` <span style="color:var(--indigo);font-weight:700;">(Swapped from ${escapeHtml(e.swappedFrom)})</span>` : '';
-              const setLine = (e.sets && e.sets.length > 0)
-                ? ` — ${e.sets.map((s) => `${s.weight}x${s.reps}`).join(', ')} (Effort ${e.effort}/5)`
-                : '';
-              return `<div style="margin-top:4px;font-size:12px;color:var(--text-secondary);">&bull; <strong style="color:var(--text-primary);">${escapeHtml(e.name)}</strong>${swapNote}${setLine}</div>`;
-            }).join('');
+            const c = entry.data;
+            const stampLabel = c.completedAt || c.date;
+            const icon = c.type === 'Sauna' ? '&#128293;' : '&#127939;';
+            const badgeClass = c.type === 'Sauna' ? 'badge-amber' : 'badge-sky';
 
             return `
               <div class="card">
-                <div class="card-header-row" style="align-items:center;">
-                  <div style="cursor:pointer;flex:1;" onclick="toggleHistoryExpand('${w.id}')">
-                    <h3 class="card-title" style="display:flex;align-items:center;gap:7px;">
-                      <span class="cal-dot lift"></span>
-                      <span>${escapeHtml(w.dayTitle)}</span>
-                    </h3>
-                    <p class="card-subtitle">${escapeHtml(w.date)} • Time Logged: <strong>${escapeHtml(w.durationFormatted || '0:00')}</strong></p>
+                <div class="card-header-row">
+                  <div style="min-width:0;flex:1;">
+                    <h3 class="card-title">${icon} ${escapeHtml(c.type)}</h3>
+                    <p class="card-subtitle">${escapeHtml(stampLabel)} • ${escapeHtml(c.environment)} • ${escapeHtml(c.durationFormatted)}${c.distance > 0 ? ` • ${c.distance} ${escapeHtml(c.unit)}` : ''}</p>
                   </div>
                   <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-                    <button type="button" class="btn-secondary btn-compact" onclick="toggleHistoryExpand('${w.id}')">${isExpanded ? 'Hide' : 'Details'}</button>
-                    <button type="button" class="delete-row-btn" onclick="confirmDeleteWorkoutLog('${w.id}')" aria-label="Delete workout entry">Delete</button>
+                    <span class="badge ${badgeClass}">${escapeHtml(c.paceDisplay)}</span>
+                    <button type="button" class="delete-row-btn" onclick="deleteCardioLog('${c.id}')" title="Delete entry">Delete</button>
                   </div>
                 </div>
-                ${isExpanded ? `
-                  <div class="history-detail-panel">
-                    <p class="card-subtitle" style="margin:0;">
-                      <strong>${Number(w.totalSets || 0)}</strong> sets • <strong>${Number(w.totalVolume || 0).toLocaleString()}</strong> lbs total volume
-                      ${w.swappedFromDay ? ` • <span style="color:var(--indigo);">Swapped from ${escapeHtml(w.swappedFromDay)}</span>` : ''}
-                    </p>
-                    ${exDetailRows}
-                    ${w.sessionNote ? `<div class="cue-box"><strong>Session Note:</strong> ${escapeHtml(w.sessionNote)}</div>` : ''}
-                  </div>
-                ` : ''}
+                ${c.notes ? `<p class="card-subtitle" style="margin-top:8px;">${escapeHtml(c.notes)}</p>` : ''}
               </div>
             `;
           }).join('');
@@ -3100,13 +3371,34 @@
           </div>
         </div>
 
-        ${renderActivityCalendar()}
+        <div class="card">
+          <div class="calendar-header">
+            <button type="button" class="icon-btn" onclick="changeCalendarMonth(-1)" aria-label="Previous month">&#8249;</button>
+            <span class="calendar-month-label">${escapeHtml(monthTitle)}</span>
+            <button type="button" class="icon-btn" onclick="changeCalendarMonth(1)" aria-label="Next month">&#8250;</button>
+          </div>
+          <div class="calendar-weekdays">
+            <div class="calendar-weekday">Sun</div>
+            <div class="calendar-weekday">Mon</div>
+            <div class="calendar-weekday">Tue</div>
+            <div class="calendar-weekday">Wed</div>
+            <div class="calendar-weekday">Thu</div>
+            <div class="calendar-weekday">Fri</div>
+            <div class="calendar-weekday">Sat</div>
+          </div>
+          <div class="calendar-grid">${cells.join('')}</div>
+          <div class="calendar-legend">
+            <span class="legend-item"><span class="cal-dot lift"></span>Lifted</span>
+            <span class="legend-item"><span class="cal-dot cardio"></span>Cardio</span>
+            <span class="legend-item"><span class="cal-dot sauna"></span>Sauna</span>
+          </div>
+        </div>
 
-        <button type="button" class="btn-secondary btn-block" style="margin-bottom:12px;" onclick="openPastWorkoutModal()">
+        <button type="button" class="btn-secondary btn-block" style="margin-bottom:12px;" onclick="openLogPastSessionModal()">
           + Log Missed / Past Session
         </button>
 
-        ${filterBannerHtml}
+        ${filterBarHtml}
         ${feedHtml}
       `;
 
@@ -3119,27 +3411,29 @@
       const exLines = exercises.map((ex) => {
         const rows = (state.setsByDay[day.id] && state.setsByDay[day.id][ex.id]) || [];
         const effort = state.efforts[ex.id] || 3;
-        const swapInfo = getExerciseSwapDetail(ex);
-        const swapTag = swapInfo.isSwapped ? ` (Swapped from ${swapInfo.swappedFrom})` : '';
+        const swapInfo = getExerciseSwapInfo(ex);
+        const swapTag = swapInfo.isSwapped ? ` [${swapInfo.swapType} from ${swapInfo.originalName}]` : '';
         const setStr = rows.map((r) => `${r.weight}x${r.reps}${r.done ? '(done)' : ''}`).join(', ');
-        return `- ${swapInfo.name}${swapTag} [Effort ${effort}/5]: ${setStr}`;
+        return `- ${swapInfo.activeName}${swapTag} [Effort ${effort}/5]: ${setStr}`;
       }).join('\n');
 
       const recentHistory = state.history.slice(0, 4).map((w) => {
         const notePart = w.sessionNote ? ` | Note: "${w.sessionNote}"` : '';
-        const swappedExercises = (w.exercises || [])
-          .filter((e) => e.swappedFrom)
-          .map((e) => `${e.name} (swapped from ${e.swappedFrom})`);
-        const swapSummary = swappedExercises.length > 0 ? ` | Swaps: ${swappedExercises.join(', ')}` : '';
-        return `- ${w.date} ${w.dayTitle} (${w.durationFormatted}, ${w.totalVolume} lbs vol)${swapSummary}${notePart}`;
+        const stamp = w.completedAt || w.date;
+        const exList = (w.exercises || []).map((e) => {
+          const sTag = e.isSwapped ? ` (${e.swapType} from ${e.originalName})` : '';
+          return `${e.name}${sTag} [Effort ${e.effort}/5]`;
+        }).join('; ');
+        return `- ${stamp} — ${w.dayTitle} (${w.durationFormatted}, ${w.totalVolume} lbs vol): ${exList}${notePart}`;
       }).join('\n');
 
       const recentCardio = state.cardioLogs.slice(0, 5).map((c) => {
+        const stamp = c.completedAt || c.date;
         const notePart = c.notes ? ` (${c.notes})` : '';
-        return `- ${c.date}: ${c.type} ${c.durationFormatted} @ ${c.paceDisplay}${notePart}`;
+        return `- ${stamp}: ${c.type} ${c.durationFormatted} @ ${c.paceDisplay}${notePart}`;
       }).join('\n');
 
-      return `Active Day: ${day.shortName} - ${day.title}\nCurrent Sets:\n${exLines}\n\nRecent Workouts:\n${recentHistory || 'None'}\n\nRecent Cardio/Sauna:\n${recentCardio || 'None'}`;
+      return `Active Day: ${day.shortName} - ${day.title}${day.isDaySwapped ? ' (Swapped Day)' : ''}\nCurrent Sets:\n${exLines}\n\nRecent Workouts:\n${recentHistory || 'None'}\n\nRecent Cardio/Sauna:\n${recentCardio || 'None'}`;
     }
 
     function saveCoachKey() {
@@ -3161,10 +3455,10 @@
       renderCoachTab();
 
       const context = buildCoachContext();
-      const systemInstruction = `You are Coach Chad, a sharp, encouraging strength & conditioning coach inside THE PROCESS app. Keep replies concise, actionable, and easy to read on a phone between sets.\n\nAthlete Context:\n${context}`;
+      const systemInstruction = `You are Coach Chad, a sharp, encouraging strength & conditioning coach inside THE PROCESS app. Keep replies concise, actionable, and easy to read on a phone between sets. Pay close attention to any exercise swaps (preset or custom) noted in the athlete's logs.\n\nAthlete Context:\n${context}`;
 
       if (!state.geminiApiKey) {
-        const fallback = `Coach Chad (Offline Mode): Add your free Gemini API key above for live AI coaching. Based on your current ${getEffectiveDay(state.selectedDayId).title} log, keep rest timers steady, bump weight next time on any exercise rated 1-2/5 effort with clean reps, and use your session notes to track how your body feels.`;
+        const fallback = `Coach Chad (Offline Mode): Add your free Gemini API key above for live AI coaching. Based on your current ${getEffectiveDay(state.selectedDayId).title} log, bump weight next time on any exercise rated 1-2/5 effort with clean reps, hold weight if effort hit 5/5, and keep logging your swaps and session notes.`;
         state.coachMessages.push({ role: 'chad', text: fallback });
         saveState();
         renderCoachTab();
@@ -3172,7 +3466,7 @@
       }
 
       try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${encodeURIComponent(state.geminiApiKey)}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(state.geminiApiKey)}`;
         const resp = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -3203,12 +3497,12 @@
             <label class="field-label" for="geminiKeyInput">Gemini API Key (Optional — Saved on Device)</label>
             <div style="display:flex;gap:8px;">
               <input id="geminiKeyInput" class="text-input" type="password" value="${escapeHtml(state.geminiApiKey)}" placeholder="Paste AI Studio API key..." />
-              <button class="btn-secondary" onclick="saveCoachKey()">Save</button>
+              <button type="button" class="btn-secondary" onclick="saveCoachKey()">Save</button>
             </div>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn-secondary" onclick="sendCoachMessage('Review my current workout sets, effort ratings, and recent session notes and give me my next progression step.')">Analyze Today's Session</button>
-            <button class="btn-secondary" onclick="sendCoachMessage('Check my recent cardio and sauna sessions alongside my lifting and tell me how to pace recovery.')">Cardio &amp; Recovery Check</button>
+            <button type="button" class="btn-secondary" onclick="sendCoachMessage('Review my current workout sets, exercise swaps, effort ratings, and recent session notes and give me my next progression step.')">Analyze Today's Session</button>
+            <button type="button" class="btn-secondary" onclick="sendCoachMessage('Check my recent cardio and sauna sessions alongside my lifting and tell me how to pace recovery.')">Cardio &amp; Recovery Check</button>
           </div>
         </div>
 
@@ -3216,7 +3510,7 @@
           <div id="coachChatList" class="chat-list">${bubblesHtml}</div>
           <div style="display:flex;gap:8px;">
             <input id="coachPromptInput" class="text-input" type="text" placeholder="Ask Coach Chad anything..." onkeydown="if(event.key==='Enter'){sendCoachMessage();}" />
-            <button class="btn-primary" onclick="sendCoachMessage()">Send</button>
+            <button type="button" class="btn-primary" onclick="sendCoachMessage()">Send</button>
           </div>
         </div>
       `;
@@ -3257,10 +3551,14 @@
       else renderWorkoutTab();
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
       loadState();
+      updateSyncPillUI();
       updateTimerUI();
       switchTab(state.activeTab || 'workout');
+      if (state.supabaseUrl && state.supabaseAnonKey) {
+        await pullStateFromSupabase(false);
+      }
     });
   </script>
 </body>
